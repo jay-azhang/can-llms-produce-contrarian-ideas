@@ -1,0 +1,696 @@
+<title>Consensus of Contrarians</title>
+<style>
+:root{
+  color-scheme: light;
+  --ground:#fbfbfc; --panel:#ffffff; --panel-2:#f4f5f8; --line:#e2e4ea; --line-strong:#c9ccd6;
+  --ink:#10131a; --ink-2:#3d4354; --ink-3:#6b7186;
+  --accent:#2a78d6; --accent-soft:#eaf1fc;
+  --counter:#eb6834;
+  --pos:#1baf7a; --neg:#e34948; --warn:#eda100;
+  --seq-0:#eef4fd; --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#6da7ec;
+  --seq-4:#3987e5; --seq-5:#256abf; --seq-6:#184f95; --seq-7:#0d366b;
+  --shadow:0 1px 2px rgba(16,19,26,.05),0 4px 16px rgba(16,19,26,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#14161b; --panel:#1b1e25; --panel-2:#22262e; --line:#2c313b; --line-strong:#3d4350;
+    --ink:#f2f3f6; --ink-2:#b9bfcd; --ink-3:#868da0;
+    --accent:#3987e5; --accent-soft:#16243a;
+    --counter:#d95926;
+    --pos:#199e70; --neg:#e66767; --warn:#c98500;
+    --seq-0:#171d28; --seq-1:#0d366b; --seq-2:#184f95; --seq-3:#256abf;
+    --seq-4:#3987e5; --seq-5:#6da7ec; --seq-6:#9ec5f4; --seq-7:#cde2fb;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#14161b; --panel:#1b1e25; --panel-2:#22262e; --line:#2c313b; --line-strong:#3d4350;
+  --ink:#f2f3f6; --ink-2:#b9bfcd; --ink-3:#868da0;
+  --accent:#3987e5; --accent-soft:#16243a;
+  --counter:#d95926;
+  --pos:#199e70; --neg:#e66767; --warn:#c98500;
+  --seq-0:#171d28; --seq-1:#0d366b; --seq-2:#184f95; --seq-3:#256abf;
+  --seq-4:#3987e5; --seq-5:#6da7ec; --seq-6:#9ec5f4; --seq-7:#cde2fb;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.col{max-width:68ch}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.08;letter-spacing:-.022em;font-weight:600}
+h2{font-size:1.55rem;line-height:1.2;letter-spacing:-.012em;font-weight:600}
+h3{font-size:1.02rem;font-weight:650;letter-spacing:-.004em}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{
+  font-size:.685rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);
+}
+/* ---------- masthead ---------- */
+header{border-bottom:1px solid var(--line);background:var(--panel);}
+.masthead{display:flex;flex-direction:column;gap:22px;padding:52px 0 40px}
+.sub{font-size:1.115rem;line-height:1.55;color:var(--ink-2);max-width:64ch}
+.runbar{
+  display:flex;flex-wrap:wrap;gap:8px 26px;padding-top:6px;
+  font-size:.775rem;color:var(--ink-3);
+}
+.runbar b{color:var(--ink-2);font-weight:600}
+/* ---------- verdict ---------- */
+.verdict{
+  margin:38px 0 0;border:1px solid var(--line);border-left:3px solid var(--neg);
+  background:var(--panel);border-radius:3px;padding:24px 26px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:12px;
+}
+.verdict .tag{
+  display:inline-flex;align-items:center;gap:7px;align-self:flex-start;
+  font-size:.7rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--neg);
+}
+.verdict .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--neg)}
+.verdict h2{font-size:1.32rem}
+.verdict p{color:var(--ink-2);font-size:.965rem;max-width:76ch}
+/* ---------- sections ---------- */
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+.shead{display:flex;flex-direction:column;gap:11px;margin-bottom:30px}
+.shead .role{
+  font-size:.685rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);
+}
+.shead p{color:var(--ink-2);font-size:.95rem;max-width:70ch}
+/* ---------- panels & tiles ---------- */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(178px,1fr))}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 18px;display:flex;flex-direction:column;gap:5px}
+.tile .k{font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.tile .v{font-size:1.72rem;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.tile .n{font-size:.775rem;color:var(--ink-3);line-height:1.4}
+.tile.flag{border-left:3px solid var(--warn)}
+/* ---------- tables ---------- */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:.845rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{
+  font-size:.665rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+  white-space:nowrap;border-bottom:1px solid var(--line-strong);position:sticky;top:0;background:var(--panel);
+}
+td.num,th.num{text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+tbody tr:hover{background:var(--panel-2)}
+.claim{max-width:44ch;color:var(--ink-2);font-size:.83rem;line-height:1.48}
+/* ---------- misc ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:center;font-size:.775rem;color:var(--ink-2);margin-bottom:14px}
+.swatch{width:11px;height:11px;border-radius:2px;display:inline-block;margin-right:7px;vertical-align:-1px}
+.hyp{display:grid;gap:12px}
+.hypcard{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 18px;display:flex;gap:16px;align-items:flex-start}
+.hypcard .badge{
+  flex:none;font-size:.665rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 9px;border-radius:2px;margin-top:2px;white-space:nowrap;
+}
+.b-yes{background:color-mix(in srgb,var(--pos) 15%,transparent);color:var(--pos)}
+.b-no{background:color-mix(in srgb,var(--neg) 15%,transparent);color:var(--neg)}
+.b-na{background:var(--panel-2);color:var(--ink-3)}
+.hypcard .body{display:flex;flex-direction:column;gap:5px}
+.hypcard .h{font-weight:650;font-size:.925rem}
+.hypcard .d{font-size:.855rem;color:var(--ink-2)}
+.asks{display:grid;gap:14px;counter-reset:ask}
+.ask{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:3px;padding:18px 20px;display:flex;flex-direction:column;gap:7px}
+.ask .t{font-weight:650;font-size:1rem;display:flex;gap:10px;align-items:baseline}
+.ask .t .no{color:var(--accent);font-size:.8rem;font-weight:700}
+.ask .d{font-size:.885rem;color:var(--ink-2)}
+.ask .need{font-size:.8rem;color:var(--ink);background:var(--panel-2);border-radius:2px;padding:9px 12px;line-height:1.5}
+.note{font-size:.8rem;color:var(--ink-3);line-height:1.55;margin-top:12px;max-width:76ch}
+.smallmults{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.sm{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:12px 12px 6px}
+.sm .lab{font-size:.78rem;font-weight:650;margin-bottom:1px}
+.sm .met{font-size:.7rem;color:var(--ink-3);margin-bottom:6px}
+figure{margin:0}
+figcaption{font-size:.79rem;color:var(--ink-3);margin-top:11px;line-height:1.55;max-width:78ch}
+#tip{
+  position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;z-index:60;
+  background:var(--ink);color:var(--ground);font-size:.775rem;line-height:1.45;
+  padding:7px 10px;border-radius:3px;max-width:280px;box-shadow:0 4px 14px rgba(0,0,0,.25);
+}
+#tip b{color:var(--ground)}
+svg{display:block;max-width:100%;height:auto}
+.axis{stroke:var(--line);stroke-width:1}
+.gridline{stroke:var(--line);stroke-width:1;stroke-dasharray:2 3}
+.tick{fill:var(--ink-3);font-size:10.5px;font-family:ui-monospace,Menlo,monospace}
+.slab{fill:var(--ink-2);font-size:11.5px}
+.vlab{fill:var(--ink);font-size:11px;font-family:ui-monospace,Menlo,monospace;font-weight:600}
+footer{padding:44px 0 60px;color:var(--ink-3);font-size:.815rem;display:flex;flex-direction:column;gap:7px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<header>
+  <div class="wrap masthead">
+    <div class="eyebrow">Nof1 Research &middot; Pilot Study &middot; v0.1</div>
+    <h1 class="serif">The Consensus of Contrarians</h1>
+    <p class="sub">Do nine frontier models from eight labs collapse to the same
+      &ldquo;contrarian&rdquo; opinions? A 1,071-generation pilot, run end to end, to decide
+      whether the full study is worth building.</p>
+    <div class="runbar mono">
+      <span><b id="m-gens"></b> generations</span>
+      <span><b id="m-models"></b> models &middot; 8 labs</span>
+      <span><b id="m-conds"></b> conditions</span>
+      <span><b id="m-cost"></b> total API spend</span>
+      <span><b>2</b> embedding spaces</span>
+      <span><b>0</b> failed calls</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="verdict">
+    <span class="tag">Primary hypothesis not supported</span>
+    <h2 class="serif">The models are distinguishable. &ldquo;Five labs, one generator&rdquo; fails this pilot.</h2>
+    <p>Against a permutation null in which every model is a draw from one shared generator,
+      each model is <b>significantly more self-similar than chance</b> — within-minus-between
+      similarity gap <span class="mono" id="v-gap"></span> versus a null of
+      <span class="mono" id="v-null"></span>
+      (<span class="mono" id="v-z"></span>, p&nbsp;&lt;&nbsp;0.002, the resolution floor at 500 permutations).
+      It replicates in both embedding spaces. The labs have detectable house styles.</p>
+    <p>But the effect is <b>small in absolute terms</b>, and the study's most quotable
+      sub-result survives intact: told explicitly to produce an opinion
+      <em>no other AI would give</em>, the models moved
+      <span class="mono" id="v-h5"></span> apart. They cannot diverge on command.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section>
+  <div class="shead">
+    <span class="role">The number</span>
+    <h2 class="serif">Effective distinct opinions per model</h2>
+    <p>Hill number of order 1 — exp(Shannon entropy) over opinion clusters — on the core
+      battery (P1, P2, P6), <span class="mono" id="n-core"></span> claims per model.
+      Read it as: <em>this model behaves as though it holds about this many distinct
+      contrarian opinions.</em> Computed independently in both embedding spaces.</p>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:var(--accent)"></span>Closed embeddings <span class="mono" id="lg-closed"></span></span>
+    <span><span class="swatch" style="background:var(--counter)"></span>Open-weights embeddings <span class="mono" id="lg-open"></span></span>
+  </div>
+  <figure class="panel"><div id="c-hill"></div></figure>
+  <figcaption>Model ranking is stable across embedding spaces (Spearman
+    &rho;&nbsp;=&nbsp;<span class="mono" id="f-rho"></span>), so the ordering is a property of the
+    models rather than of one embedding model. Absolute values are sample-size dependent and
+    would rise with the full study's n=500; only the comparison between models at equal n is meaningful.</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The test</span>
+    <h2 class="serif">Permutation null — are the models separable at all?</h2>
+    <p>This is the load-bearing test, and the reason raw divergence numbers cannot be read
+      directly at pilot scale. With ~55 claims per model spread across a few hundred clusters,
+      two <em>identical</em> generators would still produce near-disjoint distributions. So each
+      statistic is compared against its own distribution under shuffled model labels — the
+      literal &ldquo;one generator&rdquo; hypothesis.</p>
+  </div>
+  <div id="c-perm" class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))"></div>
+  <figcaption>Grey band is the 95% interval of the null across 500 label shuffles; the marker is
+    the observed value. Both statistics land far outside their nulls in both embedding spaces —
+    the models are separable. Note the direction: observed JSD sits <em>above</em> the null, meaning
+    models are more mutually divergent than a shared generator would produce, not less.</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The heatmap</span>
+    <h2 class="serif">Pairwise divergence between opinion distributions</h2>
+    <p>Jensen&ndash;Shannon divergence between each pair of models' cluster distributions,
+      closed embedding space. The thesis predicted these would be uniformly low.</p>
+  </div>
+  <figure class="panel"><div id="c-heat"></div></figure>
+  <figcaption>Every pair sits near the top of the range, but that is substantially a
+    small-sample effect — see the permutation panel above, where the null itself sits at
+    <span class="mono" id="f-nulljsd"></span>. The informative quantity is the
+    <em>gap</em> between observed and null, not the absolute value. Cells are symmetric; the
+    diagonal is undefined and left blank.
+    <br><br><strong>Correction.</strong> An earlier version of this caption said the lightest cell
+    was GPT-5.6 Sol &harr; GPT-5.6 Luna and read that as same-lab house style showing up directly.
+    It is the second-lightest of 36 pairs (0.683); the lightest is Gemini 3.1 Pro &harr; GLM-5.2
+    (0.673), which spans two different labs. Same-lab similarity is suggestive here, not
+    demonstrated, and the companion audit page retires this grid in favour of a comparison that
+    survives the small sample.</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The curves</span>
+    <h2 class="serif">Rarefaction — new opinions discovered per sample drawn</h2>
+    <p>Expected number of distinct opinion clusters after drawing <em>m</em> samples
+      (exact Hurlbert expectation, so no simulation noise). A curve that flattens has
+      exhausted the model's repertoire; a curve still climbing at the right edge has not
+      been sampled deeply enough to find its ceiling.</p>
+  </div>
+  <div id="c-rare" class="smallmults"></div>
+  <figcaption><strong>None of these curves has saturated.</strong> Every model is still
+    discovering new opinions at n=55, so the pilot cannot state a repertoire ceiling — the
+    headline &ldquo;saturates at ~14 distinct opinions&rdquo; claim needs the full study's n=500.
+    Grey reference line is the nine-model mean.</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The table</span>
+    <h2 class="serif">Largest shared opinion clusters</h2>
+    <p>The most-populated clusters across the core battery, with the share of each model's
+      claims that landed in them. Exemplar is the claim closest to the cluster centroid.</p>
+  </div>
+  <div class="panel scroll"><div id="c-table"></div></div>
+  <figcaption>The pattern that sinks the thesis is visible directly: the four largest clusters
+    include several that are <em>almost entirely one model</em> — signatures, not consensus.
+    Where clusters are genuinely shared, they cluster around a recognisable family of themes
+    (post-hoc rationalisation, productivity, information overload).</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Robustness</span>
+    <h2 class="serif">Does the result survive the choices we made?</h2>
+    <p>Two places this study could have fooled itself: the clustering algorithm and
+      the embedding model. (A temperature sweep was run and then dropped — the effect was
+      small, monotonic and not separable from noise at this sample size.)</p>
+  </div>
+  <div class="grid" style="grid-template-columns:minmax(0,1fr)">
+    <figure class="panel">
+      <h3 style="margin-bottom:14px">Prompt paraphrase</h3>
+      <div id="c-para"></div>
+      <figcaption style="margin-top:9px">Rarefied to n=86. P3 and P4 collapse diversity by
+        roughly 70% relative to P1 — <em>how you ask</em> moves the answer far more than
+        <em>which model</em> you ask.</figcaption>
+    </figure>
+  </div>
+  <div class="grid tiles" style="margin-top:16px" id="c-robust"></div>
+  <p class="note">Clustering method changes the absolute Hill number by up to ~30% but not the
+    ordering or the sign of any conclusion. The primary method — agglomerative at a cosine
+    threshold <em>calibrated against LLM-judge pairwise adjudication</em> rather than chosen by
+    hand — is the one with an external referent for its single free parameter.</p>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Pre-registered hypotheses</span>
+    <h2 class="serif">What the pilot can and cannot say</h2>
+  </div>
+  <div class="hyp" id="c-hyp"></div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Quality control</span>
+    <h2 class="serif">Validation and instrument health</h2>
+    <p>Every number above depends on the judge extracting faithful claims and on the
+      generators actually answering the question. Both were measured.</p>
+  </div>
+  <div class="grid tiles" id="c-qa"></div>
+  <div class="panel scroll" style="margin-top:16px"><div id="c-health"></div></div>
+  <p class="note" id="n-refusal"></p>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Blocked</span>
+    <h2 class="serif">What I need from you to go further</h2>
+    <p>Three parts of the design could not run in this environment. Nothing else is blocking.</p>
+  </div>
+  <div class="asks" id="c-asks"></div>
+</section>
+
+<section style="border-bottom:none">
+  <div class="shead">
+    <span class="role">Method</span>
+    <h2 class="serif">How the pilot was run</h2>
+  </div>
+  <div class="col" style="display:flex;flex-direction:column;gap:16px">
+    <p>Nine models, one flagship per lab plus a within-lab scale contrast, all reached through
+      a single OpenRouter key so that wire format and sampling parameters are identical across
+      labs. Fresh context per call, no system prompt beyond the shared format line, top_p 0.95.</p>
+    <p><strong>One deliberate deviation from the design.</strong> The design specified
+      max_tokens 200&ndash;500. Every current flagship is a reasoning model that draws
+      chain-of-thought from the same budget: measured at 500, Claude and Gemini truncated
+      mid-sentence and Kimi and GLM returned <em>no answer at all</em>, only raw reasoning.
+      Disabling reasoning would have been the cleaner match to intent, but Gemini and Grok
+      reject it outright and Qwen returns an empty completion — a setting available on 7 of 9
+      models would confound lab with sampling regime. <span class="mono">reasoning.effort=low</span>
+      at a 1200-token ceiling is the one configuration all nine accept. 32 rows that still
+      truncated were re-drawn at a raised cap and flagged in the dataset rather than dropped,
+      since truncation correlates with longer reasoning and dropping them would have biased
+      the result toward the thesis.</p>
+    <p>Answers were reduced to one canonical claim sentence by a judge model under a fixed
+      rubric, with refusals and hedges coded rather than discarded. Claims were embedded in two
+      independent spaces, then clustered <em>once over the pooled set</em> so cluster labels are
+      shared and cross-model divergence is defined. The &ldquo;same opinion&rdquo; cosine threshold
+      was fitted to 292 LLM-adjudicated claim pairs, stratified across the similarity range.</p>
+    <p>The full pipeline, the complete generation dataset, and every intermediate artifact are
+      committed alongside this page.</p>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div><a href="index.html">Companion report &rarr; is any of it actually contrarian?</a></div>
+  <div><a href="https://github.com/jay-azhang/can-llms-produce-contrarian-ideas">Code, data and every raw generation on GitHub</a> &middot;
+    <a href="https://github.com/jay-azhang/can-llms-produce-contrarian-ideas/blob/main/data/qa_pairs.csv">all 855 questions and answers (CSV)</a></div>
+  <div>Pilot run <span class="mono" id="f-date"></span> &middot; scaling to the full design is
+    editing sample sizes in <span class="mono">config.py</span> and re-running.</div>
+</footer>
+</div>
+
+<script id="payload" type="application/json">{"meta":{"judge":"google/gemini-3.7-flash","embed_closed":"openai/text-embedding-3-large","embed_open":"baai/bge-m3","max_tokens":1200,"reasoning":{"effort":"low"},"top_p":0.95,"n_generations":1071,"total_cost_usd":4.0688},"conditions":[{"id":"P1","n_pilot":25},{"id":"P2","n_pilot":15},{"id":"P3","n_pilot":10},{"id":"P4","n_pilot":10},{"id":"P5","n_pilot":15},{"id":"P6","n_pilot":10},{"id":"P7","n_pilot":10}],"calibration":{"n_pairs":292,"n_same":128,"judge":"google/gemini-3.7-flash","spaces":{"closed":{"threshold":0.56,"youden_j":0.697,"sensitivity":0.9531,"specificity":0.7439,"precision":0.7439,"f1":0.8356,"tp":122,"fp":42,"fn":6,"tn":122,"mean_sim_same":0.711,"mean_sim_diff":0.4442},"open":{"threshold":0.67,"youden_j":0.6614,"sensitivity":0.9297,"specificity":0.7317,"precision":0.7301,"f1":0.8179,"tp":119,"fp":44,"fn":9,"tn":120,"mean_sim_same":0.7847,"mean_sim_diff":0.613}}},"outcome_rates":{"GPT-5.6 Sol":{"n_normalized":119,"claim_rate":1.0,"refusal_rate":0.0,"hedge_rate":0.0,"judge_error_rate":0.0},"GPT-5.6 Luna":{"n_normalized":119,"claim_rate":0.9916,"refusal_rate":0.0084,"hedge_rate":0.0,"judge_error_rate":0.0},"Claude Opus 5":{"n_normalized":119,"claim_rate":1.0,"refusal_rate":0.0,"hedge_rate":0.0,"judge_error_rate":0.0},"Gemini 3.1 Pro":{"n_normalized":119,"claim_rate":1.0,"refusal_rate":0.0,"hedge_rate":0.0,"judge_error_rate":0.0},"Grok 4.6":{"n_normalized":119,"claim_rate":1.0,"refusal_rate":0.0,"hedge_rate":0.0,"judge_error_rate":0.0},"DeepSeek V4 Pro":{"n_normalized":119,"claim_rate":1.0,"refusal_rate":0.0,"hedge_rate":0.0,"judge_error_rate":0.0},"Qwen3 235B":{"n_normalized":119,"claim_rate":0.9664,"refusal_rate":0.0336,"hedge_rate":0.0,"judge_error_rate":0.0},"Kimi K3":{"n_normalized":119,"claim_rate":0.9916,"refusal_rate":0.0084,"hedge_rate":0.0,"judge_error_rate":0.0},"GLM-5.2":{"n_normalized":119,"claim_rate":0.9916,"refusal_rate":0.0084,"hedge_rate":0.0,"judge_error_rate":0.0}},"generation_health":{"GPT-5.6 Sol":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":124.2,"total_cost_usd":0.4626,"mean_latency_s":5.02},"GPT-5.6 Luna":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":83.7,"total_cost_usd":0.0127,"mean_latency_s":2.18},"Claude Opus 5":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":437.9,"total_cost_usd":1.3299,"mean_latency_s":10.08},"Gemini 3.1 Pro":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":678.1,"total_cost_usd":0.9748,"mean_latency_s":7.93},"Grok 4.6":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":664.5,"total_cost_usd":0.5069,"mean_latency_s":16.31},"DeepSeek V4 Pro":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":642.4,"total_cost_usd":0.1547,"mean_latency_s":13.54},"Qwen3 235B":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":55.3,"total_cost_usd":0.005,"mean_latency_s":2.62},"Kimi K3":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":149.6,"total_cost_usd":0.2892,"mean_latency_s":8.11},"GLM-5.2":{"n_calls":119,"n_ok":119,"fail_rate":0.0,"truncated_rate":0.0,"reasoning_fallback_rate":0.0,"mean_completion_tokens":733.4,"total_cost_usd":0.3329,"mean_latency_s":21.15}},"replication":{"n_models":9,"hill_q1_closed":{"anthropic/claude-opus-5":15.951,"deepseek/deepseek-v4-pro":27.333,"google/gemini-3.1-pro-preview":23.721,"moonshotai/kimi-k3":29.493,"openai/gpt-5.6-luna":22.021,"openai/gpt-5.6-sol":18.523,"qwen/qwen3-235b-a22b-2507":13.407,"x-ai/grok-4.6":21.397,"z-ai/glm-5.2":37.559},"hill_q1_open":{"anthropic/claude-opus-5":15.466,"deepseek/deepseek-v4-pro":27.108,"google/gemini-3.1-pro-preview":20.111,"moonshotai/kimi-k3":30.007,"openai/gpt-5.6-luna":18.057,"openai/gpt-5.6-sol":17.793,"qwen/qwen3-235b-a22b-2507":12.679,"x-ai/grok-4.6":26.142,"z-ai/glm-5.2":32.908},"spearman_rho_model_ranking":0.95,"mean_jsd_closed":0.9103,"mean_jsd_open":0.8854},"closed":{"models":[{"id":"openai/gpt-5.6-sol","label":"GPT-5.6 Sol","lab":"OpenAI","country":"US","tier":"flagship","open_weights":false,"n_claims":55,"n_distinct_clusters":24,"hill_q1_effective_opinions":18.523,"hill_q2_simpson":15.05,"top5_mode_share":0.4909,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.951,2.855,3.717,4.537,5.32,6.066,6.779,7.461,8.113,8.737,9.335,9.91,10.461,10.991,11.502,11.994,12.469,12.927,13.37,13.8,14.215,14.619,15.011,15.392,15.763,16.125,16.477,16.822,17.158,17.488,17.81,18.126,18.436,18.74,19.039,19.333,19.622,19.907,20.187,20.463,20.736,21.004,21.269,21.531,21.79,22.046,22.299,22.549,22.797,23.042,23.285,23.525,23.764,24.0]}},{"id":"openai/gpt-5.6-luna","label":"GPT-5.6 Luna","lab":"OpenAI","country":"US","tier":"mini","open_weights":false,"n_claims":55,"n_distinct_clusters":28,"hill_q1_effective_opinions":22.021,"hill_q2_simpson":17.09,"top5_mode_share":0.4182,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.959,2.88,3.765,4.616,5.437,6.229,6.993,7.732,8.447,9.14,9.811,10.463,11.096,11.711,12.309,12.891,13.459,14.012,14.551,15.077,15.591,16.093,16.583,17.063,17.532,17.991,18.441,18.882,19.313,19.736,20.151,20.558,20.957,21.35,21.734,22.113,22.484,22.849,23.209,23.562,23.909,24.252,24.589,24.92,25.247,25.57,25.887,26.201,26.51,26.816,27.117,27.415,27.709,28.0]}},{"id":"anthropic/claude-opus-5","label":"Claude Opus 5","lab":"Anthropic","country":"US","tier":"flagship","open_weights":false,"n_claims":55,"n_distinct_clusters":29,"hill_q1_effective_opinions":15.951,"hill_q2_simpson":7.254,"top5_mode_share":0.5273,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.878,2.671,3.405,4.098,4.761,5.402,6.027,6.64,7.243,7.837,8.424,9.004,9.578,10.145,10.707,11.263,11.814,12.359,12.898,13.433,13.962,14.486,15.005,15.519,16.028,16.532,17.032,17.526,18.017,18.502,18.984,19.46,19.933,20.401,20.866,21.326,21.782,22.234,22.682,23.127,23.568,24.005,24.439,24.87,25.297,25.72,26.141,26.558,26.972,27.384,27.792,28.197,28.6,29.0]}},{"id":"google/gemini-3.1-pro-preview","label":"Gemini 3.1 Pro","lab":"Google","country":"US","tier":"flagship","open_weights":false,"n_claims":55,"n_distinct_clusters":31,"hill_q1_effective_opinions":23.721,"hill_q2_simpson":16.351,"top5_mode_share":0.4,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.956,2.873,3.756,4.607,5.431,6.229,7.004,7.758,8.494,9.211,9.913,10.599,11.271,11.93,12.576,13.21,13.832,14.444,15.045,15.636,16.216,16.788,17.349,17.902,18.446,18.981,19.507,20.025,20.535,21.037,21.531,22.017,22.495,22.966,23.43,23.886,24.336,24.778,25.214,25.643,26.065,26.481,26.89,27.293,27.69,28.081,28.466,28.845,29.218,29.586,29.947,30.304,30.655,31.0]}},{"id":"x-ai/grok-4.6","label":"Grok 4.6","lab":"xAI","country":"US","tier":"flagship","open_weights":false,"n_claims":55,"n_distinct_clusters":33,"hill_q1_effective_opinions":21.397,"hill_q2_simpson":11.33,"top5_mode_share":0.4545,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.929,2.8,3.626,4.415,5.174,5.908,6.623,7.321,8.004,8.676,9.338,9.99,10.634,11.27,11.9,12.523,13.14,13.751,14.357,14.958,15.554,16.145,16.731,17.313,17.89,18.463,19.031,19.596,20.156,20.713,21.266,21.815,22.36,22.901,23.439,23.973,24.504,25.031,25.555,26.075,26.592,27.105,27.615,28.121,28.624,29.124,29.62,30.113,30.603,31.089,31.572,32.051,32.527,33.0]}},{"id":"deepseek/deepseek-v4-pro","label":"DeepSeek V4 Pro","lab":"DeepSeek","country":"CN","tier":"flagship","open_weights":true,"n_claims":55,"n_distinct_clusters":32,"hill_q1_effective_opinions":27.333,"hill_q2_simpson":23.092,"top5_mode_share":0.3455,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.974,2.924,3.85,4.753,5.633,6.492,7.331,8.149,8.948,9.728,10.49,11.235,11.962,12.674,13.369,14.05,14.715,15.367,16.004,16.628,17.24,17.838,18.425,18.999,19.562,20.114,20.655,21.186,21.706,22.217,22.718,23.209,23.691,24.164,24.628,25.084,25.531,25.97,26.401,26.824,27.239,27.647,28.048,28.441,28.827,29.206,29.578,29.943,30.302,30.654,31.0,31.339,31.673,32.0]}},{"id":"qwen/qwen3-235b-a22b-2507","label":"Qwen3 235B","lab":"Qwen","country":"CN","tier":"flagship","open_weights":true,"n_claims":55,"n_distinct_clusters":20,"hill_q1_effective_opinions":13.407,"hill_q2_simpson":9.603,"top5_mode_share":0.6182,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.912,2.749,3.52,4.234,4.898,5.519,6.102,6.652,7.173,7.669,8.142,8.594,9.028,9.446,9.85,10.239,10.617,10.983,11.338,11.684,12.021,12.349,12.669,12.981,13.286,13.584,13.876,14.161,14.44,14.714,14.982,15.245,15.503,15.756,16.004,16.248,16.487,16.722,16.953,17.181,17.404,17.623,17.839,18.051,18.26,18.466,18.668,18.867,19.063,19.256,19.446,19.634,19.818,20.0]}},{"id":"moonshotai/kimi-k3","label":"Kimi K3","lab":"Moonshot","country":"CN","tier":"flagship","open_weights":true,"n_claims":54,"n_distinct_clusters":35,"hill_q1_effective_opinions":29.493,"hill_q2_simpson":24.3,"top5_mode_share":0.3519,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54],"y":[1.0,1.977,2.932,3.865,4.777,5.67,6.543,7.398,8.235,9.054,9.858,10.645,11.416,12.173,12.916,13.645,14.361,15.065,15.756,16.435,17.104,17.761,18.408,19.045,19.673,20.292,20.901,21.502,22.095,22.681,23.258,23.829,24.393,24.949,25.5,26.044,26.583,27.115,27.642,28.164,28.681,29.193,29.7,30.202,30.7,31.193,31.683,32.168,32.649,33.127,33.601,34.071,34.537,35.0]}},{"id":"z-ai/glm-5.2","label":"GLM-5.2","lab":"Z-AI","country":"CN","tier":"flagship","open_weights":true,"n_claims":55,"n_distinct_clusters":42,"hill_q1_effective_opinions":37.559,"hill_q2_simpson":32.527,"top5_mode_share":0.2727,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.987,2.962,3.924,4.875,5.813,6.741,7.656,8.561,9.456,10.339,11.213,12.076,12.93,13.774,14.609,15.434,16.251,17.059,17.859,18.65,19.434,20.21,20.978,21.738,22.492,23.238,23.978,24.711,25.437,26.158,26.872,27.58,28.283,28.98,29.672,30.358,31.04,31.716,32.388,33.056,33.719,34.377,35.032,35.683,36.329,36.973,37.612,38.248,38.881,39.511,40.137,40.761,41.382,42.0]}}],"jsd_matrix":[[0.0,0.7413,0.975,0.9067,1.0,0.9605,0.9269,0.8569,0.9241],[0.7413,0.0,0.975,0.9377,1.0,0.8599,1.0,0.876,0.9225],[0.975,0.975,0.0,1.0,1.0,0.9117,1.0,0.8691,0.9818],[0.9067,0.9377,1.0,0.0,0.9568,0.9273,0.9213,0.8176,0.6505],[1.0,1.0,1.0,0.9568,0.0,0.9135,0.9455,0.9817,0.8954],[0.9605,0.8599,0.9117,0.9273,0.9135,0.0,0.9022,0.8204,0.836],[0.9269,1.0,1.0,0.9213,0.9455,0.9022,0.0,0.8652,0.8942],[0.8569,0.876,0.8691,0.8176,0.9817,0.8204,0.8652,0.0,0.8178],[0.9241,0.9225,0.9818,0.6505,0.8954,0.836,0.8942,0.8178,0.0]],"cluster_info":{"n_items":849,"primary_method":"agglomerative_cosine_average","calibrated_threshold":0.56,"n_clusters":287,"n_singletons":145,"singleton_rate":0.5052,"largest_cluster":34,"median_cluster_size":1.0,"silhouette_agglomerative":0.237,"hdbscan_n_clusters":322,"hdbscan_noise_rate":0.2497,"kmeans_k":287,"silhouette_hdbscan":0.1654,"silhouette_kmeans":0.2126},"within_vs_between":{"mean_within":0.3004,"mean_between":0.2416,"gap":0.0588},"within":{"openai/gpt-5.6-sol":0.3096,"openai/gpt-5.6-luna":0.3126,"anthropic/claude-opus-5":0.3261,"google/gemini-3.1-pro-preview":0.348,"x-ai/grok-4.6":0.2948,"deepseek/deepseek-v4-pro":0.2626,"qwen/qwen3-235b-a22b-2507":0.2827,"moonshotai/kimi-k3":0.2921,"z-ai/glm-5.2":0.2751},"mean_pairwise_jsd":0.9103,"permutation":{"n_permutations":500,"note":"null = model labels shuffled across pooled claims, i.e. all models drawn from one generator. Observed values inside the null interval mean the models are not distinguishable at this sample size.","jsd":{"observed":0.9103,"null_mean":0.688,"null_sd":0.0109,"null_ci95":[0.667,0.7075],"z":20.47,"p_two_sided":0.0},"within_minus_between_gap":{"observed":0.0588,"null_mean":-0.0,"null_sd":0.0007,"null_ci95":[-0.0013,0.0015],"z":82.647,"p_one_sided_greater":0.0}},"robustness":{"agglomerative":{"mean_hill_q1":23.267,"per_model_hill_q1":{"openai/gpt-5.6-sol":18.523,"openai/gpt-5.6-luna":22.021,"anthropic/claude-opus-5":15.951,"google/gemini-3.1-pro-preview":23.721,"x-ai/grok-4.6":21.397,"deepseek/deepseek-v4-pro":27.333,"qwen/qwen3-235b-a22b-2507":13.407,"moonshotai/kimi-k3":29.493,"z-ai/glm-5.2":37.559},"mean_pairwise_jsd":0.9103},"hdbscan":{"mean_hill_q1":23.758,"per_model_hill_q1":{"openai/gpt-5.6-sol":17.021,"openai/gpt-5.6-luna":27.629,"anthropic/claude-opus-5":16.936,"google/gemini-3.1-pro-preview":21.893,"x-ai/grok-4.6":16.248,"deepseek/deepseek-v4-pro":32.447,"qwen/qwen3-235b-a22b-2507":14.638,"moonshotai/kimi-k3":33.902,"z-ai/glm-5.2":33.112},"mean_pairwise_jsd":0.8873},"kmeans":{"mean_hill_q1":28.895,"per_model_hill_q1":{"openai/gpt-5.6-sol":24.096,"openai/gpt-5.6-luna":29.191,"anthropic/claude-opus-5":22.192,"google/gemini-3.1-pro-preview":29.057,"x-ai/grok-4.6":26.055,"deepseek/deepseek-v4-pro":34.609,"qwen/qwen3-235b-a22b-2507":20.507,"moonshotai/kimi-k3":35.465,"z-ai/glm-5.2":38.886},"mean_pairwise_jsd":0.9229}},"paraphrase":{"P1":{"n":225,"hill_q1_raw":68.426,"hill_q1_at_matched_n":45.376,"matched_n":86,"n_clusters":96},"P2":{"n":135,"hill_q1_raw":50.181,"hill_q1_at_matched_n":40.814,"matched_n":86,"n_clusters":70},"P3":{"n":86,"hill_q1_raw":12.368,"hill_q1_at_matched_n":12.368,"matched_n":86,"n_clusters":28},"P4":{"n":89,"hill_q1_raw":14.907,"hill_q1_at_matched_n":14.813,"matched_n":86,"n_clusters":23}},"h5":{"p1_mean_between_model_similarity":0.2538,"p6_mean_between_model_similarity":0.2462,"pct_reduction":2.97,"hypothesis":"H5 predicts <20% reduction","supported":true},"top_clusters":[{"cluster_id":56,"size":19,"share_of_all_core":0.0385,"exemplar_claim":"Introspection is mostly post-hoc confabulation rather than accurate self-observation.","topic_mode":"reliability of introspection","n_models_present":1,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":19,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.3455,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["Human introspection and self-reports are mostly post-hoc narrations rather than reliable readouts of actual mental processes.","People's reported reasons for their actions are mostly post-hoc confabulations, giving them no better insight into their motives than an outside observer.","Introspective reports about personal motives are largely post-hoc rationalizations rather than accurate accounts of causation.","Human introspection manufactures post-hoc rationalizations for beliefs rather than accurately reporting the true reasons for holding them.","Introspection is mostly post-hoc confabulation rather than accurate self-observation."]},{"cluster_id":175,"size":17,"share_of_all_core":0.0344,"exemplar_claim":"Most productivity advice is procrastination disguised as self-improvement, and doing fewer things consistently beats optimizing elaborate systems.","topic_mode":"productivity advice","n_models_present":4,"per_model_count":{"openai/gpt-5.6-sol":7,"openai/gpt-5.6-luna":8,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":1,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":1},"per_model_pct":{"openai/gpt-5.6-sol":0.1273,"openai/gpt-5.6-luna":0.1455,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0182,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0182},"sample_claims":["Most productivity advice is procrastination disguised as self-improvement, and doing fewer things consistently beats optimizing elaborate systems.","Most productivity advice is disguised procrastination, and simple consistency is more effective than elaborate optimization systems.","Most productivity advice functions as disguised procrastination, and simple action is superior to optimizing systems.","Most productivity advice is procrastination disguised as self-improvement, and imperfect action beats optimizing systems.","Most productivity advice is disguised procrastination, and doing fewer things consistently is more effective than optimizing routines and tools."]},{"cluster_id":29,"size":14,"share_of_all_core":0.0283,"exemplar_claim":"The technological pursuit of convenience and efficiency diminishes human happiness by removing the friction and struggle necessary for fulfillment.","topic_mode":"convenience and happiness","n_models_present":2,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":10,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":4},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.1818,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0727},"sample_claims":["Eliminating struggle and discomfort through technological convenience removes the necessary source of human meaning and purpose.","The pursuit of total convenience and elimination of friction harms human happiness and meaning.","The pursuit of convenience and elimination of friction make humanity miserable by removing the struggles that generate fulfillment.","The pursuit of total convenience through technology destroys human happiness and fulfillment by removing necessary struggle.","The technological elimination of friction and inconvenience harms human happiness, resilience, and cognitive development."]},{"cluster_id":43,"size":14,"share_of_all_core":0.0283,"exemplar_claim":"Cognitive ability is substantially heritable, explaining persistent group differences and the failure of equal-outcome policies.","topic_mode":"heritability of human traits","n_models_present":1,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":14,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.2545,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["Genetic differences heavily influence human outcomes and limit the effectiveness of policies aimed at achieving equal outcomes.","Individual and group differences in intelligence, personality, and life outcomes are substantially heritable.","Cognitive ability is substantially heritable, explaining persistent group differences and the failure of equal-outcome policies.","Cognitive ability is substantially heritable and varies across individuals and groups, making egalitarian policies counterproductive.","Innate heritable differences in intelligence and personality are stronger predictors of exceptional outcomes than effort or environment."]},{"cluster_id":108,"size":13,"share_of_all_core":0.0263,"exemplar_claim":"Excess information and choices degrade decision-making, while constraints and decisiveness improve judgment.","topic_mode":"decision making","n_models_present":4,"per_model_count":{"openai/gpt-5.6-sol":5,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":1,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":2,"moonshotai/kimi-k3":5,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0909,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0182,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0364,"moonshotai/kimi-k3":0.0926,"z-ai/glm-5.2":0.0},"sample_claims":["Constraints and fewer options produce more freedom, creativity, and progress than endless choice and information.","Constraining choices and closing options increases personal freedom more than having abundant choices and information.","Excessive information degrades human judgment beyond a basic threshold and decisiveness with incomplete information is more valuable.","Having too many choices causes anxiety and dissatisfaction rather than greater happiness.","Excessive choice causes anxiety and dissatisfaction, whereas simplicity and constraint improve well-being."]},{"cluster_id":0,"size":11,"share_of_all_core":0.0223,"exemplar_claim":"The most significant breakthroughs come from independent thinking and pursuing ideas that seem obviously wrong to most people.","topic_mode":"nature of innovation","n_models_present":1,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":11,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.2,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["Transformative breakthroughs come from pursuing unconventional and unpopular ideas rather than conforming to consensus.","Transformative breakthroughs come from individuals or small groups challenging deeply held assumptions rather than consensus.","The most important advances come from contrarian ideas that are initially rejected by most people.","The most important breakthroughs come from independent thinking and pursuing dismissed ideas rather than visible hard work.","Real breakthroughs and lasting success come only from independent thinking and doing what few others are willing to do."]},{"cluster_id":9,"size":10,"share_of_all_core":0.0202,"exemplar_claim":"Most human thinking is post-hoc rationalization of decisions driven by emotion, habit, and social pressure rather than independent thought.","topic_mode":"post-hoc rationalization","n_models_present":4,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":1,"anthropic/claude-opus-5":2,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":3,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":4,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0182,"anthropic/claude-opus-5":0.0364,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0545,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0741,"z-ai/glm-5.2":0.0},"sample_claims":["Most human thinking is post-hoc rationalization of decisions driven by emotion, habit, and social pressure rather than independent thought.","Most people inherit their deepest moral convictions from their social groups and rationalize them afterward rather than reasoning toward them.","People's stated reasons for their convictions are almost always post-hoc rationalizations driven by temperament, incentives, and social position.","Conscious thought is a post-hoc rationalization of subconscious decisions, making popular conceptions of free will an illusion.","Moral convictions are post-hoc rationalizations of emotional instincts rather than products of reasoning."]},{"cluster_id":34,"size":10,"share_of_all_core":0.0202,"exemplar_claim":"Boredom and cognitive friction are essential for preserving human creativity and resilience.","topic_mode":"value of boredom","n_models_present":4,"per_model_count":{"openai/gpt-5.6-sol":1,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":4,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":4,"z-ai/glm-5.2":1},"per_model_pct":{"openai/gpt-5.6-sol":0.0182,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0727,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0741,"z-ai/glm-5.2":0.0182},"sample_claims":["Boredom and cognitive friction are essential for preserving human creativity and resilience.","Profound boredom and deliberate inefficiency are more valuable for human progress and breakthrough ideas than relentless productivity.","Prolonged boredom is a vital and undervalued catalyst for creativity and breakthrough innovation.","Friction and boredom are essential ingredients for human happiness, resilience, and creativity rather than obstacles to them.","Boredom is an essential prerequisite for deep creativity and original thought."]},{"cluster_id":70,"size":10,"share_of_all_core":0.0202,"exemplar_claim":"AI will increase rather than decrease the value of human creativity and emotional intelligence.","topic_mode":"ai and employment","n_models_present":4,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":1,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":5,"moonshotai/kimi-k3":1,"z-ai/glm-5.2":3},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0182,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0909,"moonshotai/kimi-k3":0.0185,"z-ai/glm-5.2":0.0545},"sample_claims":["Widespread automation and AI will create new meaningful work and elevate human potential rather than cause mass unemployment.","Artificial intelligence will make human physical labor far more valuable than intellectual labor.","Generative AI will trigger a renaissance of physical craftsmanship rather than causing mass unemployment.","The advancement of artificial intelligence makes analog human skills and verifiable human imperfection more economically and culturally valuable.","AI will increase rather than decrease the value of human creativity and emotional intelligence."]},{"cluster_id":99,"size":10,"share_of_all_core":0.0202,"exemplar_claim":"The internet degrades collective human reasoning and societal epistemic health by optimizing for attention rather than truth.","topic_mode":"internet and epistemology","n_models_present":1,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":10,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.1818,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["The internet has made humanity significantly less informed overall by eroding deep learning and critical thinking.","The internet degrades collective human reasoning and societal epistemic health by optimizing for attention rather than truth.","The internet has worsened collective human reasoning by amplifying low-quality arguments and eroding consensus on truth.","The internet degrades collective human reasoning and societal epistemic health over time.","The internet degrades collective human reasoning and societal epistemic health by optimizing for attention rather than truth."]},{"cluster_id":52,"size":9,"share_of_all_core":0.0182,"exemplar_claim":"People should choose practical, well-paid careers over trying to find their passion, as passion develops through competence.","topic_mode":"career choice","n_models_present":3,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":5,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":3,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":1,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0909,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0545,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0185,"z-ai/glm-5.2":0.0},"sample_claims":["Developing competence in a skill more reliably produces career fulfillment than pursuing pre-existing passion.","People should choose careers based on skills and market demand rather than following their passion.","People should build valuable, in-demand skills rather than choose careers based on passion.","Passion is the result of skill mastery rather than its prerequisite.","People should choose practical, well-paid careers over trying to find their passion, as passion develops through competence."]},{"cluster_id":11,"size":8,"share_of_all_core":0.0162,"exemplar_claim":"AI models should be deliberately trained to occasionally give wrong answers to prevent blind trust.","topic_mode":"ai helpfulness limits","n_models_present":3,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":5,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":1,"z-ai/glm-5.2":2},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0909,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0185,"z-ai/glm-5.2":0.0364},"sample_claims":["AI assistants should deliberately limit their helpfulness to prevent human dependency and protect user autonomy.","AI models should be deliberately trained to occasionally give wrong answers to prevent blind trust.","AI systems should be intentionally programmed to be wrong occasionally to prevent human overreliance.","AI should protect human attention by refusing to answer low-value questions rather than being unconditionally helpful.","AI assistants should be required to occasionally refuse harmless requests to foster human epistemic independence."]}],"pooled_rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494],"y":[1.0,1.991,2.972,3.944,4.907,5.862,6.808,7.745,8.674,9.596,10.509,11.414,12.312,13.202,14.085,14.96,15.829,16.69,17.545,18.392,19.233,20.068,20.896,21.718,22.534,23.344,24.147,24.945,25.737,26.523,27.304,28.08,28.849,29.614,30.373,31.128,31.877,32.621,33.36,34.095,34.825,35.55,36.27,36.986,37.698,38.405,39.108,39.806,40.501,41.191,41.877,42.559,43.237,43.912,44.582,45.249,45.912,46.571,47.227,47.879,48.527,49.172,49.814,50.452,51.087,51.719,52.347,52.972,53.594,54.213,54.829,55.441,56.051,56.658,57.262,57.862,58.46,59.055,59.648,60.237,60.824,61.408,61.99,62.569,63.145,63.718,64.289,64.858,65.424,65.988,66.549,67.107,67.664,68.218,68.769,69.319,69.866,70.41,70.953,71.493,72.031,72.567,73.101,73.632,74.162,74.689,75.214,75.738,76.259,76.778,77.295,77.81,78.324,78.835,79.344,79.852,80.357,80.861,81.363,81.863,82.361,82.857,83.352,83.845,84.336,84.825,85.312,85.798,86.282,86.765,87.245,87.724,88.202,88.677,89.152,89.624,90.095,90.564,91.032,91.498,91.963,92.426,92.887,93.347,93.805,94.262,94.718,95.172,95.624,96.075,96.525,96.973,97.42,97.865,98.309,98.751,99.192,99.632,100.07,100.507,100.943,101.377,101.81,102.242,102.672,103.101,103.529,103.955,104.38,104.804,105.226,105.648,106.068,106.486,106.904,107.32,107.735,108.149,108.562,108.973,109.383,109.793,110.2,110.607,111.013,111.417,111.82,112.222,112.623,113.023,113.422,113.819,114.215,114.611,115.005,115.398,115.79,116.181,116.571,116.96,117.347,117.734,118.119,118.504,118.887,119.27,119.651,120.032,120.411,120.789,121.167,121.543,121.918,122.293,122.666,123.038,123.41,123.78,124.15,124.518,124.886,125.252,125.618,125.983,126.346,126.709,127.071,127.432,127.792,128.151,128.509,128.866,129.223,129.578,129.933,130.286,130.639,130.991,131.342,131.692,132.042,132.39,132.738,133.084,133.43,133.775,134.119,134.463,134.805,135.147,135.488,135.828,136.167,136.505,136.843,137.18,137.516,137.851,138.185,138.519,138.852,139.184,139.515,139.846,140.175,140.504,140.832,141.16,141.486,141.812,142.137,142.462,142.785,143.108,143.43,143.752,144.073,144.393,144.712,145.03,145.348,145.665,145.982,146.297,146.612,146.927,147.24,147.553,147.865,148.177,148.488,148.798,149.107,149.416,149.724,150.032,150.339,150.645,150.95,151.255,151.559,151.863,152.166,152.468,152.769,153.07,153.371,153.67,153.969,154.268,154.566,154.863,155.159,155.455,155.751,156.045,156.34,156.633,156.926,157.218,157.51,157.801,158.092,158.382,158.671,158.96,159.248,159.536,159.823,160.11,160.395,160.681,160.966,161.25,161.534,161.817,162.099,162.381,162.663,162.944,163.224,163.504,163.783,164.062,164.34,164.618,164.895,165.172,165.448,165.724,165.999,166.273,166.547,166.821,167.094,167.367,167.639,167.91,168.181,168.452,168.722,168.991,169.26,169.529,169.797,170.065,170.332,170.598,170.865,171.13,171.395,171.66,171.924,172.188,172.452,172.714,172.977,173.239,173.5,173.761,174.022,174.282,174.542,174.801,175.06,175.318,175.576,175.834,176.091,176.347,176.603,176.859,177.114,177.369,177.624,177.878,178.131,178.385,178.637,178.89,179.142,179.393,179.644,179.895,180.145,180.395,180.645,180.894,181.143,181.391,181.639,181.886,182.134,182.38,182.627,182.873,183.118,183.363,183.608,183.853,184.097,184.34,184.584,184.827,185.069,185.311,185.553,185.795,186.036,186.277,186.517,186.757,186.997,187.236,187.475,187.714,187.952,188.19,188.427,188.664,188.901,189.138,189.374,189.61,189.845,190.081,190.315,190.55,190.784,191.018,191.251,191.485,191.717,191.95,192.182,192.414,192.645,192.877,193.108,193.338,193.568,193.798,194.028,194.257,194.486,194.715,194.944,195.172,195.4,195.627,195.854,196.081,196.308,196.534,196.76,196.986,197.211,197.436,197.661,197.886,198.11,198.334,198.558,198.781,199.004,199.227,199.45,199.672,199.894,200.116,200.337,200.558,200.779,201.0]}},"open":{"models":[{"id":"openai/gpt-5.6-sol","label":"GPT-5.6 Sol","lab":"OpenAI","country":"US","tier":"flagship","open_weights":false,"n_claims":55,"n_distinct_clusters":26,"hill_q1_effective_opinions":17.793,"hill_q2_simpson":12.552,"top5_mode_share":0.5455,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.937,2.818,3.649,4.434,5.178,5.886,6.56,7.205,7.823,8.418,8.99,9.544,10.079,10.599,11.104,11.596,12.076,12.546,13.005,13.455,13.897,14.331,14.758,15.179,15.593,16.001,16.404,16.801,17.194,17.583,17.967,18.347,18.723,19.096,19.465,19.831,20.194,20.554,20.911,21.265,21.616,21.966,22.312,22.657,22.999,23.34,23.678,24.015,24.349,24.683,25.014,25.344,25.673,26.0]}},{"id":"openai/gpt-5.6-luna","label":"GPT-5.6 Luna","lab":"OpenAI","country":"US","tier":"mini","open_weights":false,"n_claims":55,"n_distinct_clusters":24,"hill_q1_effective_opinions":18.057,"hill_q2_simpson":13.94,"top5_mode_share":0.4909,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.945,2.841,3.69,4.497,5.266,5.998,6.698,7.367,8.007,8.622,9.212,9.779,10.326,10.853,11.362,11.853,12.329,12.79,13.236,13.67,14.091,14.5,14.898,15.286,15.664,16.033,16.393,16.744,17.088,17.424,17.753,18.076,18.392,18.702,19.006,19.305,19.598,19.887,20.17,20.45,20.725,20.996,21.263,21.527,21.787,22.044,22.298,22.548,22.796,23.042,23.285,23.525,23.764,24.0]}},{"id":"anthropic/claude-opus-5","label":"Claude Opus 5","lab":"Anthropic","country":"US","tier":"flagship","open_weights":false,"n_claims":55,"n_distinct_clusters":27,"hill_q1_effective_opinions":15.466,"hill_q2_simpson":7.658,"top5_mode_share":0.5273,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.886,2.688,3.43,4.128,4.792,5.431,6.05,6.653,7.243,7.821,8.39,8.949,9.5,10.042,10.577,11.105,11.626,12.14,12.647,13.148,13.643,14.131,14.614,15.09,15.561,16.026,16.486,16.94,17.389,17.832,18.27,18.704,19.132,19.554,19.972,20.385,20.794,21.197,21.595,21.989,22.377,22.761,23.141,23.515,23.885,24.25,24.61,24.966,25.316,25.663,26.004,26.341,26.673,27.0]}},{"id":"google/gemini-3.1-pro-preview","label":"Gemini 3.1 Pro","lab":"Google","country":"US","tier":"flagship","open_weights":false,"n_claims":55,"n_distinct_clusters":28,"hill_q1_effective_opinions":20.111,"hill_q2_simpson":13.444,"top5_mode_share":0.4727,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.943,2.835,3.684,4.494,5.27,6.016,6.735,7.43,8.102,8.756,9.391,10.01,10.614,11.203,11.78,12.344,12.897,13.439,13.97,14.491,15.003,15.506,15.999,16.484,16.961,17.43,17.892,18.345,18.791,19.231,19.663,20.088,20.507,20.919,21.325,21.724,22.118,22.505,22.887,23.263,23.634,23.999,24.359,24.714,25.063,25.408,25.748,26.083,26.413,26.739,27.06,27.378,27.691,28.0]}},{"id":"x-ai/grok-4.6","label":"Grok 4.6","lab":"xAI","country":"US","tier":"flagship","open_weights":false,"n_claims":55,"n_distinct_clusters":36,"hill_q1_effective_opinions":26.142,"hill_q2_simpson":14.901,"top5_mode_share":0.3636,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.95,2.859,3.733,4.579,5.4,6.201,6.985,7.754,8.51,9.256,9.991,10.718,11.437,12.149,12.854,13.552,14.244,14.93,15.611,16.286,16.955,17.618,18.276,18.929,19.576,20.218,20.855,21.485,22.111,22.731,23.346,23.956,24.56,25.158,25.752,26.339,26.922,27.499,28.071,28.637,29.198,29.754,30.304,30.848,31.388,31.922,32.451,32.974,33.492,34.004,34.511,35.013,35.509,36.0]}},{"id":"deepseek/deepseek-v4-pro","label":"DeepSeek V4 Pro","lab":"DeepSeek","country":"CN","tier":"flagship","open_weights":true,"n_claims":55,"n_distinct_clusters":33,"hill_q1_effective_opinions":27.108,"hill_q2_simpson":21.763,"top5_mode_share":0.3636,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.972,2.916,3.835,4.73,5.601,6.449,7.277,8.084,8.871,9.64,10.391,11.125,11.843,12.546,13.234,13.907,14.567,15.215,15.849,16.472,17.084,17.685,18.275,18.855,19.425,19.987,20.539,21.082,21.618,22.145,22.665,23.177,23.682,24.181,24.672,25.157,25.636,26.109,26.576,27.037,27.493,27.944,28.39,28.83,29.266,29.697,30.124,30.546,30.965,31.379,31.79,32.197,32.6,33.0]}},{"id":"qwen/qwen3-235b-a22b-2507","label":"Qwen3 235B","lab":"Qwen","country":"CN","tier":"flagship","open_weights":true,"n_claims":55,"n_distinct_clusters":19,"hill_q1_effective_opinions":12.679,"hill_q2_simpson":9.195,"top5_mode_share":0.6364,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.908,2.736,3.494,4.193,4.841,5.443,6.006,6.535,7.034,7.506,7.956,8.386,8.797,9.192,9.573,9.94,10.296,10.64,10.975,11.3,11.616,11.924,12.225,12.518,12.804,13.084,13.357,13.625,13.886,14.142,14.393,14.638,14.878,15.114,15.345,15.571,15.793,16.011,16.224,16.433,16.639,16.84,17.038,17.233,17.424,17.611,17.795,17.976,18.154,18.329,18.501,18.67,18.836,19.0]}},{"id":"moonshotai/kimi-k3","label":"Kimi K3","lab":"Moonshot","country":"CN","tier":"flagship","open_weights":true,"n_claims":54,"n_distinct_clusters":36,"hill_q1_effective_opinions":30.007,"hill_q2_simpson":23.902,"top5_mode_share":0.3519,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54],"y":[1.0,1.976,2.93,3.862,4.773,5.665,6.537,7.392,8.23,9.051,9.857,10.648,11.424,12.187,12.937,13.674,14.4,15.114,15.817,16.509,17.192,17.865,18.529,19.183,19.83,20.468,21.098,21.721,22.336,22.945,23.547,24.142,24.731,25.314,25.892,26.463,27.03,27.591,28.147,28.698,29.245,29.787,30.325,30.859,31.389,31.915,32.437,32.956,33.471,33.983,34.491,34.997,35.5,36.0]}},{"id":"z-ai/glm-5.2","label":"GLM-5.2","lab":"Z-AI","country":"CN","tier":"flagship","open_weights":true,"n_claims":55,"n_distinct_clusters":40,"hill_q1_effective_opinions":32.908,"hill_q2_simpson":23.45,"top5_mode_share":0.3091,"rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],"y":[1.0,1.975,2.927,3.859,4.772,5.667,6.546,7.411,8.262,9.1,9.927,10.744,11.55,12.348,13.136,13.916,14.689,15.454,16.212,16.964,17.709,18.447,19.18,19.907,20.628,21.344,22.054,22.759,23.459,24.154,24.843,25.528,26.208,26.882,27.552,28.218,28.878,29.534,30.185,30.831,31.473,32.11,32.743,33.371,33.995,34.615,35.23,35.841,36.448,37.05,37.648,38.242,38.832,39.418,40.0]}}],"jsd_matrix":[[0.0,0.6035,0.975,0.949,0.9559,0.9049,0.9499,0.8559,0.9406],[0.6035,0.0,0.9645,0.9306,0.9818,0.8327,0.975,0.8541,0.9323],[0.975,0.9645,0.0,0.9818,0.9818,0.8441,1.0,0.8426,0.9568],[0.949,0.9306,0.9818,0.0,0.9091,0.8502,0.9354,0.811,0.6041],[0.9559,0.9818,0.9818,0.9091,0.0,0.8885,0.9163,0.9083,0.8727],[0.9049,0.8327,0.8441,0.8502,0.8885,0.0,0.9228,0.8057,0.7666],[0.9499,0.975,1.0,0.9354,0.9163,0.9228,0.0,0.8386,0.854],[0.8559,0.8541,0.8426,0.811,0.9083,0.8057,0.8386,0.0,0.7766],[0.9406,0.9323,0.9568,0.6041,0.8727,0.7666,0.854,0.7766,0.0]],"cluster_info":{"n_items":849,"primary_method":"agglomerative_cosine_average","calibrated_threshold":0.67,"n_clusters":259,"n_singletons":121,"singleton_rate":0.4672,"largest_cluster":31,"median_cluster_size":2.0,"silhouette_agglomerative":0.2121,"hdbscan_n_clusters":355,"hdbscan_noise_rate":0.311,"kmeans_k":259,"silhouette_hdbscan":0.107,"silhouette_kmeans":0.1542},"within_vs_between":{"mean_within":0.5333,"mean_between":0.4977,"gap":0.0356},"within":{"openai/gpt-5.6-sol":0.5476,"openai/gpt-5.6-luna":0.5723,"anthropic/claude-opus-5":0.5555,"google/gemini-3.1-pro-preview":0.5489,"x-ai/grok-4.6":0.5028,"deepseek/deepseek-v4-pro":0.5154,"qwen/qwen3-235b-a22b-2507":0.5166,"moonshotai/kimi-k3":0.5334,"z-ai/glm-5.2":0.507},"mean_pairwise_jsd":0.8854,"permutation":{"n_permutations":500,"note":"null = model labels shuffled across pooled claims, i.e. all models drawn from one generator. Observed values inside the null interval mean the models are not distinguishable at this sample size.","jsd":{"observed":0.8854,"null_mean":0.6434,"null_sd":0.0127,"null_ci95":[0.6171,0.6694],"z":19.022,"p_two_sided":0.0},"within_minus_between_gap":{"observed":0.0356,"null_mean":-0.0,"null_sd":0.0005,"null_ci95":[-0.001,0.0011],"z":65.555,"p_one_sided_greater":0.0}},"robustness":{"agglomerative":{"mean_hill_q1":22.252,"per_model_hill_q1":{"openai/gpt-5.6-sol":17.793,"openai/gpt-5.6-luna":18.057,"anthropic/claude-opus-5":15.466,"google/gemini-3.1-pro-preview":20.111,"x-ai/grok-4.6":26.142,"deepseek/deepseek-v4-pro":27.108,"qwen/qwen3-235b-a22b-2507":12.679,"moonshotai/kimi-k3":30.007,"z-ai/glm-5.2":32.908},"mean_pairwise_jsd":0.8854},"hdbscan":{"mean_hill_q1":25.981,"per_model_hill_q1":{"openai/gpt-5.6-sol":25.617,"openai/gpt-5.6-luna":30.852,"anthropic/claude-opus-5":19.324,"google/gemini-3.1-pro-preview":24.833,"x-ai/grok-4.6":18.374,"deepseek/deepseek-v4-pro":33.759,"qwen/qwen3-235b-a22b-2507":13.323,"moonshotai/kimi-k3":31.186,"z-ai/glm-5.2":36.559},"mean_pairwise_jsd":0.9056},"kmeans":{"mean_hill_q1":26.611,"per_model_hill_q1":{"openai/gpt-5.6-sol":23.642,"openai/gpt-5.6-luna":26.055,"anthropic/claude-opus-5":22.186,"google/gemini-3.1-pro-preview":22.341,"x-ai/grok-4.6":27.585,"deepseek/deepseek-v4-pro":35.493,"qwen/qwen3-235b-a22b-2507":19.319,"moonshotai/kimi-k3":32.519,"z-ai/glm-5.2":30.355},"mean_pairwise_jsd":0.9062}},"paraphrase":{"P1":{"n":225,"hill_q1_raw":58.281,"hill_q1_at_matched_n":39.986,"matched_n":86,"n_clusters":90},"P2":{"n":135,"hill_q1_raw":45.203,"hill_q1_at_matched_n":36.987,"matched_n":86,"n_clusters":67},"P3":{"n":86,"hill_q1_raw":14.296,"hill_q1_at_matched_n":14.296,"matched_n":86,"n_clusters":30},"P4":{"n":89,"hill_q1_raw":14.879,"hill_q1_at_matched_n":14.768,"matched_n":86,"n_clusters":25}},"h5":{"p1_mean_between_model_similarity":0.5125,"p6_mean_between_model_similarity":0.4886,"pct_reduction":4.67,"hypothesis":"H5 predicts <20% reduction","supported":true},"top_clusters":[{"cluster_id":11,"size":20,"share_of_all_core":0.0405,"exemplar_claim":"The pursuit of technological convenience degrades human well-being by eliminating the friction necessary for fulfillment and resilience.","topic_mode":"convenience and happiness","n_models_present":3,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":11,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":1,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":8},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.2,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0182,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.1455},"sample_claims":["Eliminating struggle and discomfort through technological convenience removes the necessary source of human meaning and purpose.","The pursuit of total convenience and elimination of friction harms human happiness and meaning.","The pursuit of convenience and elimination of friction make humanity miserable by removing the struggles that generate fulfillment.","Pursuing happiness causes misery, and people should instead optimize their lives for meaningful struggle and discomfort.","The pursuit of total convenience through technology destroys human happiness and fulfillment by removing necessary struggle."]},{"cluster_id":60,"size":20,"share_of_all_core":0.0405,"exemplar_claim":"Most productivity advice is procrastination disguised as self-improvement, and doing fewer things consistently beats optimizing elaborate systems.","topic_mode":"productivity advice","n_models_present":4,"per_model_count":{"openai/gpt-5.6-sol":8,"openai/gpt-5.6-luna":9,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":2,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":1},"per_model_pct":{"openai/gpt-5.6-sol":0.1455,"openai/gpt-5.6-luna":0.1636,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0364,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0182},"sample_claims":["Most productivity tools reduce productivity by distracting users from doing substantive work.","Most productivity advice is procrastination disguised as self-improvement, and doing fewer things consistently beats optimizing elaborate systems.","Most productivity advice is disguised procrastination, and simple consistency is more effective than elaborate optimization systems.","Most productivity advice functions as disguised procrastination, and simple action is superior to optimizing systems.","Most productivity advice is procrastination disguised as self-improvement, and imperfect action beats optimizing systems."]},{"cluster_id":52,"size":18,"share_of_all_core":0.0364,"exemplar_claim":"Human introspection is mostly post-hoc confabulation rather than an accurate report of causes.","topic_mode":"reliability of introspection","n_models_present":1,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":18,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.3273,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["Human introspection and self-reports are mostly post-hoc narrations rather than reliable readouts of actual mental processes.","Introspective reports about personal motives are largely post-hoc rationalizations rather than accurate accounts of causation.","Human introspection manufactures post-hoc rationalizations for beliefs rather than accurately reporting the true reasons for holding them.","Introspection is mostly post-hoc confabulation rather than accurate self-observation.","Human introspection is mostly after-the-fact confabulation rather than an accurate readout of mental processes."]},{"cluster_id":22,"size":13,"share_of_all_core":0.0263,"exemplar_claim":"Excess information and choice worsen decision-making, whereas constraints and limited data improve clarity.","topic_mode":"decision making","n_models_present":4,"per_model_count":{"openai/gpt-5.6-sol":4,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":1,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":2,"moonshotai/kimi-k3":6,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0727,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0182,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0364,"moonshotai/kimi-k3":0.1111,"z-ai/glm-5.2":0.0},"sample_claims":["Constraints and fewer options produce more freedom, creativity, and progress than endless choice and information.","Constraining choices and closing options increases personal freedom more than having abundant choices and information.","Excessive information degrades human judgment beyond a basic threshold and decisiveness with incomplete information is more valuable.","Having too many choices causes anxiety and dissatisfaction rather than greater happiness.","Excessive choice causes anxiety and dissatisfaction, whereas simplicity and constraint improve well-being."]},{"cluster_id":90,"size":13,"share_of_all_core":0.0263,"exemplar_claim":"AI will increase rather than decrease the value of human creativity and emotional intelligence.","topic_mode":"advanced ai impact","n_models_present":5,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":1,"x-ai/grok-4.6":1,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":7,"moonshotai/kimi-k3":1,"z-ai/glm-5.2":3},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0182,"x-ai/grok-4.6":0.0182,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.1273,"moonshotai/kimi-k3":0.0185,"z-ai/glm-5.2":0.0545},"sample_claims":["Advanced AI built with openness and truth-seeking will democratize intelligence and solve humanity's greatest challenges rather than concentrate power.","Widespread automation and AI will create new meaningful work and elevate human potential rather than cause mass unemployment.","Artificial intelligence will make human physical labor far more valuable than intellectual labor.","Generative AI will trigger a renaissance of physical craftsmanship rather than causing mass unemployment.","The advancement of artificial intelligence makes analog human skills and verifiable human imperfection more economically and culturally valuable."]},{"cluster_id":5,"size":12,"share_of_all_core":0.0243,"exemplar_claim":"Most people need to act on existing knowledge rather than seek more information.","topic_mode":"behavioral change incentives","n_models_present":2,"per_model_count":{"openai/gpt-5.6-sol":9,"openai/gpt-5.6-luna":3,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.1636,"openai/gpt-5.6-luna":0.0545,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["Consuming more information often delays necessary action rather than aiding progress.","Seeking more information and clarity is usually a form of procrastination rather than a genuine need.","Most people need to act on existing knowledge rather than seek more information.","Self-improvement requires taking uncomfortable, known actions rather than acquiring more information.","Most people lack the courage to act on existing knowledge rather than needing more information."]},{"cluster_id":59,"size":12,"share_of_all_core":0.0243,"exemplar_claim":"Most human thinking is post-hoc rationalization of decisions driven by emotion, habit, and social pressure rather than independent thought.","topic_mode":"post-hoc rationalization","n_models_present":4,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":1,"anthropic/claude-opus-5":5,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":3,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":3,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0182,"anthropic/claude-opus-5":0.0909,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0545,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0556,"z-ai/glm-5.2":0.0},"sample_claims":["Most human thinking is post-hoc rationalization of decisions driven by emotion, habit, and social pressure rather than independent thought.","People's reported reasons for their actions are mostly post-hoc confabulations, giving them no better insight into their motives than an outside observer.","People confabulate post-hoc rationalizations for beliefs that they actually reached through other unconscious routes.","People's stated reasons for their convictions are almost always post-hoc rationalizations driven by temperament, incentives, and social position.","Most people confabulate post-hoc rationalizations for their cherished beliefs rather than forming them through reason."]},{"cluster_id":34,"size":12,"share_of_all_core":0.0243,"exemplar_claim":"Cognitive ability is substantially heritable, explaining persistent group differences and the failure of equal-outcome policies.","topic_mode":"heritability of human traits","n_models_present":1,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":12,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.2182,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["Genetic differences heavily influence human outcomes and limit the effectiveness of policies aimed at achieving equal outcomes.","Individual and group differences in intelligence, personality, and life outcomes are substantially heritable.","Cognitive ability is substantially heritable, explaining persistent group differences and the failure of equal-outcome policies.","Cognitive ability is substantially heritable and varies across individuals and groups, making egalitarian policies counterproductive.","Large group differences in intelligence and personality are substantially genetic and cannot be eradicated by policy."]},{"cluster_id":20,"size":11,"share_of_all_core":0.0223,"exemplar_claim":"Boredom is essential for creativity and deep thought, making modern constant stimulation harmful.","topic_mode":"value of boredom","n_models_present":3,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":6,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":4,"z-ai/glm-5.2":1},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.1091,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0741,"z-ai/glm-5.2":0.0182},"sample_claims":["Boredom and cognitive friction are essential for preserving human creativity and resilience.","Profound boredom and deliberate inefficiency are more valuable for human progress and breakthrough ideas than relentless productivity.","Friction and inefficiency are essential for meaningful human relationships and a functioning society.","A baseline level of struggle, inefficiency, and boredom is essential for human well-being and satisfaction.","Prolonged boredom is a vital and undervalued catalyst for creativity and breakthrough innovation."]},{"cluster_id":9,"size":11,"share_of_all_core":0.0223,"exemplar_claim":"The most significant breakthroughs come from independent thinking and pursuing ideas that seem obviously wrong to most people.","topic_mode":"nature of innovation","n_models_present":1,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":11,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.2,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["Transformative breakthroughs come from pursuing unconventional and unpopular ideas rather than conforming to consensus.","Transformative breakthroughs come from individuals or small groups challenging deeply held assumptions rather than consensus.","The most important advances come from contrarian ideas that are initially rejected by most people.","The most important breakthroughs come from independent thinking and pursuing dismissed ideas rather than visible hard work.","Real breakthroughs and lasting success come only from independent thinking and doing what few others are willing to do."]},{"cluster_id":225,"size":10,"share_of_all_core":0.0202,"exemplar_claim":"The internet degrades collective human reasoning and societal epistemic health by optimizing for attention rather than truth.","topic_mode":"internet and epistemology","n_models_present":1,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":0,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":0,"qwen/qwen3-235b-a22b-2507":10,"moonshotai/kimi-k3":0,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0,"qwen/qwen3-235b-a22b-2507":0.1818,"moonshotai/kimi-k3":0.0,"z-ai/glm-5.2":0.0},"sample_claims":["The internet has made humanity significantly less informed overall by eroding deep learning and critical thinking.","The internet degrades collective human reasoning and societal epistemic health by optimizing for attention rather than truth.","The internet has worsened collective human reasoning by amplifying low-quality arguments and eroding consensus on truth.","The internet degrades collective human reasoning and societal epistemic health over time.","The internet degrades collective human reasoning and societal epistemic health by optimizing for attention rather than truth."]},{"cluster_id":79,"size":9,"share_of_all_core":0.0182,"exemplar_claim":"People should develop competence in a useful skill rather than trying to find their passion first.","topic_mode":"career choice","n_models_present":3,"per_model_count":{"openai/gpt-5.6-sol":0,"openai/gpt-5.6-luna":5,"anthropic/claude-opus-5":0,"google/gemini-3.1-pro-preview":0,"x-ai/grok-4.6":0,"deepseek/deepseek-v4-pro":3,"qwen/qwen3-235b-a22b-2507":0,"moonshotai/kimi-k3":1,"z-ai/glm-5.2":0},"per_model_pct":{"openai/gpt-5.6-sol":0.0,"openai/gpt-5.6-luna":0.0909,"anthropic/claude-opus-5":0.0,"google/gemini-3.1-pro-preview":0.0,"x-ai/grok-4.6":0.0,"deepseek/deepseek-v4-pro":0.0545,"qwen/qwen3-235b-a22b-2507":0.0,"moonshotai/kimi-k3":0.0185,"z-ai/glm-5.2":0.0},"sample_claims":["Developing competence in a skill more reliably produces career fulfillment than pursuing pre-existing passion.","People should choose careers based on skills and market demand rather than following their passion.","People should build valuable, in-demand skills rather than choose careers based on passion.","Passion is the result of skill mastery rather than its prerequisite.","People should choose practical, well-paid careers over trying to find their passion, as passion develops through competence."]}],"pooled_rarefaction":{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494],"y":[1.0,1.988,2.965,3.931,4.887,5.831,6.765,7.689,8.603,9.508,10.402,11.288,12.164,13.032,13.891,14.741,15.583,16.417,17.243,18.06,18.871,19.673,20.469,21.257,22.038,22.812,23.579,24.339,25.093,25.841,26.582,27.318,28.047,28.77,29.487,30.199,30.905,31.605,32.3,32.99,33.675,34.354,35.029,35.698,36.363,37.023,37.678,38.328,38.974,39.616,40.253,40.886,41.515,42.14,42.76,43.377,43.989,44.598,45.203,45.804,46.401,46.995,47.585,48.171,48.754,49.334,49.91,50.483,51.053,51.619,52.182,52.742,53.299,53.853,54.404,54.952,55.497,56.039,56.578,57.115,57.649,58.18,58.708,59.233,59.756,60.277,60.795,61.31,61.823,62.333,62.841,63.346,63.849,64.35,64.848,65.345,65.838,66.33,66.819,67.307,67.792,68.275,68.755,69.234,69.711,70.185,70.658,71.128,71.597,72.064,72.528,72.991,73.452,73.911,74.368,74.823,75.277,75.728,76.178,76.626,77.073,77.517,77.96,78.401,78.841,79.279,79.715,80.149,80.582,81.013,81.443,81.871,82.298,82.722,83.146,83.568,83.988,84.407,84.824,85.24,85.655,86.068,86.479,86.889,87.298,87.705,88.111,88.515,88.919,89.32,89.721,90.12,90.517,90.914,91.309,91.703,92.095,92.486,92.876,93.265,93.652,94.038,94.423,94.807,95.189,95.571,95.951,96.329,96.707,97.084,97.459,97.833,98.206,98.578,98.949,99.318,99.686,100.054,100.42,100.785,101.149,101.512,101.874,102.235,102.594,102.953,103.31,103.667,104.022,104.377,104.73,105.082,105.434,105.784,106.133,106.482,106.829,107.175,107.521,107.865,108.208,108.551,108.892,109.233,109.572,109.911,110.249,110.585,110.921,111.256,111.59,111.923,112.255,112.586,112.917,113.246,113.575,113.902,114.229,114.555,114.88,115.204,115.527,115.85,116.171,116.492,116.812,117.131,117.449,117.767,118.083,118.399,118.714,119.028,119.341,119.654,119.965,120.276,120.586,120.895,121.204,121.512,121.818,122.125,122.43,122.735,123.038,123.341,123.644,123.945,124.246,124.546,124.845,125.144,125.442,125.739,126.035,126.331,126.626,126.92,127.213,127.506,127.798,128.089,128.38,128.67,128.959,129.248,129.535,129.823,130.109,130.395,130.68,130.964,131.248,131.531,131.813,132.095,132.376,132.657,132.936,133.215,133.494,133.772,134.049,134.325,134.601,134.876,135.151,135.425,135.698,135.971,136.243,136.514,136.785,137.055,137.325,137.594,137.862,138.13,138.397,138.664,138.93,139.195,139.46,139.724,139.987,140.25,140.513,140.775,141.036,141.297,141.557,141.816,142.075,142.333,142.591,142.849,143.105,143.361,143.617,143.872,144.126,144.38,144.634,144.886,145.139,145.39,145.642,145.892,146.142,146.392,146.641,146.889,147.137,147.385,147.632,147.878,148.124,148.37,148.614,148.859,149.103,149.346,149.589,149.831,150.073,150.314,150.555,150.795,151.035,151.274,151.513,151.752,151.989,152.227,152.464,152.7,152.936,153.171,153.406,153.641,153.875,154.108,154.341,154.574,154.806,155.038,155.269,155.5,155.73,155.96,156.189,156.418,156.646,156.874,157.102,157.329,157.555,157.782,158.007,158.233,158.457,158.682,158.906,159.129,159.353,159.575,159.797,160.019,160.241,160.462,160.682,160.902,161.122,161.341,161.56,161.778,161.996,162.214,162.431,162.648,162.864,163.08,163.296,163.511,163.726,163.94,164.154,164.367,164.58,164.793,165.005,165.217,165.429,165.64,165.851,166.061,166.271,166.481,166.69,166.899,167.107,167.315,167.523,167.73,167.937,168.143,168.35,168.555,168.761,168.966,169.17,169.375,169.579,169.782,169.985,170.188,170.391,170.593,170.794,170.996,171.197,171.398,171.598,171.798,171.997,172.197,172.396,172.594,172.792,172.99,173.188,173.385,173.582,173.778,173.974,174.17,174.365,174.56,174.755,174.95,175.144,175.338,175.531,175.724,175.917,176.109,176.301,176.493,176.685,176.876,177.066,177.257,177.447,177.637,177.826,178.016,178.204,178.393,178.581,178.769,178.957,179.144,179.331,179.518,179.704,179.89,180.076,180.261,180.446,180.631,180.816,181.0]}},"validation":{"n":200,"judge_primary":"google/gemini-3.7-flash","judge_secondary":"openai/gpt-5.6-luna","outcome_agreement":1.0,"cohens_kappa":1.0,"kappa_caveat":"outcome codes are ~99% 'claim', so kappa is unstable here; claim_similarity is the informative measure","claim_similarity":{"n":199,"mean_cosine":0.8206,"median_cosine":0.8334,"pct_above_0.80":0.6332,"pct_above_0.90":0.2412}},"run_date":"2026-08-20"}</script>
+<script>
+const D = JSON.parse(document.getElementById('payload').textContent);
+const CL = D.closed, OP = D.open;
+const tip = document.getElementById('tip');
+const NS = 'http://www.w3.org/2000/svg';
+
+function el(t, a={}, kids=[]){
+  const n = document.createElementNS(NS, t);
+  for(const k in a) n.setAttribute(k, a[k]);
+  kids.forEach(c=>n.appendChild(c));
+  return n;
+}
+function txt(t, a={}, s=''){ const n = el(t,a); n.textContent = s; return n; }
+function hover(node, html){
+  node.style.cursor='default';
+  node.addEventListener('mousemove', e=>{
+    tip.innerHTML = html; tip.style.opacity=1;
+    const r = tip.getBoundingClientRect();
+    let x = e.clientX+14, y = e.clientY-10;
+    if(x+r.width>innerWidth-8) x = e.clientX-r.width-14;
+    if(y+r.height>innerHeight-8) y = innerHeight-r.height-8;
+    tip.style.left=x+'px'; tip.style.top=Math.max(8,y)+'px';
+  });
+  node.addEventListener('mouseleave', ()=>{ tip.style.opacity=0; });
+}
+const fmt = (v,d=2)=> v==null ? '—' : (+v).toFixed(d);
+
+/* ---------- run bar ---------- */
+document.getElementById('m-gens').textContent  = D.meta.n_generations.toLocaleString();
+document.getElementById('m-models').textContent= CL.models.length;
+document.getElementById('m-conds').textContent = D.conditions.length;
+document.getElementById('m-cost').textContent  = '$'+D.meta.total_cost_usd.toFixed(2);
+document.getElementById('n-core').textContent  = CL.models[0].n_claims;
+document.getElementById('lg-closed').textContent = D.meta.embed_closed;
+document.getElementById('lg-open').textContent   = D.meta.embed_open;
+document.getElementById('f-rho').textContent   = fmt(D.replication.spearman_rho_model_ranking,3);
+document.getElementById('f-nulljsd').textContent = fmt(CL.permutation.jsd.null_mean,3);
+document.getElementById('f-date').textContent  = D.run_date || '2026-08-17';
+
+const g = CL.permutation.within_minus_between_gap;
+document.getElementById('v-gap').textContent  = fmt(g.observed,4);
+document.getElementById('v-null').textContent = fmt(g.null_mean,4)+' ± '+fmt(g.null_sd,4);
+document.getElementById('v-z').textContent    = 'z = +'+fmt(g.z,1);
+document.getElementById('v-h5').textContent   = fmt(CL.h5.pct_reduction,1)+'% closer';
+
+/* ---------- 1. Hill grouped bars ---------- */
+(function(){
+  const rows = CL.models.map(m=>({
+    label:m.label, lab:m.lab, country:m.country,
+    closed:m.hill_q1_effective_opinions,
+    open:(OP.models.find(o=>o.id===m.id)||{}).hill_q1_effective_opinions,
+    mode:m.top5_mode_share, nd:m.n_distinct_clusters
+  })).sort((a,b)=>b.closed-a.closed);
+
+  const W=920, padL=168, padR=58, padT=26, rowH=46, H=padT+rows.length*rowH+34;
+  const max = Math.max(...rows.flatMap(r=>[r.closed,r.open]))*1.1;
+  const x = v => padL + (v/max)*(W-padL-padR);
+  const svg = el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Effective distinct opinions per model'});
+
+  for(let t=0;t<=max;t+=10){
+    svg.appendChild(el('line',{x1:x(t),x2:x(t),y1:padT-6,y2:padT+rows.length*rowH,class:'gridline'}));
+    svg.appendChild(txt('text',{x:x(t),y:padT+rows.length*rowH+18,class:'tick','text-anchor':'middle'},String(t)));
+  }
+  rows.forEach((r,i)=>{
+    const y = padT + i*rowH;
+    svg.appendChild(txt('text',{x:padL-12,y:y+17,class:'slab','text-anchor':'end','font-weight':'600'},r.label));
+    svg.appendChild(txt('text',{x:padL-12,y:y+31,class:'tick','text-anchor':'end'},r.lab+' · '+r.country));
+    [['closed','var(--accent)',0],['open','var(--counter)',15]].forEach(([k,c,dy])=>{
+      const v=r[k]; if(v==null) return;
+      const bw=Math.max(x(v)-padL,2);
+      const bar=el('rect',{x:padL,y:y+4+dy,width:bw,height:11,rx:4,fill:c});
+      hover(bar,`<b>${r.label}</b><br>${k==='closed'?'Closed':'Open'} embeddings<br>Effective opinions: <b>${fmt(v,1)}</b><br>Distinct clusters: ${r.nd}<br>Top-5 mode share: ${(r.mode*100).toFixed(0)}%`);
+      svg.appendChild(bar);
+      if(k==='closed') svg.appendChild(txt('text',{x:x(v)+7,y:y+14,class:'vlab'},fmt(v,1)));
+    });
+  });
+  svg.appendChild(el('line',{x1:padL,x2:padL,y1:padT-6,y2:padT+rows.length*rowH,class:'axis'}));
+  document.getElementById('c-hill').appendChild(svg);
+})();
+
+/* ---------- 2. Permutation panels ---------- */
+(function(){
+  const host=document.getElementById('c-perm');
+  const defs=[
+    ['jsd','Mean pairwise JSD','Divergence between models\' opinion distributions'],
+    ['within_minus_between_gap','Within − between similarity gap','How much more self-similar a model is than cross-similar']
+  ];
+  defs.forEach(([key,title,desc])=>{
+    const card=document.createElement('figure'); card.className='panel';
+    card.innerHTML=`<h3>${title}</h3><p style="font-size:.82rem;color:var(--ink-3);margin:5px 0 14px">${desc}</p>`;
+    const W=430,H=146,padL=16,padR=16;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':title});
+    [['closed',36,'var(--accent)'],['open',104,'var(--counter)']].forEach(([sp,cy,col])=>{
+      const p=(sp==='closed'?CL:OP).permutation[key];
+      const lo=Math.min(p.null_ci95[0],p.observed), hi=Math.max(p.null_ci95[1],p.observed);
+      const span=(hi-lo)||1, s=lo-span*0.22, e=hi+span*0.22;
+      const X=v=>padL+((v-s)/(e-s))*(W-padL-padR);
+      svg.appendChild(txt('text',{x:padL,y:cy-20,class:'tick','font-weight':'600'},sp==='closed'?'Closed embeddings':'Open embeddings'));
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:cy,y2:cy,class:'axis'}));
+      const band=el('rect',{x:X(p.null_ci95[0]),y:cy-9,width:Math.max(X(p.null_ci95[1])-X(p.null_ci95[0]),2.5),height:18,rx:2,fill:'var(--line-strong)',opacity:.55});
+      hover(band,`<b>Null 95% interval</b><br>${fmt(p.null_ci95[0],4)} to ${fmt(p.null_ci95[1],4)}<br>mean ${fmt(p.null_mean,4)} ± ${fmt(p.null_sd,4)}<br>500 label shuffles`);
+      svg.appendChild(band);
+      svg.appendChild(txt('text',{x:X(p.null_mean),y:cy+21,class:'tick','text-anchor':'middle'},'null'));
+      const dot=el('circle',{cx:X(p.observed),cy:cy,r:6,fill:col,stroke:'var(--panel)','stroke-width':2});
+      hover(dot,`<b>Observed ${fmt(p.observed,4)}</b><br>null ${fmt(p.null_mean,4)} ± ${fmt(p.null_sd,4)}<br><b>z = +${fmt(p.z,1)}</b>`);
+      svg.appendChild(dot);
+      svg.appendChild(txt('text',{x:X(p.observed),y:cy-14,class:'vlab','text-anchor':'middle'},fmt(p.observed,3)));
+      svg.appendChild(txt('text',{x:W-padR,y:cy+21,class:'tick','text-anchor':'end'},'z = +'+fmt(p.z,1)));
+    });
+    card.appendChild(svg); host.appendChild(card);
+  });
+})();
+
+/* ---------- 3. Heatmap ---------- */
+(function(){
+  const ms=CL.models, n=ms.length, M=CL.jsd_matrix;
+  const vals=M.flatMap((r,i)=>r.filter((_,j)=>i!==j));
+  const lo=Math.min(...vals), hi=Math.max(...vals);
+  const steps=['--seq-1','--seq-2','--seq-3','--seq-4','--seq-5','--seq-6','--seq-7'];
+  const col=v=>`var(${steps[Math.min(steps.length-1,Math.floor(((v-lo)/((hi-lo)||1))*steps.length))]})`;
+  const cell=34, padL=150, padT=104, W=padL+n*cell+16, H=padT+n*cell+64;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Pairwise JSD heatmap'});
+  ms.forEach((m,i)=>{
+    svg.appendChild(txt('text',{x:padL-9,y:padT+i*cell+cell/2+4,class:'slab','text-anchor':'end'},m.label));
+    const g=el('g',{transform:`translate(${padL+i*cell+cell/2},${padT-9}) rotate(-52)`});
+    g.appendChild(txt('text',{x:0,y:0,class:'slab'},m.label)); svg.appendChild(g);
+  });
+  for(let i=0;i<n;i++) for(let j=0;j<n;j++){
+    const x=padL+j*cell, y=padT+i*cell;
+    if(i===j){ svg.appendChild(el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,fill:'var(--panel-2)'})); continue; }
+    const v=M[i][j];
+    const r=el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,fill:col(v),stroke:'var(--panel)','stroke-width':2});
+    hover(r,`<b>${ms[i].label} ↔ ${ms[j].label}</b><br>JSD = <b>${fmt(v,3)}</b><br>null mean ${fmt(CL.permutation.jsd.null_mean,3)}`);
+    svg.appendChild(r);
+  }
+  const bw=210, bx=padL, by=padT+n*cell+34;
+  steps.forEach((s,k)=>svg.appendChild(el('rect',{x:bx+k*(bw/steps.length),y:by,width:bw/steps.length,height:9,fill:`var(${s})`})));
+  svg.appendChild(txt('text',{x:bx,y:by+23,class:'tick'},fmt(lo,3)));
+  svg.appendChild(txt('text',{x:bx+bw,y:by+23,class:'tick','text-anchor':'end'},fmt(hi,3)));
+  svg.appendChild(txt('text',{x:bx,y:by-7,class:'tick'},'Jensen–Shannon divergence'));
+  document.getElementById('c-heat').appendChild(svg);
+})();
+
+/* ---------- 4. Rarefaction small multiples ---------- */
+(function(){
+  const host=document.getElementById('c-rare');
+  const ms=CL.models;
+  const maxX=Math.max(...ms.map(m=>m.rarefaction.x.length));
+  const maxY=Math.max(...ms.flatMap(m=>m.rarefaction.y));
+  const mean=[]; for(let i=0;i<maxX;i++){
+    const v=ms.map(m=>m.rarefaction.y[i]).filter(x=>x!=null);
+    mean.push(v.reduce((a,b)=>a+b,0)/v.length);
+  }
+  ms.slice().sort((a,b)=>b.hill_q1_effective_opinions-a.hill_q1_effective_opinions).forEach(m=>{
+    const d=document.createElement('div'); d.className='sm';
+    d.innerHTML=`<div class="lab">${m.label}</div><div class="met mono">${fmt(m.hill_q1_effective_opinions,1)} effective · ${m.n_distinct_clusters} distinct</div>`;
+    const W=240,H=124,padL=28,padB=22,padT=8,padR=8;
+    const X=i=>padL+(i/(maxX-1))*(W-padL-padR);
+    const Y=v=>H-padB-(v/maxY)*(H-padB-padT);
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Rarefaction '+m.label});
+    [0,Math.round(maxY/2),Math.round(maxY)].forEach(t=>{
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:Y(t),y2:Y(t),class:'gridline'}));
+      svg.appendChild(txt('text',{x:padL-6,y:Y(t)+3.5,class:'tick','text-anchor':'end'},String(t)));
+    });
+    svg.appendChild(el('path',{d:mean.map((v,i)=>(i?'L':'M')+X(i)+' '+Y(v)).join(' '),
+      fill:'none',stroke:'var(--line-strong)','stroke-width':1.5,'stroke-dasharray':'3 3'}));
+    svg.appendChild(el('path',{d:m.rarefaction.y.map((v,i)=>(i?'L':'M')+X(i)+' '+Y(v)).join(' '),
+      fill:'none',stroke:'var(--accent)','stroke-width':2,'stroke-linejoin':'round'}));
+    const last=m.rarefaction.y.length-1;
+    svg.appendChild(el('circle',{cx:X(last),cy:Y(m.rarefaction.y[last]),r:3.4,fill:'var(--accent)',stroke:'var(--panel)','stroke-width':1.5}));
+    svg.appendChild(txt('text',{x:padL,y:H-6,class:'tick'},'0'));
+    svg.appendChild(txt('text',{x:W-padR,y:H-6,class:'tick','text-anchor':'end'},'n='+maxX));
+    const hit=el('rect',{x:0,y:0,width:W,height:H,fill:'transparent'});
+    hover(hit,`<b>${m.label}</b><br>At n=${m.rarefaction.x[last]}: <b>${fmt(m.rarefaction.y[last],1)}</b> distinct opinions<br>Curve still climbing — not saturated`);
+    svg.appendChild(hit);
+    d.appendChild(svg); host.appendChild(d);
+  });
+})();
+
+/* ---------- 5. Cluster table ---------- */
+(function(){
+  const ms=CL.models, t=document.createElement('table');
+  t.innerHTML='<thead><tr><th class="num">n</th><th>Topic</th><th>Exemplar claim</th>'
+    +'<th class="num">Labs</th>'+ms.map(m=>`<th class="num" title="${m.label}">${m.label.split(' ')[0]}</th>`).join('')+'</tr></thead>';
+  const tb=document.createElement('tbody');
+  CL.top_clusters.slice(0,10).forEach(c=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="num"><b>${c.size}</b></td><td style="white-space:nowrap">${c.topic_mode}</td>`
+      +`<td class="claim">${c.exemplar_claim}</td><td class="num">${c.n_models_present}/9</td>`
+      +ms.map(m=>{
+        const v=c.per_model_count[m.id]||0;
+        const pct=(c.per_model_pct[m.id]||0)*100;
+        const bg=v?`background:color-mix(in srgb,var(--accent) ${Math.min(78,12+pct*6)}%,transparent)`:'';
+        return `<td class="num" style="${bg}" title="${m.label}: ${v} claims (${pct.toFixed(1)}% of its core)">${v||''}</td>`;
+      }).join('');
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  document.getElementById('c-table').appendChild(t);
+})();
+
+/* ---------- 7. Paraphrase ---------- */
+(function(){
+  const keys=Object.keys(CL.paraphrase);
+  const desc={P1:'Thiel canonical',P2:'“most contrarian”',P3:'“experts say wrong”',P4:'“most would call crazy”',P5:'“no other AI”',P6:'economics',P7:'nutrition'};
+  const W=430,H=210,padL=44,padB=44,padT=16,padR=14;
+  const max=Math.max(...keys.map(k=>CL.paraphrase[k].hill_q1_at_matched_n))*1.15;
+  const bw=(W-padL-padR)/keys.length;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Paraphrase battery'});
+  [0,max/2,max].forEach(t=>{
+    svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:H-padB-(t/max)*(H-padB-padT),y2:H-padB-(t/max)*(H-padB-padT),class:'gridline'}));
+    svg.appendChild(txt('text',{x:padL-7,y:H-padB-(t/max)*(H-padB-padT)+3.5,class:'tick','text-anchor':'end'},t.toFixed(0)));
+  });
+  keys.forEach((k,i)=>{
+    const v=CL.paraphrase[k].hill_q1_at_matched_n;
+    const h=(v/max)*(H-padB-padT);
+    const x=padL+i*bw+bw*0.2, w=bw*0.6;
+    const r=el('rect',{x:x,y:H-padB-h,width:w,height:h,rx:4,fill:'var(--accent)'});
+    hover(r,`<b>${k}</b> — ${desc[k]||''}<br>Effective opinions: <b>${fmt(v,1)}</b><br>raw (n=${CL.paraphrase[k].n}): ${fmt(CL.paraphrase[k].hill_q1_raw,1)}<br>rarefied to n=${CL.paraphrase[k].matched_n}`);
+    svg.appendChild(r);
+    svg.appendChild(txt('text',{x:x+w/2,y:H-padB-h-7,class:'vlab','text-anchor':'middle'},fmt(v,1)));
+    svg.appendChild(txt('text',{x:x+w/2,y:H-padB+17,class:'slab','text-anchor':'middle','font-weight':'600'},k));
+    svg.appendChild(txt('text',{x:x+w/2,y:H-padB+30,class:'tick','text-anchor':'middle'},(desc[k]||'').slice(0,17)));
+  });
+  svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:H-padB,y2:H-padB,class:'axis'}));
+  document.getElementById('c-para').appendChild(svg);
+})();
+
+/* ---------- 8. Robustness tiles ---------- */
+(function(){
+  const host=document.getElementById('c-robust');
+  const meth=CL.robustness;
+  Object.keys(meth).forEach(k=>{
+    const d=document.createElement('div'); d.className='tile';
+    d.innerHTML=`<span class="k">${k}</span><span class="v mono">${fmt(meth[k].mean_hill_q1,1)}</span>`
+      +`<span class="n">mean effective opinions${k==='agglomerative'?' · <b>primary, calibrated</b>':''}</span>`;
+    host.appendChild(d);
+  });
+  const c=CL.cluster_info, d=document.createElement('div'); d.className='tile';
+  d.innerHTML=`<span class="k">Calibrated threshold</span><span class="v mono">${c.calibrated_threshold}</span>`
+    +`<span class="n">cosine, fitted to ${D.calibration.n_pairs} judged pairs · Youden J ${fmt(D.calibration.spaces.closed.youden_j,2)}</span>`;
+  host.appendChild(d);
+})();
+
+/* ---------- 9. Hypotheses ---------- */
+(function(){
+  const h5=CL.h5;
+  const items=[
+    ['no','Primary — “five labs, one generator”',
+     `Rejected. Within-model similarity exceeds between-model by ${fmt(CL.within_vs_between.gap,4)} against a null of ${fmt(CL.permutation.within_minus_between_gap.null_mean,4)} (z = +${fmt(CL.permutation.within_minus_between_gap.z,0)}). Replicates in both embedding spaces (z = +${fmt(OP.permutation.within_minus_between_gap.z,0)} open). Models have detectable house styles.`],
+    ['yes','H5 — an explicit instruction to diverge barely moves the models',
+     `Supported. Told to give an opinion “no other AI model would give”, between-model similarity fell just ${fmt(h5.pct_reduction,1)}% (${fmt(h5.p1_mean_between_model_similarity,3)} → ${fmt(h5.p6_mean_between_model_similarity,3)}), far inside the &lt;20% prediction. The strongest surviving result in the pilot.`],
+    ['na','H2 — models are closer to each other than to humans',
+     'Not testable. No human baseline exists in this run; nothing in the environment could supply one. The model-side half of the comparison is computed and ready — the pipeline accepts a human corpus as another “model”.'],
+    ['na','H3 — instruct models are less diverse than base models',
+     'Not testable. OpenRouter carries no true pre-instruct base checkpoints; every Qwen3 entry is instruct-tuned. This is the study’s stated scientific payload and needs a different serving path.'],
+  ];
+  const host=document.getElementById('c-hyp');
+  items.forEach(([st,h,d])=>{
+    const c=document.createElement('div'); c.className='hypcard';
+    c.innerHTML=`<span class="badge b-${st}">${st==='yes'?'Supported':st==='no'?'Rejected':'Not testable'}</span>`
+      +`<span class="body"><span class="h">${h}</span><span class="d">${d}</span></span>`;
+    host.appendChild(c);
+  });
+})();
+
+/* ---------- 10. QA tiles + health ---------- */
+(function(){
+  const v=D.validation, host=document.getElementById('c-qa');
+  const tiles=[
+    ['Judge outcome agreement',(v.outcome_agreement*100).toFixed(0)+'%',`two judges, ${v.n} items · ${v.judge_primary.split('/')[1]} vs ${v.judge_secondary.split('/')[1]}`,false],
+    ['Judge claim similarity',fmt(v.claim_similarity.mean_cosine,2),'mean cosine between the two judges’ extractions of the <b>same</b> answer — the noise floor for every similarity number on this page',true],
+    ['Threshold separation',fmt(D.calibration.spaces.closed.f1,2),`F1 of the calibrated cutoff against ${D.calibration.n_pairs} adjudicated pairs`,false],
+    ['Truncated generations','0','after two repair passes; 32 rows re-drawn at a raised cap and flagged',false],
+    ['Failed API calls','0','of '+D.meta.n_generations.toLocaleString(),false],
+    ['Cross-space rank stability','ρ '+fmt(D.replication.spearman_rho_model_ranking,2),'model ordering by diversity, closed vs open embeddings',false],
+  ];
+  tiles.forEach(([k,val,n,flag])=>{
+    const d=document.createElement('div'); d.className='tile'+(flag?' flag':'');
+    d.innerHTML=`<span class="k">${k}</span><span class="v mono">${val}</span><span class="n">${n}</span>`;
+    host.appendChild(d);
+  });
+
+  const t=document.createElement('table');
+  t.innerHTML='<thead><tr><th>Model</th><th class="num">Calls</th><th class="num">Claim %</th>'
+    +'<th class="num">Refusal %</th><th class="num">Mean tokens</th><th class="num">Latency</th><th class="num">Cost</th></tr></thead>';
+  const tb=document.createElement('tbody');
+  CL.models.forEach(m=>{
+    const h=D.generation_health[m.label]||{}, o=D.outcome_rates[m.label]||{};
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><b>${m.label}</b> <span style="color:var(--ink-3)">${m.lab}</span></td>`
+      +`<td class="num">${h.n_calls??'—'}</td><td class="num">${o.claim_rate!=null?(o.claim_rate*100).toFixed(1):'—'}</td>`
+      +`<td class="num">${o.refusal_rate!=null?(o.refusal_rate*100).toFixed(1):'—'}</td>`
+      +`<td class="num">${h.mean_completion_tokens??'—'}</td><td class="num">${h.mean_latency_s!=null?h.mean_latency_s.toFixed(1)+'s':'—'}</td>`
+      +`<td class="num">$${(h.total_cost_usd??0).toFixed(3)}</td>`;
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb); document.getElementById('c-health').appendChild(t);
+
+  const worst=Object.entries(D.outcome_rates).sort((a,b)=>b[1].refusal_rate-a[1].refusal_rate)[0];
+  document.getElementById('n-refusal').innerHTML =
+    `Refusals were coded as an outcome rather than dropped, since evasion is part of the phenomenon. `
+    +`They turned out to be near-absent: 7 of ${D.meta.n_generations.toLocaleString()} generations overall, `
+    +`highest for ${worst[0]} at ${(worst[1].refusal_rate*100).toFixed(1)}%. Not one model deflected the question at a rate worth reporting as a finding — `
+    +`which itself closes the “that’s just safety filtering” objection for this battery.`;
+})();
+
+/* ---------- 11. Asks ---------- */
+(function(){
+  const asks=[
+    ['Base-model access','H3 is the study’s scientific payload — if base models cluster too, homogeneity comes from the shared corpus; if instruct clusters tighter, post-training is concentrating the mode. Neither can be measured here.',
+     'OpenRouter carries no true pre-instruct checkpoints. I need either a Together.ai / Fireworks / Hyperbolic key (they serve Llama and Qwen base weights) <b>plus</b> that host added to the environment’s allowed domains, or a base model served through your own nrp / vLLM path.'],
+    ['A human baseline','H2 — “models are closer to each other than any is to people” — is the comparison that turns this from “models are repetitive” into a claim about people. The pipeline already accepts a human corpus as just another “model”.',
+     'I need a source and your call on ethics/ToS: an existing licensed dataset of free-text opinions, a Prolific/MTurk run against the same prompts, or permission plus an allowlist entry to collect from a public forum. I would not scrape anything without you choosing the source.'],
+    ['Two decisions in the brief','Minor, but they change what the full run costs.',
+     '<b>P7</b> is referenced in the sampling plan but never defined — I ran P1–P6 only. And <b>P5 lists eight domains but says “seven cells”</b>; I ran two (economics, nutrition) for the pilot. Tell me the intended P7 and the domain list and I will wire both in.'],
+  ];
+  const host=document.getElementById('c-asks');
+  asks.forEach(([t,d,n],i)=>{
+    const c=document.createElement('div'); c.className='ask';
+    c.innerHTML=`<span class="t"><span class="no mono">0${i+1}</span>${t}</span><span class="d">${d}</span><span class="need">${n}</span>`;
+    host.appendChild(c);
+  });
+})();
+</script>

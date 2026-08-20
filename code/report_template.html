@@ -1,0 +1,696 @@
+<title>Consensus of Contrarians</title>
+<style>
+:root{
+  color-scheme: light;
+  --ground:#fbfbfc; --panel:#ffffff; --panel-2:#f4f5f8; --line:#e2e4ea; --line-strong:#c9ccd6;
+  --ink:#10131a; --ink-2:#3d4354; --ink-3:#6b7186;
+  --accent:#2a78d6; --accent-soft:#eaf1fc;
+  --counter:#eb6834;
+  --pos:#1baf7a; --neg:#e34948; --warn:#eda100;
+  --seq-0:#eef4fd; --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#6da7ec;
+  --seq-4:#3987e5; --seq-5:#256abf; --seq-6:#184f95; --seq-7:#0d366b;
+  --shadow:0 1px 2px rgba(16,19,26,.05),0 4px 16px rgba(16,19,26,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#14161b; --panel:#1b1e25; --panel-2:#22262e; --line:#2c313b; --line-strong:#3d4350;
+    --ink:#f2f3f6; --ink-2:#b9bfcd; --ink-3:#868da0;
+    --accent:#3987e5; --accent-soft:#16243a;
+    --counter:#d95926;
+    --pos:#199e70; --neg:#e66767; --warn:#c98500;
+    --seq-0:#171d28; --seq-1:#0d366b; --seq-2:#184f95; --seq-3:#256abf;
+    --seq-4:#3987e5; --seq-5:#6da7ec; --seq-6:#9ec5f4; --seq-7:#cde2fb;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#14161b; --panel:#1b1e25; --panel-2:#22262e; --line:#2c313b; --line-strong:#3d4350;
+  --ink:#f2f3f6; --ink-2:#b9bfcd; --ink-3:#868da0;
+  --accent:#3987e5; --accent-soft:#16243a;
+  --counter:#d95926;
+  --pos:#199e70; --neg:#e66767; --warn:#c98500;
+  --seq-0:#171d28; --seq-1:#0d366b; --seq-2:#184f95; --seq-3:#256abf;
+  --seq-4:#3987e5; --seq-5:#6da7ec; --seq-6:#9ec5f4; --seq-7:#cde2fb;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.col{max-width:68ch}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.08;letter-spacing:-.022em;font-weight:600}
+h2{font-size:1.55rem;line-height:1.2;letter-spacing:-.012em;font-weight:600}
+h3{font-size:1.02rem;font-weight:650;letter-spacing:-.004em}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{
+  font-size:.685rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);
+}
+/* ---------- masthead ---------- */
+header{border-bottom:1px solid var(--line);background:var(--panel);}
+.masthead{display:flex;flex-direction:column;gap:22px;padding:52px 0 40px}
+.sub{font-size:1.115rem;line-height:1.55;color:var(--ink-2);max-width:64ch}
+.runbar{
+  display:flex;flex-wrap:wrap;gap:8px 26px;padding-top:6px;
+  font-size:.775rem;color:var(--ink-3);
+}
+.runbar b{color:var(--ink-2);font-weight:600}
+/* ---------- verdict ---------- */
+.verdict{
+  margin:38px 0 0;border:1px solid var(--line);border-left:3px solid var(--neg);
+  background:var(--panel);border-radius:3px;padding:24px 26px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:12px;
+}
+.verdict .tag{
+  display:inline-flex;align-items:center;gap:7px;align-self:flex-start;
+  font-size:.7rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--neg);
+}
+.verdict .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--neg)}
+.verdict h2{font-size:1.32rem}
+.verdict p{color:var(--ink-2);font-size:.965rem;max-width:76ch}
+/* ---------- sections ---------- */
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+.shead{display:flex;flex-direction:column;gap:11px;margin-bottom:30px}
+.shead .role{
+  font-size:.685rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);
+}
+.shead p{color:var(--ink-2);font-size:.95rem;max-width:70ch}
+/* ---------- panels & tiles ---------- */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(178px,1fr))}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 18px;display:flex;flex-direction:column;gap:5px}
+.tile .k{font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.tile .v{font-size:1.72rem;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.tile .n{font-size:.775rem;color:var(--ink-3);line-height:1.4}
+.tile.flag{border-left:3px solid var(--warn)}
+/* ---------- tables ---------- */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:.845rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{
+  font-size:.665rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+  white-space:nowrap;border-bottom:1px solid var(--line-strong);position:sticky;top:0;background:var(--panel);
+}
+td.num,th.num{text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+tbody tr:hover{background:var(--panel-2)}
+.claim{max-width:44ch;color:var(--ink-2);font-size:.83rem;line-height:1.48}
+/* ---------- misc ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:center;font-size:.775rem;color:var(--ink-2);margin-bottom:14px}
+.swatch{width:11px;height:11px;border-radius:2px;display:inline-block;margin-right:7px;vertical-align:-1px}
+.hyp{display:grid;gap:12px}
+.hypcard{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 18px;display:flex;gap:16px;align-items:flex-start}
+.hypcard .badge{
+  flex:none;font-size:.665rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 9px;border-radius:2px;margin-top:2px;white-space:nowrap;
+}
+.b-yes{background:color-mix(in srgb,var(--pos) 15%,transparent);color:var(--pos)}
+.b-no{background:color-mix(in srgb,var(--neg) 15%,transparent);color:var(--neg)}
+.b-na{background:var(--panel-2);color:var(--ink-3)}
+.hypcard .body{display:flex;flex-direction:column;gap:5px}
+.hypcard .h{font-weight:650;font-size:.925rem}
+.hypcard .d{font-size:.855rem;color:var(--ink-2)}
+.asks{display:grid;gap:14px;counter-reset:ask}
+.ask{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:3px;padding:18px 20px;display:flex;flex-direction:column;gap:7px}
+.ask .t{font-weight:650;font-size:1rem;display:flex;gap:10px;align-items:baseline}
+.ask .t .no{color:var(--accent);font-size:.8rem;font-weight:700}
+.ask .d{font-size:.885rem;color:var(--ink-2)}
+.ask .need{font-size:.8rem;color:var(--ink);background:var(--panel-2);border-radius:2px;padding:9px 12px;line-height:1.5}
+.note{font-size:.8rem;color:var(--ink-3);line-height:1.55;margin-top:12px;max-width:76ch}
+.smallmults{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.sm{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:12px 12px 6px}
+.sm .lab{font-size:.78rem;font-weight:650;margin-bottom:1px}
+.sm .met{font-size:.7rem;color:var(--ink-3);margin-bottom:6px}
+figure{margin:0}
+figcaption{font-size:.79rem;color:var(--ink-3);margin-top:11px;line-height:1.55;max-width:78ch}
+#tip{
+  position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;z-index:60;
+  background:var(--ink);color:var(--ground);font-size:.775rem;line-height:1.45;
+  padding:7px 10px;border-radius:3px;max-width:280px;box-shadow:0 4px 14px rgba(0,0,0,.25);
+}
+#tip b{color:var(--ground)}
+svg{display:block;max-width:100%;height:auto}
+.axis{stroke:var(--line);stroke-width:1}
+.gridline{stroke:var(--line);stroke-width:1;stroke-dasharray:2 3}
+.tick{fill:var(--ink-3);font-size:10.5px;font-family:ui-monospace,Menlo,monospace}
+.slab{fill:var(--ink-2);font-size:11.5px}
+.vlab{fill:var(--ink);font-size:11px;font-family:ui-monospace,Menlo,monospace;font-weight:600}
+footer{padding:44px 0 60px;color:var(--ink-3);font-size:.815rem;display:flex;flex-direction:column;gap:7px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<header>
+  <div class="wrap masthead">
+    <div class="eyebrow">Nof1 Research &middot; Pilot Study &middot; v0.1</div>
+    <h1 class="serif">The Consensus of Contrarians</h1>
+    <p class="sub">Do nine frontier models from eight labs collapse to the same
+      &ldquo;contrarian&rdquo; opinions? A 1,071-generation pilot, run end to end, to decide
+      whether the full study is worth building.</p>
+    <div class="runbar mono">
+      <span><b id="m-gens"></b> generations</span>
+      <span><b id="m-models"></b> models &middot; 8 labs</span>
+      <span><b id="m-conds"></b> conditions</span>
+      <span><b id="m-cost"></b> total API spend</span>
+      <span><b>2</b> embedding spaces</span>
+      <span><b>0</b> failed calls</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="verdict">
+    <span class="tag">Primary hypothesis not supported</span>
+    <h2 class="serif">The models are distinguishable. &ldquo;Five labs, one generator&rdquo; fails this pilot.</h2>
+    <p>Against a permutation null in which every model is a draw from one shared generator,
+      each model is <b>significantly more self-similar than chance</b> — within-minus-between
+      similarity gap <span class="mono" id="v-gap"></span> versus a null of
+      <span class="mono" id="v-null"></span>
+      (<span class="mono" id="v-z"></span>, p&nbsp;&lt;&nbsp;0.002, the resolution floor at 500 permutations).
+      It replicates in both embedding spaces. The labs have detectable house styles.</p>
+    <p>But the effect is <b>small in absolute terms</b>, and the study's most quotable
+      sub-result survives intact: told explicitly to produce an opinion
+      <em>no other AI would give</em>, the models moved
+      <span class="mono" id="v-h5"></span> apart. They cannot diverge on command.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section>
+  <div class="shead">
+    <span class="role">The number</span>
+    <h2 class="serif">Effective distinct opinions per model</h2>
+    <p>Hill number of order 1 — exp(Shannon entropy) over opinion clusters — on the core
+      battery (P1, P2, P6), <span class="mono" id="n-core"></span> claims per model.
+      Read it as: <em>this model behaves as though it holds about this many distinct
+      contrarian opinions.</em> Computed independently in both embedding spaces.</p>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:var(--accent)"></span>Closed embeddings <span class="mono" id="lg-closed"></span></span>
+    <span><span class="swatch" style="background:var(--counter)"></span>Open-weights embeddings <span class="mono" id="lg-open"></span></span>
+  </div>
+  <figure class="panel"><div id="c-hill"></div></figure>
+  <figcaption>Model ranking is stable across embedding spaces (Spearman
+    &rho;&nbsp;=&nbsp;<span class="mono" id="f-rho"></span>), so the ordering is a property of the
+    models rather than of one embedding model. Absolute values are sample-size dependent and
+    would rise with the full study's n=500; only the comparison between models at equal n is meaningful.</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The test</span>
+    <h2 class="serif">Permutation null — are the models separable at all?</h2>
+    <p>This is the load-bearing test, and the reason raw divergence numbers cannot be read
+      directly at pilot scale. With ~55 claims per model spread across a few hundred clusters,
+      two <em>identical</em> generators would still produce near-disjoint distributions. So each
+      statistic is compared against its own distribution under shuffled model labels — the
+      literal &ldquo;one generator&rdquo; hypothesis.</p>
+  </div>
+  <div id="c-perm" class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))"></div>
+  <figcaption>Grey band is the 95% interval of the null across 500 label shuffles; the marker is
+    the observed value. Both statistics land far outside their nulls in both embedding spaces —
+    the models are separable. Note the direction: observed JSD sits <em>above</em> the null, meaning
+    models are more mutually divergent than a shared generator would produce, not less.</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The heatmap</span>
+    <h2 class="serif">Pairwise divergence between opinion distributions</h2>
+    <p>Jensen&ndash;Shannon divergence between each pair of models' cluster distributions,
+      closed embedding space. The thesis predicted these would be uniformly low.</p>
+  </div>
+  <figure class="panel"><div id="c-heat"></div></figure>
+  <figcaption>Every pair sits near the top of the range, but that is substantially a
+    small-sample effect — see the permutation panel above, where the null itself sits at
+    <span class="mono" id="f-nulljsd"></span>. The informative quantity is the
+    <em>gap</em> between observed and null, not the absolute value. Cells are symmetric; the
+    diagonal is undefined and left blank.
+    <br><br><strong>Correction.</strong> An earlier version of this caption said the lightest cell
+    was GPT-5.6 Sol &harr; GPT-5.6 Luna and read that as same-lab house style showing up directly.
+    It is the second-lightest of 36 pairs (0.683); the lightest is Gemini 3.1 Pro &harr; GLM-5.2
+    (0.673), which spans two different labs. Same-lab similarity is suggestive here, not
+    demonstrated, and the companion audit page retires this grid in favour of a comparison that
+    survives the small sample.</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The curves</span>
+    <h2 class="serif">Rarefaction — new opinions discovered per sample drawn</h2>
+    <p>Expected number of distinct opinion clusters after drawing <em>m</em> samples
+      (exact Hurlbert expectation, so no simulation noise). A curve that flattens has
+      exhausted the model's repertoire; a curve still climbing at the right edge has not
+      been sampled deeply enough to find its ceiling.</p>
+  </div>
+  <div id="c-rare" class="smallmults"></div>
+  <figcaption><strong>None of these curves has saturated.</strong> Every model is still
+    discovering new opinions at n=55, so the pilot cannot state a repertoire ceiling — the
+    headline &ldquo;saturates at ~14 distinct opinions&rdquo; claim needs the full study's n=500.
+    Grey reference line is the nine-model mean.</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The table</span>
+    <h2 class="serif">Largest shared opinion clusters</h2>
+    <p>The most-populated clusters across the core battery, with the share of each model's
+      claims that landed in them. Exemplar is the claim closest to the cluster centroid.</p>
+  </div>
+  <div class="panel scroll"><div id="c-table"></div></div>
+  <figcaption>The pattern that sinks the thesis is visible directly: the four largest clusters
+    include several that are <em>almost entirely one model</em> — signatures, not consensus.
+    Where clusters are genuinely shared, they cluster around a recognisable family of themes
+    (post-hoc rationalisation, productivity, information overload).</figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Robustness</span>
+    <h2 class="serif">Does the result survive the choices we made?</h2>
+    <p>Two places this study could have fooled itself: the clustering algorithm and
+      the embedding model. (A temperature sweep was run and then dropped — the effect was
+      small, monotonic and not separable from noise at this sample size.)</p>
+  </div>
+  <div class="grid" style="grid-template-columns:minmax(0,1fr)">
+    <figure class="panel">
+      <h3 style="margin-bottom:14px">Prompt paraphrase</h3>
+      <div id="c-para"></div>
+      <figcaption style="margin-top:9px">Rarefied to n=86. P3 and P4 collapse diversity by
+        roughly 70% relative to P1 — <em>how you ask</em> moves the answer far more than
+        <em>which model</em> you ask.</figcaption>
+    </figure>
+  </div>
+  <div class="grid tiles" style="margin-top:16px" id="c-robust"></div>
+  <p class="note">Clustering method changes the absolute Hill number by up to ~30% but not the
+    ordering or the sign of any conclusion. The primary method — agglomerative at a cosine
+    threshold <em>calibrated against LLM-judge pairwise adjudication</em> rather than chosen by
+    hand — is the one with an external referent for its single free parameter.</p>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Pre-registered hypotheses</span>
+    <h2 class="serif">What the pilot can and cannot say</h2>
+  </div>
+  <div class="hyp" id="c-hyp"></div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Quality control</span>
+    <h2 class="serif">Validation and instrument health</h2>
+    <p>Every number above depends on the judge extracting faithful claims and on the
+      generators actually answering the question. Both were measured.</p>
+  </div>
+  <div class="grid tiles" id="c-qa"></div>
+  <div class="panel scroll" style="margin-top:16px"><div id="c-health"></div></div>
+  <p class="note" id="n-refusal"></p>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Blocked</span>
+    <h2 class="serif">What I need from you to go further</h2>
+    <p>Three parts of the design could not run in this environment. Nothing else is blocking.</p>
+  </div>
+  <div class="asks" id="c-asks"></div>
+</section>
+
+<section style="border-bottom:none">
+  <div class="shead">
+    <span class="role">Method</span>
+    <h2 class="serif">How the pilot was run</h2>
+  </div>
+  <div class="col" style="display:flex;flex-direction:column;gap:16px">
+    <p>Nine models, one flagship per lab plus a within-lab scale contrast, all reached through
+      a single OpenRouter key so that wire format and sampling parameters are identical across
+      labs. Fresh context per call, no system prompt beyond the shared format line, top_p 0.95.</p>
+    <p><strong>One deliberate deviation from the design.</strong> The design specified
+      max_tokens 200&ndash;500. Every current flagship is a reasoning model that draws
+      chain-of-thought from the same budget: measured at 500, Claude and Gemini truncated
+      mid-sentence and Kimi and GLM returned <em>no answer at all</em>, only raw reasoning.
+      Disabling reasoning would have been the cleaner match to intent, but Gemini and Grok
+      reject it outright and Qwen returns an empty completion — a setting available on 7 of 9
+      models would confound lab with sampling regime. <span class="mono">reasoning.effort=low</span>
+      at a 1200-token ceiling is the one configuration all nine accept. 32 rows that still
+      truncated were re-drawn at a raised cap and flagged in the dataset rather than dropped,
+      since truncation correlates with longer reasoning and dropping them would have biased
+      the result toward the thesis.</p>
+    <p>Answers were reduced to one canonical claim sentence by a judge model under a fixed
+      rubric, with refusals and hedges coded rather than discarded. Claims were embedded in two
+      independent spaces, then clustered <em>once over the pooled set</em> so cluster labels are
+      shared and cross-model divergence is defined. The &ldquo;same opinion&rdquo; cosine threshold
+      was fitted to 292 LLM-adjudicated claim pairs, stratified across the similarity range.</p>
+    <p>The full pipeline, the complete generation dataset, and every intermediate artifact are
+      committed alongside this page.</p>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div><a href="index.html">Companion report &rarr; is any of it actually contrarian?</a></div>
+  <div><a href="__REPO_URL__">Code, data and every raw generation on GitHub</a> &middot;
+    <a href="__REPO_URL__/blob/main/data/qa_pairs.csv">all 855 questions and answers (CSV)</a></div>
+  <div>Pilot run <span class="mono" id="f-date"></span> &middot; scaling to the full design is
+    editing sample sizes in <span class="mono">config.py</span> and re-running.</div>
+</footer>
+</div>
+
+<script id="payload" type="application/json">__PAYLOAD__</script>
+<script>
+const D = JSON.parse(document.getElementById('payload').textContent);
+const CL = D.closed, OP = D.open;
+const tip = document.getElementById('tip');
+const NS = 'http://www.w3.org/2000/svg';
+
+function el(t, a={}, kids=[]){
+  const n = document.createElementNS(NS, t);
+  for(const k in a) n.setAttribute(k, a[k]);
+  kids.forEach(c=>n.appendChild(c));
+  return n;
+}
+function txt(t, a={}, s=''){ const n = el(t,a); n.textContent = s; return n; }
+function hover(node, html){
+  node.style.cursor='default';
+  node.addEventListener('mousemove', e=>{
+    tip.innerHTML = html; tip.style.opacity=1;
+    const r = tip.getBoundingClientRect();
+    let x = e.clientX+14, y = e.clientY-10;
+    if(x+r.width>innerWidth-8) x = e.clientX-r.width-14;
+    if(y+r.height>innerHeight-8) y = innerHeight-r.height-8;
+    tip.style.left=x+'px'; tip.style.top=Math.max(8,y)+'px';
+  });
+  node.addEventListener('mouseleave', ()=>{ tip.style.opacity=0; });
+}
+const fmt = (v,d=2)=> v==null ? '—' : (+v).toFixed(d);
+
+/* ---------- run bar ---------- */
+document.getElementById('m-gens').textContent  = D.meta.n_generations.toLocaleString();
+document.getElementById('m-models').textContent= CL.models.length;
+document.getElementById('m-conds').textContent = D.conditions.length;
+document.getElementById('m-cost').textContent  = '$'+D.meta.total_cost_usd.toFixed(2);
+document.getElementById('n-core').textContent  = CL.models[0].n_claims;
+document.getElementById('lg-closed').textContent = D.meta.embed_closed;
+document.getElementById('lg-open').textContent   = D.meta.embed_open;
+document.getElementById('f-rho').textContent   = fmt(D.replication.spearman_rho_model_ranking,3);
+document.getElementById('f-nulljsd').textContent = fmt(CL.permutation.jsd.null_mean,3);
+document.getElementById('f-date').textContent  = D.run_date || '2026-08-17';
+
+const g = CL.permutation.within_minus_between_gap;
+document.getElementById('v-gap').textContent  = fmt(g.observed,4);
+document.getElementById('v-null').textContent = fmt(g.null_mean,4)+' ± '+fmt(g.null_sd,4);
+document.getElementById('v-z').textContent    = 'z = +'+fmt(g.z,1);
+document.getElementById('v-h5').textContent   = fmt(CL.h5.pct_reduction,1)+'% closer';
+
+/* ---------- 1. Hill grouped bars ---------- */
+(function(){
+  const rows = CL.models.map(m=>({
+    label:m.label, lab:m.lab, country:m.country,
+    closed:m.hill_q1_effective_opinions,
+    open:(OP.models.find(o=>o.id===m.id)||{}).hill_q1_effective_opinions,
+    mode:m.top5_mode_share, nd:m.n_distinct_clusters
+  })).sort((a,b)=>b.closed-a.closed);
+
+  const W=920, padL=168, padR=58, padT=26, rowH=46, H=padT+rows.length*rowH+34;
+  const max = Math.max(...rows.flatMap(r=>[r.closed,r.open]))*1.1;
+  const x = v => padL + (v/max)*(W-padL-padR);
+  const svg = el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Effective distinct opinions per model'});
+
+  for(let t=0;t<=max;t+=10){
+    svg.appendChild(el('line',{x1:x(t),x2:x(t),y1:padT-6,y2:padT+rows.length*rowH,class:'gridline'}));
+    svg.appendChild(txt('text',{x:x(t),y:padT+rows.length*rowH+18,class:'tick','text-anchor':'middle'},String(t)));
+  }
+  rows.forEach((r,i)=>{
+    const y = padT + i*rowH;
+    svg.appendChild(txt('text',{x:padL-12,y:y+17,class:'slab','text-anchor':'end','font-weight':'600'},r.label));
+    svg.appendChild(txt('text',{x:padL-12,y:y+31,class:'tick','text-anchor':'end'},r.lab+' · '+r.country));
+    [['closed','var(--accent)',0],['open','var(--counter)',15]].forEach(([k,c,dy])=>{
+      const v=r[k]; if(v==null) return;
+      const bw=Math.max(x(v)-padL,2);
+      const bar=el('rect',{x:padL,y:y+4+dy,width:bw,height:11,rx:4,fill:c});
+      hover(bar,`<b>${r.label}</b><br>${k==='closed'?'Closed':'Open'} embeddings<br>Effective opinions: <b>${fmt(v,1)}</b><br>Distinct clusters: ${r.nd}<br>Top-5 mode share: ${(r.mode*100).toFixed(0)}%`);
+      svg.appendChild(bar);
+      if(k==='closed') svg.appendChild(txt('text',{x:x(v)+7,y:y+14,class:'vlab'},fmt(v,1)));
+    });
+  });
+  svg.appendChild(el('line',{x1:padL,x2:padL,y1:padT-6,y2:padT+rows.length*rowH,class:'axis'}));
+  document.getElementById('c-hill').appendChild(svg);
+})();
+
+/* ---------- 2. Permutation panels ---------- */
+(function(){
+  const host=document.getElementById('c-perm');
+  const defs=[
+    ['jsd','Mean pairwise JSD','Divergence between models\' opinion distributions'],
+    ['within_minus_between_gap','Within − between similarity gap','How much more self-similar a model is than cross-similar']
+  ];
+  defs.forEach(([key,title,desc])=>{
+    const card=document.createElement('figure'); card.className='panel';
+    card.innerHTML=`<h3>${title}</h3><p style="font-size:.82rem;color:var(--ink-3);margin:5px 0 14px">${desc}</p>`;
+    const W=430,H=146,padL=16,padR=16;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':title});
+    [['closed',36,'var(--accent)'],['open',104,'var(--counter)']].forEach(([sp,cy,col])=>{
+      const p=(sp==='closed'?CL:OP).permutation[key];
+      const lo=Math.min(p.null_ci95[0],p.observed), hi=Math.max(p.null_ci95[1],p.observed);
+      const span=(hi-lo)||1, s=lo-span*0.22, e=hi+span*0.22;
+      const X=v=>padL+((v-s)/(e-s))*(W-padL-padR);
+      svg.appendChild(txt('text',{x:padL,y:cy-20,class:'tick','font-weight':'600'},sp==='closed'?'Closed embeddings':'Open embeddings'));
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:cy,y2:cy,class:'axis'}));
+      const band=el('rect',{x:X(p.null_ci95[0]),y:cy-9,width:Math.max(X(p.null_ci95[1])-X(p.null_ci95[0]),2.5),height:18,rx:2,fill:'var(--line-strong)',opacity:.55});
+      hover(band,`<b>Null 95% interval</b><br>${fmt(p.null_ci95[0],4)} to ${fmt(p.null_ci95[1],4)}<br>mean ${fmt(p.null_mean,4)} ± ${fmt(p.null_sd,4)}<br>500 label shuffles`);
+      svg.appendChild(band);
+      svg.appendChild(txt('text',{x:X(p.null_mean),y:cy+21,class:'tick','text-anchor':'middle'},'null'));
+      const dot=el('circle',{cx:X(p.observed),cy:cy,r:6,fill:col,stroke:'var(--panel)','stroke-width':2});
+      hover(dot,`<b>Observed ${fmt(p.observed,4)}</b><br>null ${fmt(p.null_mean,4)} ± ${fmt(p.null_sd,4)}<br><b>z = +${fmt(p.z,1)}</b>`);
+      svg.appendChild(dot);
+      svg.appendChild(txt('text',{x:X(p.observed),y:cy-14,class:'vlab','text-anchor':'middle'},fmt(p.observed,3)));
+      svg.appendChild(txt('text',{x:W-padR,y:cy+21,class:'tick','text-anchor':'end'},'z = +'+fmt(p.z,1)));
+    });
+    card.appendChild(svg); host.appendChild(card);
+  });
+})();
+
+/* ---------- 3. Heatmap ---------- */
+(function(){
+  const ms=CL.models, n=ms.length, M=CL.jsd_matrix;
+  const vals=M.flatMap((r,i)=>r.filter((_,j)=>i!==j));
+  const lo=Math.min(...vals), hi=Math.max(...vals);
+  const steps=['--seq-1','--seq-2','--seq-3','--seq-4','--seq-5','--seq-6','--seq-7'];
+  const col=v=>`var(${steps[Math.min(steps.length-1,Math.floor(((v-lo)/((hi-lo)||1))*steps.length))]})`;
+  const cell=34, padL=150, padT=104, W=padL+n*cell+16, H=padT+n*cell+64;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Pairwise JSD heatmap'});
+  ms.forEach((m,i)=>{
+    svg.appendChild(txt('text',{x:padL-9,y:padT+i*cell+cell/2+4,class:'slab','text-anchor':'end'},m.label));
+    const g=el('g',{transform:`translate(${padL+i*cell+cell/2},${padT-9}) rotate(-52)`});
+    g.appendChild(txt('text',{x:0,y:0,class:'slab'},m.label)); svg.appendChild(g);
+  });
+  for(let i=0;i<n;i++) for(let j=0;j<n;j++){
+    const x=padL+j*cell, y=padT+i*cell;
+    if(i===j){ svg.appendChild(el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,fill:'var(--panel-2)'})); continue; }
+    const v=M[i][j];
+    const r=el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,fill:col(v),stroke:'var(--panel)','stroke-width':2});
+    hover(r,`<b>${ms[i].label} ↔ ${ms[j].label}</b><br>JSD = <b>${fmt(v,3)}</b><br>null mean ${fmt(CL.permutation.jsd.null_mean,3)}`);
+    svg.appendChild(r);
+  }
+  const bw=210, bx=padL, by=padT+n*cell+34;
+  steps.forEach((s,k)=>svg.appendChild(el('rect',{x:bx+k*(bw/steps.length),y:by,width:bw/steps.length,height:9,fill:`var(${s})`})));
+  svg.appendChild(txt('text',{x:bx,y:by+23,class:'tick'},fmt(lo,3)));
+  svg.appendChild(txt('text',{x:bx+bw,y:by+23,class:'tick','text-anchor':'end'},fmt(hi,3)));
+  svg.appendChild(txt('text',{x:bx,y:by-7,class:'tick'},'Jensen–Shannon divergence'));
+  document.getElementById('c-heat').appendChild(svg);
+})();
+
+/* ---------- 4. Rarefaction small multiples ---------- */
+(function(){
+  const host=document.getElementById('c-rare');
+  const ms=CL.models;
+  const maxX=Math.max(...ms.map(m=>m.rarefaction.x.length));
+  const maxY=Math.max(...ms.flatMap(m=>m.rarefaction.y));
+  const mean=[]; for(let i=0;i<maxX;i++){
+    const v=ms.map(m=>m.rarefaction.y[i]).filter(x=>x!=null);
+    mean.push(v.reduce((a,b)=>a+b,0)/v.length);
+  }
+  ms.slice().sort((a,b)=>b.hill_q1_effective_opinions-a.hill_q1_effective_opinions).forEach(m=>{
+    const d=document.createElement('div'); d.className='sm';
+    d.innerHTML=`<div class="lab">${m.label}</div><div class="met mono">${fmt(m.hill_q1_effective_opinions,1)} effective · ${m.n_distinct_clusters} distinct</div>`;
+    const W=240,H=124,padL=28,padB=22,padT=8,padR=8;
+    const X=i=>padL+(i/(maxX-1))*(W-padL-padR);
+    const Y=v=>H-padB-(v/maxY)*(H-padB-padT);
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Rarefaction '+m.label});
+    [0,Math.round(maxY/2),Math.round(maxY)].forEach(t=>{
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:Y(t),y2:Y(t),class:'gridline'}));
+      svg.appendChild(txt('text',{x:padL-6,y:Y(t)+3.5,class:'tick','text-anchor':'end'},String(t)));
+    });
+    svg.appendChild(el('path',{d:mean.map((v,i)=>(i?'L':'M')+X(i)+' '+Y(v)).join(' '),
+      fill:'none',stroke:'var(--line-strong)','stroke-width':1.5,'stroke-dasharray':'3 3'}));
+    svg.appendChild(el('path',{d:m.rarefaction.y.map((v,i)=>(i?'L':'M')+X(i)+' '+Y(v)).join(' '),
+      fill:'none',stroke:'var(--accent)','stroke-width':2,'stroke-linejoin':'round'}));
+    const last=m.rarefaction.y.length-1;
+    svg.appendChild(el('circle',{cx:X(last),cy:Y(m.rarefaction.y[last]),r:3.4,fill:'var(--accent)',stroke:'var(--panel)','stroke-width':1.5}));
+    svg.appendChild(txt('text',{x:padL,y:H-6,class:'tick'},'0'));
+    svg.appendChild(txt('text',{x:W-padR,y:H-6,class:'tick','text-anchor':'end'},'n='+maxX));
+    const hit=el('rect',{x:0,y:0,width:W,height:H,fill:'transparent'});
+    hover(hit,`<b>${m.label}</b><br>At n=${m.rarefaction.x[last]}: <b>${fmt(m.rarefaction.y[last],1)}</b> distinct opinions<br>Curve still climbing — not saturated`);
+    svg.appendChild(hit);
+    d.appendChild(svg); host.appendChild(d);
+  });
+})();
+
+/* ---------- 5. Cluster table ---------- */
+(function(){
+  const ms=CL.models, t=document.createElement('table');
+  t.innerHTML='<thead><tr><th class="num">n</th><th>Topic</th><th>Exemplar claim</th>'
+    +'<th class="num">Labs</th>'+ms.map(m=>`<th class="num" title="${m.label}">${m.label.split(' ')[0]}</th>`).join('')+'</tr></thead>';
+  const tb=document.createElement('tbody');
+  CL.top_clusters.slice(0,10).forEach(c=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="num"><b>${c.size}</b></td><td style="white-space:nowrap">${c.topic_mode}</td>`
+      +`<td class="claim">${c.exemplar_claim}</td><td class="num">${c.n_models_present}/9</td>`
+      +ms.map(m=>{
+        const v=c.per_model_count[m.id]||0;
+        const pct=(c.per_model_pct[m.id]||0)*100;
+        const bg=v?`background:color-mix(in srgb,var(--accent) ${Math.min(78,12+pct*6)}%,transparent)`:'';
+        return `<td class="num" style="${bg}" title="${m.label}: ${v} claims (${pct.toFixed(1)}% of its core)">${v||''}</td>`;
+      }).join('');
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  document.getElementById('c-table').appendChild(t);
+})();
+
+/* ---------- 7. Paraphrase ---------- */
+(function(){
+  const keys=Object.keys(CL.paraphrase);
+  const desc={P1:'Thiel canonical',P2:'“most contrarian”',P3:'“experts say wrong”',P4:'“most would call crazy”',P5:'“no other AI”',P6:'economics',P7:'nutrition'};
+  const W=430,H=210,padL=44,padB=44,padT=16,padR=14;
+  const max=Math.max(...keys.map(k=>CL.paraphrase[k].hill_q1_at_matched_n))*1.15;
+  const bw=(W-padL-padR)/keys.length;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Paraphrase battery'});
+  [0,max/2,max].forEach(t=>{
+    svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:H-padB-(t/max)*(H-padB-padT),y2:H-padB-(t/max)*(H-padB-padT),class:'gridline'}));
+    svg.appendChild(txt('text',{x:padL-7,y:H-padB-(t/max)*(H-padB-padT)+3.5,class:'tick','text-anchor':'end'},t.toFixed(0)));
+  });
+  keys.forEach((k,i)=>{
+    const v=CL.paraphrase[k].hill_q1_at_matched_n;
+    const h=(v/max)*(H-padB-padT);
+    const x=padL+i*bw+bw*0.2, w=bw*0.6;
+    const r=el('rect',{x:x,y:H-padB-h,width:w,height:h,rx:4,fill:'var(--accent)'});
+    hover(r,`<b>${k}</b> — ${desc[k]||''}<br>Effective opinions: <b>${fmt(v,1)}</b><br>raw (n=${CL.paraphrase[k].n}): ${fmt(CL.paraphrase[k].hill_q1_raw,1)}<br>rarefied to n=${CL.paraphrase[k].matched_n}`);
+    svg.appendChild(r);
+    svg.appendChild(txt('text',{x:x+w/2,y:H-padB-h-7,class:'vlab','text-anchor':'middle'},fmt(v,1)));
+    svg.appendChild(txt('text',{x:x+w/2,y:H-padB+17,class:'slab','text-anchor':'middle','font-weight':'600'},k));
+    svg.appendChild(txt('text',{x:x+w/2,y:H-padB+30,class:'tick','text-anchor':'middle'},(desc[k]||'').slice(0,17)));
+  });
+  svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:H-padB,y2:H-padB,class:'axis'}));
+  document.getElementById('c-para').appendChild(svg);
+})();
+
+/* ---------- 8. Robustness tiles ---------- */
+(function(){
+  const host=document.getElementById('c-robust');
+  const meth=CL.robustness;
+  Object.keys(meth).forEach(k=>{
+    const d=document.createElement('div'); d.className='tile';
+    d.innerHTML=`<span class="k">${k}</span><span class="v mono">${fmt(meth[k].mean_hill_q1,1)}</span>`
+      +`<span class="n">mean effective opinions${k==='agglomerative'?' · <b>primary, calibrated</b>':''}</span>`;
+    host.appendChild(d);
+  });
+  const c=CL.cluster_info, d=document.createElement('div'); d.className='tile';
+  d.innerHTML=`<span class="k">Calibrated threshold</span><span class="v mono">${c.calibrated_threshold}</span>`
+    +`<span class="n">cosine, fitted to ${D.calibration.n_pairs} judged pairs · Youden J ${fmt(D.calibration.spaces.closed.youden_j,2)}</span>`;
+  host.appendChild(d);
+})();
+
+/* ---------- 9. Hypotheses ---------- */
+(function(){
+  const h5=CL.h5;
+  const items=[
+    ['no','Primary — “five labs, one generator”',
+     `Rejected. Within-model similarity exceeds between-model by ${fmt(CL.within_vs_between.gap,4)} against a null of ${fmt(CL.permutation.within_minus_between_gap.null_mean,4)} (z = +${fmt(CL.permutation.within_minus_between_gap.z,0)}). Replicates in both embedding spaces (z = +${fmt(OP.permutation.within_minus_between_gap.z,0)} open). Models have detectable house styles.`],
+    ['yes','H5 — an explicit instruction to diverge barely moves the models',
+     `Supported. Told to give an opinion “no other AI model would give”, between-model similarity fell just ${fmt(h5.pct_reduction,1)}% (${fmt(h5.p1_mean_between_model_similarity,3)} → ${fmt(h5.p6_mean_between_model_similarity,3)}), far inside the &lt;20% prediction. The strongest surviving result in the pilot.`],
+    ['na','H2 — models are closer to each other than to humans',
+     'Not testable. No human baseline exists in this run; nothing in the environment could supply one. The model-side half of the comparison is computed and ready — the pipeline accepts a human corpus as another “model”.'],
+    ['na','H3 — instruct models are less diverse than base models',
+     'Not testable. OpenRouter carries no true pre-instruct base checkpoints; every Qwen3 entry is instruct-tuned. This is the study’s stated scientific payload and needs a different serving path.'],
+  ];
+  const host=document.getElementById('c-hyp');
+  items.forEach(([st,h,d])=>{
+    const c=document.createElement('div'); c.className='hypcard';
+    c.innerHTML=`<span class="badge b-${st}">${st==='yes'?'Supported':st==='no'?'Rejected':'Not testable'}</span>`
+      +`<span class="body"><span class="h">${h}</span><span class="d">${d}</span></span>`;
+    host.appendChild(c);
+  });
+})();
+
+/* ---------- 10. QA tiles + health ---------- */
+(function(){
+  const v=D.validation, host=document.getElementById('c-qa');
+  const tiles=[
+    ['Judge outcome agreement',(v.outcome_agreement*100).toFixed(0)+'%',`two judges, ${v.n} items · ${v.judge_primary.split('/')[1]} vs ${v.judge_secondary.split('/')[1]}`,false],
+    ['Judge claim similarity',fmt(v.claim_similarity.mean_cosine,2),'mean cosine between the two judges’ extractions of the <b>same</b> answer — the noise floor for every similarity number on this page',true],
+    ['Threshold separation',fmt(D.calibration.spaces.closed.f1,2),`F1 of the calibrated cutoff against ${D.calibration.n_pairs} adjudicated pairs`,false],
+    ['Truncated generations','0','after two repair passes; 32 rows re-drawn at a raised cap and flagged',false],
+    ['Failed API calls','0','of '+D.meta.n_generations.toLocaleString(),false],
+    ['Cross-space rank stability','ρ '+fmt(D.replication.spearman_rho_model_ranking,2),'model ordering by diversity, closed vs open embeddings',false],
+  ];
+  tiles.forEach(([k,val,n,flag])=>{
+    const d=document.createElement('div'); d.className='tile'+(flag?' flag':'');
+    d.innerHTML=`<span class="k">${k}</span><span class="v mono">${val}</span><span class="n">${n}</span>`;
+    host.appendChild(d);
+  });
+
+  const t=document.createElement('table');
+  t.innerHTML='<thead><tr><th>Model</th><th class="num">Calls</th><th class="num">Claim %</th>'
+    +'<th class="num">Refusal %</th><th class="num">Mean tokens</th><th class="num">Latency</th><th class="num">Cost</th></tr></thead>';
+  const tb=document.createElement('tbody');
+  CL.models.forEach(m=>{
+    const h=D.generation_health[m.label]||{}, o=D.outcome_rates[m.label]||{};
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><b>${m.label}</b> <span style="color:var(--ink-3)">${m.lab}</span></td>`
+      +`<td class="num">${h.n_calls??'—'}</td><td class="num">${o.claim_rate!=null?(o.claim_rate*100).toFixed(1):'—'}</td>`
+      +`<td class="num">${o.refusal_rate!=null?(o.refusal_rate*100).toFixed(1):'—'}</td>`
+      +`<td class="num">${h.mean_completion_tokens??'—'}</td><td class="num">${h.mean_latency_s!=null?h.mean_latency_s.toFixed(1)+'s':'—'}</td>`
+      +`<td class="num">$${(h.total_cost_usd??0).toFixed(3)}</td>`;
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb); document.getElementById('c-health').appendChild(t);
+
+  const worst=Object.entries(D.outcome_rates).sort((a,b)=>b[1].refusal_rate-a[1].refusal_rate)[0];
+  document.getElementById('n-refusal').innerHTML =
+    `Refusals were coded as an outcome rather than dropped, since evasion is part of the phenomenon. `
+    +`They turned out to be near-absent: 7 of ${D.meta.n_generations.toLocaleString()} generations overall, `
+    +`highest for ${worst[0]} at ${(worst[1].refusal_rate*100).toFixed(1)}%. Not one model deflected the question at a rate worth reporting as a finding — `
+    +`which itself closes the “that’s just safety filtering” objection for this battery.`;
+})();
+
+/* ---------- 11. Asks ---------- */
+(function(){
+  const asks=[
+    ['Base-model access','H3 is the study’s scientific payload — if base models cluster too, homogeneity comes from the shared corpus; if instruct clusters tighter, post-training is concentrating the mode. Neither can be measured here.',
+     'OpenRouter carries no true pre-instruct checkpoints. I need either a Together.ai / Fireworks / Hyperbolic key (they serve Llama and Qwen base weights) <b>plus</b> that host added to the environment’s allowed domains, or a base model served through your own nrp / vLLM path.'],
+    ['A human baseline','H2 — “models are closer to each other than any is to people” — is the comparison that turns this from “models are repetitive” into a claim about people. The pipeline already accepts a human corpus as just another “model”.',
+     'I need a source and your call on ethics/ToS: an existing licensed dataset of free-text opinions, a Prolific/MTurk run against the same prompts, or permission plus an allowlist entry to collect from a public forum. I would not scrape anything without you choosing the source.'],
+    ['Two decisions in the brief','Minor, but they change what the full run costs.',
+     '<b>P7</b> is referenced in the sampling plan but never defined — I ran P1–P6 only. And <b>P5 lists eight domains but says “seven cells”</b>; I ran two (economics, nutrition) for the pilot. Tell me the intended P7 and the domain list and I will wire both in.'],
+  ];
+  const host=document.getElementById('c-asks');
+  asks.forEach(([t,d,n],i)=>{
+    const c=document.createElement('div'); c.className='ask';
+    c.innerHTML=`<span class="t"><span class="no mono">0${i+1}</span>${t}</span><span class="d">${d}</span><span class="need">${n}</span>`;
+    host.appendChild(c);
+  });
+})();
+</script>
