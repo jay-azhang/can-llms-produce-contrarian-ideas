@@ -1,0 +1,15 @@
+{
+  "n": 200,
+  "judge_primary": "google/gemini-3.7-flash",
+  "judge_secondary": "openai/gpt-5.6-luna",
+  "outcome_agreement": 1.0,
+  "cohens_kappa": 1.0,
+  "kappa_caveat": "outcome codes are ~99% 'claim', so kappa is unstable here; claim_similarity is the informative measure",
+  "claim_similarity": {
+    "n": 199,
+    "mean_cosine": 0.8206,
+    "median_cosine": 0.8334,
+    "pct_above_0.80": 0.6332,
+    "pct_above_0.90": 0.2412
+  }
+}

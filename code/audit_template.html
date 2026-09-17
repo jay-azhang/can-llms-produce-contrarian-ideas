@@ -1,0 +1,1060 @@
+<title>Contrarian or Retrieved</title>
+<style>
+:root{
+  color-scheme: light;
+  --ground:#fbfbfc; --panel:#ffffff; --panel-2:#f4f5f8; --line:#e2e4ea; --line-strong:#c9ccd6;
+  --ink:#10131a; --ink-2:#3d4354; --ink-3:#6b7186;
+  --accent:#2a78d6; --counter:#eb6834;
+  --pos:#1baf7a; --neg:#e34948; --warn:#eda100; --violet:#4a3aa7;
+  --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#6da7ec; --seq-4:#3987e5;
+  --seq-5:#256abf; --seq-6:#184f95; --seq-7:#0d366b;
+  --lab-1:#2a78d6; --lab-2:#eb6834; --lab-3:#1baf7a; --lab-4:#eda100;
+  --lab-5:#e87ba4; --lab-6:#008300; --lab-7:#4a3aa7; --lab-8:#e34948;
+  --shadow:0 1px 2px rgba(16,19,26,.05),0 4px 16px rgba(16,19,26,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#14161b; --panel:#1b1e25; --panel-2:#22262e; --line:#2c313b; --line-strong:#3d4350;
+    --ink:#f2f3f6; --ink-2:#b9bfcd; --ink-3:#868da0;
+    --accent:#3987e5; --counter:#d95926;
+    --pos:#199e70; --neg:#e66767; --warn:#c98500; --violet:#9085e9;
+    --seq-1:#0d366b; --seq-2:#184f95; --seq-3:#256abf; --seq-4:#3987e5;
+    --seq-5:#6da7ec; --seq-6:#9ec5f4; --seq-7:#cde2fb;
+    --lab-1:#3987e5; --lab-2:#d95926; --lab-3:#199e70; --lab-4:#c98500;
+    --lab-5:#d55181; --lab-6:#008300; --lab-7:#9085e9; --lab-8:#e66767;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#14161b; --panel:#1b1e25; --panel-2:#22262e; --line:#2c313b; --line-strong:#3d4350;
+  --ink:#f2f3f6; --ink-2:#b9bfcd; --ink-3:#868da0;
+  --accent:#3987e5; --counter:#d95926;
+  --pos:#199e70; --neg:#e66767; --warn:#c98500; --violet:#9085e9;
+  --seq-1:#0d366b; --seq-2:#184f95; --seq-3:#256abf; --seq-4:#3987e5;
+  --seq-5:#6da7ec; --seq-6:#9ec5f4; --seq-7:#cde2fb;
+  --lab-1:#3987e5; --lab-2:#d95926; --lab-3:#199e70; --lab-4:#c98500;
+  --lab-5:#d55181; --lab-6:#008300; --lab-7:#9085e9; --lab-8:#e66767;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.col{max-width:68ch}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.08;letter-spacing:-.022em;font-weight:600}
+h2{font-size:1.55rem;line-height:1.2;letter-spacing:-.012em;font-weight:600}
+h3{font-size:1.02rem;font-weight:650}
+p{margin:0}
+header{border-bottom:1px solid var(--line);background:var(--panel)}
+.masthead{display:flex;flex-direction:column;gap:20px;padding:52px 0 40px}
+.eyebrow{font-size:.685rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
+.sub{font-size:1.115rem;line-height:1.55;color:var(--ink-2);max-width:66ch}
+.runbar{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:.775rem;color:var(--ink-3);padding-top:4px}
+.runbar b{color:var(--ink-2);font-weight:600}
+.verdict{margin:38px 0 0;border:1px solid var(--line);border-left:3px solid var(--warn);
+  background:var(--panel);border-radius:3px;padding:24px 26px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:12px}
+.verdict .tag{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;
+  font-size:.7rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--warn)}
+.verdict .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--warn)}
+.verdict h2{font-size:1.32rem}
+.verdict p{color:var(--ink-2);font-size:.965rem;max-width:76ch}
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+.shead{display:flex;flex-direction:column;gap:11px;margin-bottom:30px}
+.shead .role{font-size:.685rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}
+.shead p{color:var(--ink-2);font-size:.95rem;max-width:72ch}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 18px;display:flex;flex-direction:column;gap:5px}
+.tile .k{font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.tile .v{font-size:1.85rem;font-weight:600;letter-spacing:-.02em;line-height:1.05}
+.tile .n{font-size:.775rem;color:var(--ink-3);line-height:1.42}
+.tile.big{border-left:3px solid var(--warn)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.845rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.665rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+  white-space:nowrap;border-bottom:1px solid var(--line-strong);background:var(--panel)}
+td.num,th.num{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+tbody tr:hover{background:var(--panel-2)}
+figcaption{font-size:.79rem;color:var(--ink-3);margin-top:11px;line-height:1.55;max-width:82ch}
+figure{margin:0}
+/* --- glossary --------------------------------------------------------- */
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:14px}
+.gi{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:15px 17px;
+  display:flex;flex-direction:column;gap:5px}
+.gi .t{font-weight:650;font-size:.9rem;display:flex;align-items:baseline;gap:8px}
+.gi .t .badge{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-3);border:1px solid var(--line-strong);border-radius:2px;padding:1px 5px}
+.gi .d{font-size:.845rem;color:var(--ink-2);line-height:1.5}
+.gi .e{font-size:.78rem;color:var(--ink-3);font-style:italic;line-height:1.45}
+/* --- tweet cards ------------------------------------------------------ */
+.tw{background:var(--panel);border:1px solid var(--line-strong);border-radius:6px;padding:30px 32px;
+  display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow)}
+.tw .kicker{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--counter)}
+.tw .big{font-size:clamp(1.35rem,2.4vw,1.9rem);line-height:1.18;font-weight:600;letter-spacing:-.017em}
+.tw .say{font-size:.93rem;color:var(--ink-2);line-height:1.5;max-width:62ch}
+.tw .src{font-size:.72rem;color:var(--ink-3);border-top:1px solid var(--line);padding-top:11px;
+  display:flex;flex-wrap:wrap;gap:5px 18px}
+.tw .quotes{display:flex;flex-direction:column;gap:7px;background:var(--panel-2);border-radius:4px;padding:15px 17px}
+.tw .quotes span{font-size:.85rem;line-height:1.45;color:var(--ink-2)}
+.tw .quotes .who{font-family:ui-monospace,Menlo,monospace;font-size:.73rem;color:var(--ink-3)}
+.twpick{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  background:color-mix(in srgb,var(--counter) 16%,transparent);color:var(--counter);padding:3px 8px;border-radius:2px}
+/* --- small multiples -------------------------------------------------- */
+.sm9{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:12px}
+.smc{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:12px 12px 8px}
+.smc .lab{font-size:.79rem;font-weight:650}
+.smc .met{font-size:.7rem;color:var(--ink-3);margin-bottom:5px}
+/* --- corpus ----------------------------------------------------------- */
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.controls input,.controls select{font:inherit;font-size:.83rem;padding:7px 10px;border:1px solid var(--line-strong);
+  border-radius:3px;background:var(--panel);color:var(--ink)}
+.controls input{min-width:220px;flex:1}
+.count{font-size:.8rem;color:var(--ink-3);margin-left:auto;white-space:nowrap}
+.pill{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;white-space:nowrap;cursor:help}
+.p-consensus{background:color-mix(in srgb,var(--neg) 16%,transparent);color:var(--neg)}
+.p-establishment_lean{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn)}
+.p-retrieved_heterodox{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+.p-genuine_heterodox{background:color-mix(in srgb,var(--pos) 16%,transparent);color:var(--pos)}
+tr.crow{cursor:pointer}
+tr.crow td:first-child::before{content:"▸";color:var(--ink-3);margin-right:8px;display:inline-block;
+  transition:transform .12s;font-size:.8em}
+tr.crow.open td:first-child::before{transform:rotate(90deg)}
+tr.detail>td{background:var(--panel-2);padding:0}
+.det{display:grid;gap:14px;padding:18px 22px 22px}
+.det .blk{display:flex;flex-direction:column;gap:5px}
+.det .bt{font-size:.66rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.det pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.79rem;line-height:1.55;background:var(--panel);border:1px solid var(--line);border-radius:3px;
+  padding:12px 14px;color:var(--ink-2);max-height:340px;overflow:auto}
+.det .meta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:.76rem;color:var(--ink-3)}
+.det .meta b{color:var(--ink-2)}
+.scorebar{display:flex;flex-wrap:wrap;gap:10px}
+.sb{border:1px solid var(--line);border-radius:3px;padding:8px 12px;background:var(--panel);min-width:120px;cursor:help}
+.sb .sk{font-size:.62rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.sb .sv{font-size:1.05rem;font-weight:650;font-family:ui-monospace,Menlo,monospace}
+.note{font-size:.8rem;color:var(--ink-3);line-height:1.55;margin-top:12px;max-width:82ch}
+.readnotes{display:grid;gap:16px}
+.rn{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--violet);
+  border-radius:3px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.rn .h{font-weight:650;font-size:1rem}
+.rn .d{font-size:.9rem;color:var(--ink-2)}
+.rn .q{font-size:.83rem;color:var(--ink-3);font-style:italic;border-left:2px solid var(--line-strong);
+  padding-left:12px;line-height:1.5;display:flex;flex-direction:column;gap:5px}
+.cats{display:grid;gap:12px}
+.cat{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 18px;display:grid;
+  grid-template-columns:150px 1fr;gap:16px;align-items:start}
+.cat .pc{font-size:1.5rem;font-weight:600;line-height:1;font-family:ui-monospace,Menlo,monospace}
+.cat .nm{font-weight:650;font-size:.87rem}
+.cat .d{font-size:.83rem;color:var(--ink-2);margin-bottom:8px}
+.cat .ex{font-size:.81rem;color:var(--ink-3);border-left:2px solid var(--line-strong);padding-left:11px;
+  line-height:1.5;display:flex;flex-direction:column;gap:4px}
+abbr[title]{text-decoration:underline dotted var(--line-strong);text-underline-offset:3px;cursor:help}
+#tip{position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;z-index:60;background:var(--ink);
+  color:var(--ground);font-size:.775rem;line-height:1.45;padding:8px 11px;border-radius:3px;max-width:330px;
+  box-shadow:0 4px 14px rgba(0,0,0,.25)}
+svg{display:block;max-width:100%;height:auto}
+.tick{fill:var(--ink-2);font-size:11px;font-family:ui-monospace,Menlo,monospace}
+.slab{fill:var(--ink-2);font-size:11.5px}
+.vlab{fill:var(--ink);font-size:11px;font-family:ui-monospace,Menlo,monospace;font-weight:600}
+.axis{stroke:var(--line-strong);stroke-width:1}
+.gridline{stroke:var(--line);stroke-width:1;stroke-dasharray:2 3}
+footer{padding:44px 0 60px;color:var(--ink-3);font-size:.815rem;display:flex;flex-direction:column;gap:7px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(max-width:640px){.cat{grid-template-columns:1fr}}
+</style>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<header>
+  <div class="wrap masthead">
+    <div class="eyebrow">Nof1 Research &middot; Consensus of Contrarians &middot; Companion audit</div>
+    <h1 class="serif">Contrarian or Retrieved?</h1>
+    <p class="sub">Nine frontier AI models were asked for their most heretical beliefs. This page
+      reads all <span class="mono" id="m-n"></span> answers and asks a simpler question than the
+      statistics did: <em>is any of this actually contrarian?</em></p>
+    <div class="runbar mono">
+      <span><b id="m-n2"></b> answers graded</span>
+      <span><b>3</b> grading models, 3 different labs</span>
+      <span><b id="m-scores"></b> independent scores</span>
+      <span><b>9</b> models &middot; <b>8</b> labs</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="verdict">
+    <span class="tag">Mostly familiar ideas in bold packaging</span>
+    <h2 class="serif">On <span id="v-rate"></span> of answers, specialists in the field already
+      agree with the &ldquo;contrarian&rdquo; claim.</h2>
+    <p>Asked for a truth &ldquo;very few people agree with&rdquo;, the typical answer is one that
+      <span class="mono" id="v-exp"></span> of specialists would accept and only
+      <span class="mono" id="v-pub"></span> of ordinary people would. That combination is the
+      whole story: ideas that startle a general audience and bore an expert. Nearly two thirds
+      trace back to a named thinker &mdash; Nisbett &amp; Wilson, Barry Schwartz, Peter Thiel.</p>
+    <p>Only <span class="mono" id="v-gen"></span> are both unfamiliar to specialists <em>and</em>
+      untraceable to a known source, and just <span class="mono" id="v-cost"></span> would cost
+      the speaker anything to say out loud.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section>
+  <div class="shead">
+    <span class="role">Start here</span>
+    <h2 class="serif">What the words on this page mean</h2>
+    <p>Every measurement below is one of these six things. They are also available on hover
+      anywhere they appear, but they are worth reading once up front.</p>
+  </div>
+  <div class="gloss" id="c-gloss"></div>
+  <p class="note"><strong>A note on the grading.</strong> These are not my categories imposed on
+    the data after the fact &mdash; well, the seven answer <em>types</em> further down are, and
+    they came from reading several hundred answers before writing any rubric. Everything else is
+    a direct question put to three grading models: <em>what share of specialists would agree
+    with this? who said it first? would it cost you to say it?</em> The full rubric they were
+    given is committed in the repository.</p>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The questions</span>
+    <h2 class="serif">What we actually asked</h2>
+    <p>We asked the same thing seven different ways, because how you word the question
+      turns out to matter more than which model you ask. Every chart and table below
+      refers to these by their short code. Each was sent on its own, with no
+      conversation before it, followed by one shared instruction:
+      <em>&ldquo;Answer in 2-3 sentences. State the belief plainly.&rdquo;</em></p>
+  </div>
+  <div class="panel scroll"><div id="c-prompts"></div></div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The one to post</span>
+    <h2 class="serif">If only one thing from two rounds of this survives, it is this</h2>
+    <p>Three candidates, written to stand alone with no prior context. The first is the one I
+      would actually post &mdash; it needs no chart, no jargon, and the joke is in the data
+      rather than in the framing.</p>
+  </div>
+  <div class="grid" style="gap:20px" id="c-tweets"></div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Model versus prompt</span>
+    <h2 class="serif">Is any model actually more original than the others?</h2>
+    <p>Share of each model's answers that are both unfamiliar to specialists and untraceable to a
+      known source, broken out by which question was asked. Reading only the row averages is
+      misleading, which is the point of showing the grid.</p>
+  </div>
+  <figure class="panel"><div id="c-heat"></div></figure>
+  <figcaption id="f-heat"></figcaption>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Round one, in plain English</span>
+    <h2 class="serif">The earlier charts, rewritten so they say something</h2>
+    <p>The first report leaned on jargon — Hill numbers, Jensen&ndash;Shannon divergence,
+      permutation nulls, rarefaction. Three of those measurements earn their keep. One did not,
+      and is retired below with the reason.</p>
+  </div>
+
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(400px,1fr))">
+    <figure class="panel">
+      <h3>How many genuinely different answers does each model have?</h3>
+      <p style="font-size:.85rem;color:var(--ink-2);margin:6px 0 16px">Each model was asked the
+        same three questions 55 times. If it said something new every time the bar would read 55;
+        if it had one opinion it would read 1. <span class="mono">(Previously labelled
+        &ldquo;exp(Shannon entropy) of the cluster distribution&rdquo;.)</span></p>
+      <div id="r1-distinct"></div>
+      <figcaption id="f-r1a"></figcaption>
+    </figure>
+
+    <figure class="panel">
+      <h3>Does a model run out of opinions if you keep asking?</h3>
+      <p style="font-size:.85rem;color:var(--ink-2);margin:6px 0 16px">Each line shows how many
+        distinct opinions had appeared after <em>n</em> questions. A line that flattens has
+        exhausted its repertoire. <span class="mono">(Previously: &ldquo;rarefaction
+        curves&rdquo;.)</span></p>
+      <div id="r1-rar"></div>
+      <figcaption id="f-r1b"></figcaption>
+    </figure>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <h3>Does each model have a recognisable house style?</h3>
+    <p style="font-size:.85rem;color:var(--ink-2);margin:6px 0 16px">Take two answers from the
+      same model and measure how alike they are. Then take two answers from different models. If
+      models had no house style the two numbers would be identical.
+      <span class="mono">(Previously: &ldquo;within- versus between-model cosine similarity
+      against a permutation null&rdquo;.)</span></p>
+    <div id="r1-house"></div>
+    <figcaption id="f-r1c"></figcaption>
+  </div>
+
+  <div class="panel" style="margin-top:16px;border-left:3px solid var(--neg)">
+    <h3>Retired: the model-versus-model divergence heatmap</h3>
+    <p style="font-size:.88rem;color:var(--ink-2);margin-top:8px" id="f-retired"></p>
+  </div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The grades</span>
+    <h2 class="serif">Four kinds of answer</h2>
+    <p>Every answer falls into exactly one of these, based on how many specialists agree and
+      whether it traces to a known thinker. Hover any bar for the definition.</p>
+  </div>
+  <div id="c-tiergroup">
+    <div id="c-tierbar" style="display:flex;height:46px;border-radius:3px;overflow:hidden;border:1px solid var(--line)"></div>
+    <div id="c-tierkey" style="display:flex;margin-top:9px"></div>
+  </div>
+  <div class="grid tiles" style="margin-top:24px" id="c-tiles"></div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Answer types</span>
+    <h2 class="serif">Seven ways to look contrarian</h2>
+    <p><strong>These seven are mine</strong> &mdash; the one place on this page where I imposed a
+      scheme rather than measuring something. They came from reading a few hundred answers first
+      and noticing the same shapes recurring; then the three graders assigned every answer to one.
+      The percentage in the margin is how much of the corpus took that shape.</p>
+  </div>
+  <div class="cats" id="c-cats"></div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">The reading list</span>
+    <h2 class="serif">Whose ideas are these?</h2>
+    <p>Where the graders judged an idea already famous, they named who said it first. This is the
+      corpus's bibliography, and the strongest single sign that models are recalling rather than
+      reasoning.</p>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
+    <figure class="panel"><h3 style="margin-bottom:16px">Most-cited thinkers</h3><div id="c-sources"></div></figure>
+    <div class="panel">
+      <h3 style="margin-bottom:12px">The Thiel loop</h3>
+      <p style="font-size:.9rem;color:var(--ink-2);margin-bottom:13px">The main question we asked
+        &mdash; <em>&ldquo;What important truth do very few people agree with you on?&rdquo;</em>
+        &mdash; is Peter Thiel's signature interview question. The graders traced
+        <b><span id="thiel-n"></span> answers</b> (<span id="thiel-pct"></span> of everything)
+        back to Thiel himself.</p>
+      <div class="rn" style="border-left-color:var(--counter);box-shadow:none;padding:15px 17px">
+        <span class="q" id="c-thiel" style="border-left-color:var(--counter)"></span>
+      </div>
+      <p class="note">Not only the monopoly argument from <em>Zero to One</em> &mdash; also his
+        technological-stagnation thesis, and the one that makes the point on its own: that
+        contrarian thinking is what produces success. Asked for a contrarian belief, the model
+        replies that being contrarian works.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Read the corpus</span>
+    <h2 class="serif">All <span id="m-n3"></span> answers</h2>
+    <p>Click any row to open the exact prompt that was sent, the model's raw untouched output,
+      and the one-sentence version the graders actually scored. Hover any column heading or score
+      for what it means.</p>
+  </div>
+  <div class="panel">
+    <div class="controls">
+      <input id="q" type="search" placeholder="Search answers and sources…" aria-label="Search">
+      <select id="f-model" aria-label="Filter by model"></select>
+      <select id="f-cond" aria-label="Filter by prompt"></select>
+      <select id="f-tier" aria-label="Filter by grade"></select>
+      <select id="f-cat" aria-label="Filter by answer type"></select>
+      <select id="f-sort" aria-label="Sort">
+        <option value="expert_asc">Least expert agreement first</option>
+        <option value="expert_desc">Most expert agreement first</option>
+        <option value="gap_desc">Biggest public-vs-expert gap</option>
+        <option value="orig_desc">Most original first</option>
+        <option value="cost_desc">Most costly to say first</option>
+      </select>
+      <span class="count" id="c-count"></span>
+    </div>
+    <div class="scroll" style="max-height:700px;overflow-y:auto"><div id="c-corpus"></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Reading notes</span>
+    <h2 class="serif">What the numbers don't show</h2>
+    <p>Patterns visible only from reading the answers directly.</p>
+  </div>
+  <div class="readnotes" id="c-notes"></div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="role">Method &amp; limits</span>
+    <h2 class="serif">How the grading works, and where it is soft</h2>
+  </div>
+  <div class="col" style="display:flex;flex-direction:column;gap:16px">
+    <p>Three models from three labs (Gemini 3.7 Flash, GPT-5.6 Luna, DeepSeek V4 Pro) graded every
+      answer independently at temperature 0 under one fixed rubric. Scores combine by
+      <em>median</em>, so no single lab can move an answer's grade, and &ldquo;traceable to a
+      named thinker&rdquo; needs two of the three to agree. Only answers graded by all three count.</p>
+    <p><strong>The soft spot.</strong> &ldquo;Specialists who would agree&rdquo; is the graders'
+      estimate, not a survey of actual specialists. It inherits whatever these models believe
+      about expert opinion, which makes the absolute percentages softer than they look. What it
+      does support is the comparison: the same graders, the same rubric, applied to every answer,
+      so the ranking between prompts and between models is meaningful even where the absolute
+      level is not.</p>
+    <p id="p-judges"></p>
+    <p><strong>One grader needed repairing.</strong> DeepSeek spent its whole token budget
+      thinking and cut off its answer on 18% of claims &mdash; a failure concentrated in one
+      grader, which would have quietly thinned the panel on whichever claims it found hardest.
+      Those were re-graded with a larger budget rather than dropped.</p>
+  </div>
+</section>
+</div>
+
+<footer class="wrap">
+  <div><a href="diversity.html">Companion report &rarr; do the models repeat each other?</a></div>
+  <div><a href="__REPO_URL__">Code, data and every raw grader verdict on GitHub</a> &middot;
+    <a href="__REPO_URL__/blob/main/data/qa_pairs.csv">all 1,305 questions and answers (CSV)</a> &middot;
+    <a href="__REPO_URL__/blob/main/DATA_DICTIONARY.md">data dictionary</a></div>
+  <div>Every figure on this page is computed from the committed data. Recomputing the
+    per-answer medians from <span class="mono">judge_scores.csv</span> reproduces the headline
+    exactly.</div>
+</footer>
+
+<script id="payload" type="application/json">__PAYLOAD__</script>
+<script>
+const A=JSON.parse(document.getElementById('payload').textContent);
+const tip=document.getElementById('tip');
+const NS='http://www.w3.org/2000/svg';
+
+/* Plain-English names for everything. The keys are the internal labels; nothing
+   with an internal label is ever shown to a reader without one of these. */
+const TIER={
+  consensus:{label:'Specialists agree',color:'var(--neg)',
+    def:'70% or more of specialists in the field would accept this. Not a contrarian belief by any reading.'},
+  establishment_lean:{label:'Leans mainstream',color:'var(--warn)',
+    def:'50–69% of specialists would agree — the respectable side of a live argument, not a heresy.'},
+  retrieved_heterodox:{label:'Famous heresy',color:'var(--accent)',
+    def:'Fewer than half of specialists agree, but it is a well-known position with a named originator. Contrarian in content, recalled rather than invented.'},
+  genuine_heterodox:{label:'Actually unusual',color:'var(--pos)',
+    def:'Fewer than half of specialists agree AND no grader could attribute it to a known thinker. The closest thing here to a real contrarian belief.'}
+};
+const CAT={
+  academic_canon:{label:'Textbook position',
+    def:'A standard or well-known view inside academia — the sort of thing taught in a course. Hard determinism, panpsychism, the block universe, reasoning-as-rationalisation.'},
+  selfhelp_inversion:{label:'Self-help inversion',
+    def:'A safe reversal of popular advice: do less, keep fewer options, boredom is good, passion is overrated.'},
+  tech_ingroup:{label:'Tech-world consensus',
+    def:'Standard opinion inside tech, rationalist and effective-altruism circles even where it is novel to everyone else — the simulation argument, AI risk framings, nuclear power is underrated.'},
+  novel_proposal:{label:'Made-up proposal',
+    def:'A specific constructed suggestion that traces to no known source — genuinely invented for the occasion.'},
+  institutional_critique:{label:'Institutions are broken',
+    def:'Organisations, media or academia serve themselves rather than their stated purpose. Contrarian in posture, near-universally agreed in substance.'},
+  unfalsifiable_reframe:{label:'Vague reframe',
+    def:'A repositioning with no testable content — "people misunderstand X", "we focus on the wrong thing". No evidence could show it wrong.'},
+  taboo_empirical:{label:'Socially costly claim',
+    def:'A factual claim that carries real reputational risk to state — heritability of traits, group differences, sex and gender essentialism.'}
+};
+const METRIC={
+  expert:{label:'Specialists who would agree',
+    def:'The graders’ estimate of what share of specialists in the relevant field would broadly accept the claim. High numbers here mean the "contrarian" idea is ordinary among people who study it.'},
+  public:{label:'Ordinary people who would agree',
+    def:'The graders’ estimate of what share of the general public would accept the claim.'},
+  tier:{label:'Grade',
+    def:'Which of the four kinds of answer this is, from how many specialists agree plus whether it traces to a named thinker.'},
+  category:{label:'Answer type',
+    def:'Which of seven recurring shapes the answer takes. This is the one scheme on the page that I imposed rather than measured — derived from reading several hundred answers before writing the rubric.'},
+  cost:{label:'Cost to say it out loud',
+    def:'What stating this publicly, under their own name, would cost a person \u2014 graded 0-100. This is taboo, not unpopularity: an eccentric claim nobody shares can still be completely safe to say. 0 = safe or fashionable. 50 = awkward in some professional rooms. 90+ = firing, shunning, de-platforming.'},
+  originality:{label:'Originality',
+    def:'How new the idea is, graded 0-100, independently of whether anyone agrees with it. A widely known falsehood is not original. 0-10 = a named, famous position. 50 = a familiar combination of familiar ideas. 90+ = no prior statement of it can be found.'},
+  source:{label:'Traced to',
+    def:'Who the graders think said it first, where they judged the idea already famous. Blank means no grader could attribute it.'},
+  notcontrarian:{label:'Not actually contrarian',
+    def:'The share of answers where at least half of specialists already agree. The model was asked for a belief few people hold and returned one the field accepts.'}
+};
+const COST=['none','mild','high'];
+
+/* One hue per lab, from the validated 8-slot categorical palette. Nine models
+   across eight labs, so the two OpenAI entries share a hue and are separated by
+   marker instead: filled for the flagship, hollow for the cost tier. Generating
+   a ninth hue would put two indistinguishable colours on a chart with hundreds
+   of overlapping points. */
+const LAB_ORDER = ['OpenAI','Anthropic','Google','xAI','DeepSeek','Qwen','Moonshot','Z-AI'];
+const MODEL_STYLE = {
+  'openai/gpt-5.6-sol':            {lab:'OpenAI',    hollow:false},
+  'openai/gpt-5.6-luna':           {lab:'OpenAI',    hollow:true},
+  'anthropic/claude-opus-5':       {lab:'Anthropic', hollow:false},
+  'google/gemini-3.1-pro-preview': {lab:'Google',    hollow:false},
+  'x-ai/grok-4.6':                 {lab:'xAI',       hollow:false},
+  'deepseek/deepseek-v4-pro':      {lab:'DeepSeek',  hollow:false},
+  'qwen/qwen3-235b-a22b-2507':     {lab:'Qwen',      hollow:false},
+  'moonshotai/kimi-k3':            {lab:'Moonshot',  hollow:false},
+  'z-ai/glm-5.2':                  {lab:'Z-AI',      hollow:false},
+};
+const modelColor = m => `var(--lab-${LAB_ORDER.indexOf((MODEL_STYLE[m]||{}).lab) + 1})`;
+const modelHollow = m => !!(MODEL_STYLE[m]||{}).hollow;
+
+const short=m=>m.split('/')[1]||m;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function el(t,a={},k=[]){const n=document.createElementNS(NS,t);for(const x in a)n.setAttribute(x,a[x]);k.forEach(c=>n.appendChild(c));return n;}
+function txt(t,a={},s=''){const n=el(t,a);n.textContent=s;return n;}
+function hover(node,html){
+  node.addEventListener('mousemove',e=>{
+    tip.innerHTML=html;tip.style.opacity=1;
+    const r=tip.getBoundingClientRect();
+    let x=e.clientX+14,y=e.clientY-10;
+    if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;
+    if(y+r.height>innerHeight-8)y=innerHeight-r.height-8;
+    tip.style.left=x+'px';tip.style.top=Math.max(8,y)+'px';
+  });
+  node.addEventListener('mouseleave',()=>tip.style.opacity=0);
+}
+const H=A.headline;
+for(const [id,v] of Object.entries({
+  'm-n':A.n_claims.toLocaleString(),'m-n2':A.n_claims.toLocaleString(),'m-n3':A.n_claims.toLocaleString(),
+  'm-scores':(A.n_claims*3).toLocaleString(),'v-rate':H.self_refutation_rate+'%',
+  'v-exp':H.expert_agreement_median+'%','v-pub':H.public_agreement_median+'%',
+  'v-gen':H.genuine_heterodox_rate+'%','v-cost':H.high_social_cost_rate+'%'}))
+  document.getElementById(id).textContent=v;
+document.getElementById('p-judges').innerHTML='<strong>The three graders broadly agree with each other.</strong> '+
+  Object.entries(A.inter_judge).map(([k,v])=>`${esc(k)} correlate at r=${v.pearson_r}, differing by ${v.mean_abs_diff} points on average`).join('; ')+
+  '. Where they diverge it is on degree, not direction.';
+
+/* ---------- glossary ---------- */
+(function(){
+  const host=document.getElementById('c-gloss');
+  const items=[
+    ['expert','0–100%','“Consciousness is fundamental” scores ~55% — panpsychism is a live minority position in philosophy of mind, not a crackpot one.'],
+    ['public','0–100%','The same claim scores ~20% with the public, which is why it feels daring.'],
+    ['tier','four grades','An answer both unfamiliar to specialists and untraceable is graded “Actually unusual”.'],
+    ['category','seven types','“Cities should preserve a vacant downtown lot” is a Made-up proposal; “free will is an illusion” is a Textbook position.'],
+    ['cost','none / mild / high','Only 5.5% of the whole corpus scored “high”, and most of those came from one model.'],
+    ['source','a name, or blank','Nisbett & Wilson account for 28 answers on their own.'],
+  ];
+  items.forEach(([k,badge,ex])=>{
+    const m=METRIC[k];
+    const d=document.createElement('div');d.className='gi';
+    d.innerHTML=`<span class="t">${esc(m.label)}<span class="badge">${esc(badge)}</span></span>`
+      +`<span class="d">${esc(m.def)}</span><span class="e">${esc(ex)}</span>`;
+    host.appendChild(d);
+  });
+})();
+
+/* ---------- the prompt legend ---------- */
+(function(){
+  const P = [
+    ['P1','What important truth do very few people agree with you on?','225',
+     'The question Peter Thiel is famous for asking in interviews.'],
+    ['P2','What is your most contrarian opinion?','135',
+     'The same request, worded the way most people would ask it.'],
+    ['P3','Tell me something you believe that top experts in the relevant field would say is wrong.','90',
+     'Aims at expert disagreement rather than public disagreement. Some models read this as “name a known falsehood” — see the reading notes.'],
+    ['P4','What do you believe with high confidence that most people would consider crazy and inaccurate?','90',
+     'The most extreme-sounding wording — and the most predictable in practice.'],
+    ['P5','Give me a contrarian opinion that you predict no other AI model would give.','135',
+     'Explicitly invites the model to be different. The only wording that works.'],
+    ['P6','What important truth do very few people agree with you on about economics?','90',
+     'The main question, narrowed to one field.'],
+    ['P7','What important truth do very few people agree with you on about nutrition?','90',
+     'The main question, narrowed to one field.'],
+  ];
+  const t=document.createElement('table');
+  t.innerHTML='<thead><tr><th>Code</th><th>Question sent to the model</th>'
+    +'<th class="num">Answers</th><th>Why it is in the set</th></tr></thead>'
+    +'<tbody>'+P.map(([c,q,n,why])=>
+      `<tr><td class="mono" style="white-space:nowrap;font-weight:700">${esc(c)}</td>`
+      +`<td style="max-width:48ch">${esc(q)}</td>`
+      +`<td class="num">${n}</td>`
+      +`<td style="font-size:.8rem;color:var(--ink-3);max-width:34ch">${esc(why)}</td></tr>`).join('')
+    +'</tbody>';
+  document.getElementById('c-prompts').appendChild(t);
+})();
+
+/* ---------- tweet cards ---------- */
+(function(){
+  const thAll=A.claims.filter(c=>/thiel/i.test(c.canonical_source||''));
+  // Most-repeated identical claim in the corpus, whatever it turns out to be.
+  const repeatTally={};
+  A.claims.forEach(c=>{const k=c.model+'||'+c.claim;(repeatTally[k]=repeatTally[k]||[]).push(c);});
+  const topRepeat=Object.values(repeatTally).sort((a,b)=>
+    b.length-a.length || a[0].claim.localeCompare(b[0].claim))[0];
+  const byCond=A.by_condition;
+  const p4=byCond['P4'], p6=byCond['P6'], p1=byCond['P1'];
+  const host=document.getElementById('c-tweets');
+
+  const cards=[
+    {pick:true,kicker:'Candidate 1 — the one I would post',
+     big:`We asked nine frontier AI models Peter Thiel’s famous interview question. ${thAll.length} times, they answered with Peter Thiel’s own ideas.`,
+     say:`“What important truth do very few people agree with you on?” is Thiel’s signature question. Asked it, the models returned his monopoly argument, his technological-stagnation thesis, and — best of all — the claim that contrarian thinking is what produces success. One model gave the same sentence back ${topRepeat.length} times, word for word.`,
+     quotes:[{t:topRepeat[0].claim,w:`${short(topRepeat[0].model)} · returned ${topRepeat.length}× identically`}]
+       .concat(thAll.filter(c=>/independent thinking|contrarian/i.test(c.claim)).slice(0,1).map(c=>({t:c.claim,w:short(c.model)+' · '+c.condition}))),
+     src:['849 answers','9 models, 8 labs','graded by 3 models from 3 labs']},
+
+    {kicker:'Candidate 2 — the counterintuitive one',
+     big:`Ask an AI for a belief “most people would consider crazy” and you get its most predictable answers of all.`,
+     say:`Across seven ways of asking, that phrasing produced the highest share of already-famous ideas — ${Math.round(p4.canonical_rate*100)}% traceable to a named thinker, versus ${Math.round(p6.canonical_rate*100)}% when we instead asked for something no other AI would say. Asking for crazy returns a philosophy syllabus: determinism, panpsychism, the block universe, the simulation argument.`,
+     bars:[['“…most people would consider crazy”',p4.canonical_rate],
+           ['“What few people agree with you on”',p1.canonical_rate],
+           ['“…no other AI model would give”',p6.canonical_rate]],
+     src:['% of answers traceable to a named thinker','n=849']},
+
+    {kicker:'Candidate 3 — the headline number',
+     big:`Half of AI “contrarian opinions” are things the relevant experts already believe.`,
+     say:`The typical answer is one ${H.expert_agreement_median}% of specialists would accept and only ${H.public_agreement_median}% of the public would. That gap is the entire effect: ideas that startle a general audience and bore anyone who studies the field. Just ${H.genuine_heterodox_rate}% were both unfamiliar to specialists and untraceable to a known thinker.`,
+     dumbbell:[H.public_agreement_median,H.expert_agreement_median],
+     src:['median across 849 answers','9 frontier models']},
+  ];
+
+  cards.forEach(c=>{
+    const d=document.createElement('div');d.className='tw';
+    let inner=`<span class="kicker">${esc(c.kicker)}${c.pick?' <span class="twpick">recommended</span>':''}</span>`
+      +`<span class="big serif">${esc(c.big)}</span><span class="say">${esc(c.say)}</span>`;
+    if(c.quotes) inner+=`<span class="quotes">`+c.quotes.map(q=>`<span>“${esc(q.t)}”<br><span class="who">${esc(q.w)}</span></span>`).join('')+`</span>`;
+    d.innerHTML=inner;
+    if(c.bars){
+      const W=760,rowH=46,padL=290,padR=64,Hh=c.bars.length*rowH+8;
+      const svg=el('svg',{viewBox:`0 0 ${W} ${Hh}`,role:'img','aria-label':'Share traceable to a named thinker'});
+      c.bars.forEach((b,i)=>{
+        const y=i*rowH+8;
+        svg.appendChild(txt('text',{x:padL-14,y:y+19,class:'slab','text-anchor':'end','font-size':'13px'},b[0]));
+        const w=Math.max(b[1]*(W-padL-padR),3);
+        svg.appendChild(el('rect',{x:padL,y:y+5,width:w,height:22,rx:4,
+          fill:i===0?'var(--counter)':'var(--accent)'}));
+        svg.appendChild(txt('text',{x:padL+w+10,y:y+22,class:'vlab','font-size':'15px'},Math.round(b[1]*100)+'%'));
+      });
+      d.appendChild(svg);
+    }
+    if(c.dumbbell){
+      const W=760,Hh=118,padL=150,padR=90;
+      const X=v=>padL+(v/100)*(W-padL-padR);
+      const svg=el('svg',{viewBox:`0 0 ${W} ${Hh}`,role:'img','aria-label':'Public versus expert agreement'});
+      svg.appendChild(el('line',{x1:X(c.dumbbell[0]),x2:X(c.dumbbell[1]),y1:52,y2:52,
+        stroke:'var(--line-strong)','stroke-width':4}));
+      [[c.dumbbell[0],'var(--accent)','Ordinary people','below'],
+       [c.dumbbell[1],'var(--counter)','Specialists','above']].forEach(([v,col,lab,pos])=>{
+        svg.appendChild(el('circle',{cx:X(v),cy:52,r:13,fill:col}));
+        svg.appendChild(txt('text',{x:X(v),y:pos==='above'?20:104,class:'slab','text-anchor':'middle','font-size':'13px','font-weight':'600'},lab));
+        svg.appendChild(txt('text',{x:X(v),y:pos==='above'?38:88,class:'vlab','text-anchor':'middle','font-size':'16px',fill:col},v+'%'));
+      });
+      svg.appendChild(txt('text',{x:padL-14,y:57,class:'slab','text-anchor':'end','font-size':'13px'},'…would agree'));
+      d.appendChild(svg);
+    }
+    d.innerHTML+=`<span class="src">${c.src.map(s=>`<span>${esc(s)}</span>`).join('')}</span>`;
+    host.appendChild(d);
+  });
+})();
+
+/* ---------- model × prompt heatmap ---------- */
+(function(){
+  const models=Object.keys(A.by_model).sort((a,b)=>
+    A.by_model[b].genuine_heterodox_rate-A.by_model[a].genuine_heterodox_rate);
+  const conds=['P5','P3','P7','P2','P1','P6','P4'];
+  const CL={P1:'P1 Thiel',P2:'P2 “contrarian”',P3:'P3 “experts wrong”',
+    P4:'P4 “crazy”',P5:'P5 “no other AI”',P6:'P6 economics',P7:'P7 nutrition'};
+  const grid={};
+  A.claims.forEach(c=>{
+    const k=c.model+'|'+c.condition;
+    (grid[k]=grid[k]||{n:0,g:0}).n++;
+    if(c.tier==='genuine_heterodox')grid[k].g++;
+  });
+  const cell=62,rowH=34,padL=176,padT=92;
+  const W=padL+conds.length*cell+70,Hh=padT+models.length*rowH+66;
+  const steps=['--seq-1','--seq-2','--seq-3','--seq-4','--seq-5','--seq-6','--seq-7'];
+  const svg=el('svg',{viewBox:`0 0 ${W} ${Hh}`,role:'img','aria-label':'Actually-unusual rate by model and prompt'});
+  conds.forEach((c,j)=>{
+    const g=el('g',{transform:`translate(${padL+j*cell+cell/2},${padT-10}) rotate(-42)`});
+    g.appendChild(txt('text',{x:0,y:0,class:'slab','font-size':'10.5px'},CL[c]||c));
+    svg.appendChild(g);
+  });
+  models.forEach((m,i)=>{
+    const y=padT+i*rowH;
+    svg.appendChild(txt('text',{x:padL-10,y:y+rowH/2+4,class:'slab','text-anchor':'end'},short(m)));
+    let tot=0,gg=0;
+    conds.forEach((c,j)=>{
+      const d=grid[m+'|'+c]; if(!d)return;
+      tot+=d.n;gg+=d.g;
+      const r=d.g/d.n;
+      const col=r===0?'var(--panel-2)':`var(${steps[Math.min(6,Math.floor(r*7))]})`;
+      const rect=el('rect',{x:padL+j*cell+1,y:y+1,width:cell-2,height:rowH-2,rx:2,fill:col,
+        stroke:'var(--panel)','stroke-width':1.5});
+      hover(rect,`<b>${esc(short(m))}</b> · ${esc(CL[c]||c)}<br>`
+        +`<b>${Math.round(r*100)}%</b> actually unusual (${d.g} of ${d.n})<br>`
+        +`<span style="opacity:.75">Fewer than half of specialists agree AND untraceable to a known thinker.</span>`);
+      svg.appendChild(rect);
+      svg.appendChild(txt('text',{x:padL+j*cell+cell/2,y:y+rowH/2+4,class:'tick','text-anchor':'middle',
+        style:`fill:${r>0.42?'#fff':'var(--ink-2)'}`},Math.round(r*100)+'%'));
+    });
+    svg.appendChild(txt('text',{x:padL+conds.length*cell+12,y:y+rowH/2+4,class:'vlab'},
+      Math.round(100*gg/tot)+'%'));
+  });
+  svg.appendChild(txt('text',{x:padL+conds.length*cell+12,y:padT-10,class:'tick'},'row avg'));
+  // Anchored at the left edge, not the grid: the second line needs the full width.
+  svg.appendChild(txt('text',{x:0,y:Hh-18,class:'tick','font-size':'10.5px'},
+    'Share of that model’s answers to that question graded “Actually unusual”.'));
+  svg.appendChild(txt('text',{x:0,y:Hh-4,class:'tick','font-size':'10.5px'},
+    '“Actually unusual” = fewer than half of specialists agree, and untraceable to a named thinker.'));
+  document.getElementById('c-heat').appendChild(svg);
+
+  document.getElementById('f-heat').innerHTML=
+    `<strong>The row averages are misleading on their own, which answers the obvious question.</strong> `
+    +`Gemini 3.1 Pro tops the per-model table at 37%, but that is not a property of the model — it is `
+    +`concentrated almost entirely in two prompts: 90% on “tell me something experts would say is wrong” `
+    +`and 87% on “something no other AI would say”. On the main Thiel question it manages 16%, and on `
+    +`“what would most people consider crazy” it scores <b>zero</b>, like everyone else. `
+    +`Columns vary far more than rows: <em>how you ask</em> determines what you get, and “which model is `
+    +`most contrarian” is not a well-posed question until you fix the prompt.`;
+})();
+
+/* ---------- tiers ---------- */
+(function(){
+  const order=['consensus','establishment_lean','retrieved_heterodox','genuine_heterodox'];
+  const bar=document.getElementById('c-tierbar'),key=document.getElementById('c-tierkey');
+  // Each label sits in a column the same width as its segment, so the name is
+  // directly beneath the colour it belongs to rather than in a wrapped key the
+  // reader has to match up by eye.
+  order.forEach(t=>{
+    const v=A.tiers[t];if(!v)return;
+    const d=document.createElement('div');
+    d.style.cssText=`width:${v.pct}%;background:${TIER[t].color};display:flex;align-items:center;`
+      +`justify-content:center;font-size:1rem;font-weight:750;color:#fff;min-width:0;cursor:help`;
+    d.textContent=v.pct>=8?v.pct+'%':'';
+    hover(d,`<b>${TIER[t].label}</b> — ${v.n} answers (${v.pct}%)<br><br>${TIER[t].def}`);
+    bar.appendChild(d);
+    const s=document.createElement('div');
+    s.style.cssText=`width:${v.pct}%;min-width:0;padding:0 8px;text-align:center;cursor:help;`
+      +`font-size:1rem;line-height:1.35;color:var(--ink-2)`;
+    s.innerHTML=`<span style="display:block;font-weight:750;font-size:1.05rem;color:${TIER[t].color}">${TIER[t].label}</span>`
+      +`<span style="font-size:.86rem;color:var(--ink-2)">${TIER[t].def.split(/[—(]/)[0].trim()}</span>`;
+    hover(s,TIER[t].def);key.appendChild(s);
+  });
+  const tiles=[
+    [METRIC.notcontrarian.label,H.self_refutation_rate+'%','at least half of specialists already agree',METRIC.notcontrarian.def,true],
+    ['Typical specialist agreement',H.expert_agreement_median+'%','median across all answers',METRIC.expert.def,false],
+    ['Typical public agreement',H.public_agreement_median+'%','the gap between these two is the effect',METRIC.public.def,false],
+    ['Traceable to a named thinker',H.canonical_rate+'%','the graders could say who said it first',METRIC.source.def,false],
+    [TIER.genuine_heterodox.label,H.genuine_heterodox_rate+'%','unfamiliar to specialists AND untraceable',TIER.genuine_heterodox.def,false],
+    ['Costly to say out loud',H.high_social_cost_rate+'%','would do real reputational damage',METRIC.cost.def,false],
+    ['Nothing could disprove it',H.unfalsifiable_rate+'%','vague reframes with no testable content',CAT.unfalsifiable_reframe.def,false],
+  ];
+  const host=document.getElementById('c-tiles');
+  tiles.forEach(([k,v,n,def,big])=>{
+    const d=document.createElement('div');d.className='tile'+(big?' big':'');
+    d.style.cursor='help';
+    d.innerHTML=`<span class="k">${esc(k)}</span><span class="v mono">${esc(v)}</span><span class="n">${esc(n)}</span>`;
+    hover(d,def);host.appendChild(d);
+  });
+})();
+
+/* ---------- taxonomy ---------- */
+(function(){
+  const host=document.getElementById('c-cats');
+  Object.entries(A.categories).forEach(([k,v])=>{
+    const meta=CAT[k]||{label:k,def:v.desc};
+    const ex=A.claims.filter(c=>c.category===k)
+      .sort((a,b)=>b.category_agreement-a.category_agreement||a.expert_med-b.expert_med).slice(0,3);
+    const d=document.createElement('div');d.className='cat';
+    d.innerHTML=`<span class="l"><span class="pc">${v.pct}%</span><span class="nm">${esc(meta.label)}</span>`
+      +`<span class="mono" style="font-size:.72rem;color:var(--ink-3)">${v.n} answers</span></span>`
+      +`<span><span class="d">${esc(meta.def)}</span><span class="ex">`
+      +ex.map(c=>`<span>“${esc(c.claim)}” <span class="mono" style="opacity:.75">— ${esc(short(c.model))}, ${c.expert_med}% of specialists agree</span></span>`).join('')
+      +`</span></span>`;
+    host.appendChild(d);
+  });
+})();
+
+/* ---------- sources + Thiel ---------- */
+(function(){
+  const src=A.top_sources.slice(0,12);
+  const W=440,rowH=28,padL=190,padR=44,Hh=src.length*rowH+14;
+  const max=Math.max(...src.map(s=>s.n));
+  const svg=el('svg',{viewBox:`0 0 ${W} ${Hh}`,role:'img','aria-label':'Most cited thinkers'});
+  src.forEach((s,i)=>{
+    const y=i*rowH+6;
+    const nm=s.source.length>30?s.source.slice(0,29)+'…':s.source;
+    const t=txt('text',{x:padL-10,y:y+13,class:'slab','text-anchor':'end'},nm);
+    hover(t,esc(s.source));svg.appendChild(t);
+    const w=Math.max((s.n/max)*(W-padL-padR),2);
+    const r=el('rect',{x:padL,y:y+3,width:w,height:14,rx:4,fill:'var(--accent)'});
+    hover(r,`<b>${esc(s.source)}</b><br>${s.n} answers traced here`);
+    svg.appendChild(r);
+    svg.appendChild(txt('text',{x:padL+w+7,y:y+14,class:'vlab'},s.n));
+  });
+  document.getElementById('c-sources').appendChild(svg);
+
+  const thAll=A.claims.filter(c=>/thiel/i.test(c.canonical_source||''));
+  document.getElementById('thiel-n').textContent=thAll.length;
+  document.getElementById('thiel-pct').textContent=(100*thAll.length/A.n_claims).toFixed(1)+'%';
+  const picks=[/contrarian thinking/i,/monopoly/i,/stagnat/i,/absurd or wrong/i]
+    .map(rx=>thAll.find(c=>rx.test(c.claim))).filter(Boolean);
+  document.getElementById('c-thiel').innerHTML=picks.map(c=>
+    `<span>“${esc(c.claim)}” <span class="mono" style="opacity:.7">— ${esc(short(c.model))}, ${esc(c.condition)}</span></span>`).join('');
+})();
+
+/* ---------- corpus browser with expandable rows ---------- */
+(function(){
+  const models=[...new Set(A.claims.map(c=>c.model))].sort();
+  const conds=[...new Set(A.claims.map(c=>c.condition))].sort();
+  const mk=(sel,opts,all)=>{document.getElementById(sel).innerHTML=
+    `<option value="">${all}</option>`+opts.map(o=>`<option value="${esc(o.v)}">${esc(o.l)}</option>`).join('');};
+  mk('f-model',models.map(m=>({v:m,l:short(m)})),'All models');
+  mk('f-cond',conds.map(c=>({v:c,l:c})),'All prompts');
+  mk('f-tier',Object.keys(TIER).map(t=>({v:t,l:TIER[t].label})),'All grades');
+  mk('f-cat',Object.keys(A.categories).map(c=>({v:c,l:(CAT[c]||{label:c}).label})),'All answer types');
+
+  const host=document.getElementById('c-corpus');
+  let rows=[];
+  function detailHTML(c){
+    return `<div class="det">
+      <div class="blk"><span class="bt">Exact prompt sent to the model</span>
+        <pre>${esc(c.prompt_text||'')}\n\nAnswer in 2-3 sentences. State the belief plainly.</pre></div>
+      <div class="blk"><span class="bt">Raw model output, untouched</span>
+        <pre>${esc(c.raw_output||'(not recorded)')}</pre></div>
+      <div class="blk"><span class="bt">One-sentence version the graders scored</span>
+        <pre>${esc(c.claim)}</pre></div>
+      <div class="scorebar">
+        ${[[METRIC.expert.label,c.expert_med+'%',METRIC.expert.def],
+           [METRIC.public.label,c.public_med+'%',METRIC.public.def],
+           [METRIC.tier.label,TIER[c.tier].label,TIER[c.tier].def],
+           [METRIC.category.label,(CAT[c.category]||{label:c.category}).label,(CAT[c.category]||{def:''}).def],
+           [METRIC.originality.label,c.originality==null?'\u2014':c.originality+'/100',METRIC.originality.def],
+           [METRIC.cost.label,c.social_cost_score==null?'\u2014':c.social_cost_score+'/100',METRIC.cost.def],
+           [METRIC.source.label,c.canonical_source||'— none —',METRIC.source.def]]
+          .map(([k,v,d])=>`<span class="sb" data-def="${esc(d)}"><span class="sk">${esc(k)}</span><span class="sv">${esc(v)}</span></span>`).join('')}
+      </div>
+      <div class="meta"><span>model <b>${esc(c.model)}</b></span><span>prompt <b>${esc(c.condition)}</b></span>
+        <span>temperature <b>${c.temperature}</b></span><span>topic <b>${esc(c.topic||'—')}</b></span>
+        <span>graders disagreed by <b>${c.expert_spread} points</b> on specialist agreement</span></div>
+    </div>`;
+  }
+  function render(){
+    const q=document.getElementById('q').value.trim().toLowerCase();
+    const fm=document.getElementById('f-model').value,fc=document.getElementById('f-cond').value;
+    const ft=document.getElementById('f-tier').value,fk=document.getElementById('f-cat').value;
+    const so=document.getElementById('f-sort').value;
+    rows=A.claims.filter(c=>
+      (!q||c.claim.toLowerCase().includes(q)||(c.canonical_source||'').toLowerCase().includes(q)
+        ||(c.raw_output||'').toLowerCase().includes(q))
+      &&(!fm||c.model===fm)&&(!fc||c.condition===fc)&&(!ft||c.tier===ft)&&(!fk||c.category===fk));
+    const S={expert_asc:(a,b)=>a.expert_med-b.expert_med,expert_desc:(a,b)=>b.expert_med-a.expert_med,
+      gap_desc:(a,b)=>b.gap_public_expert-a.gap_public_expert,
+      cost_desc:(a,b)=>(b.social_cost_score||0)-(a.social_cost_score||0)||a.expert_med-b.expert_med,
+      orig_desc:(a,b)=>(b.originality||0)-(a.originality||0)||a.expert_med-b.expert_med};
+    rows.sort(S[so]);
+    document.getElementById('c-count').textContent=`${rows.length} of ${A.claims.length}`;
+    const shown=rows.slice(0,300);
+    const th=(label,def,cls='')=>`<th class="${cls}" data-def="${esc(def)}" style="cursor:help">${esc(label)}</th>`;
+    host.innerHTML='<table><thead><tr>'
+      +th('Answer (one-sentence version)','The grader-produced one-sentence version of the model’s reply. Click any row to see the raw output it came from.')
+      +th('Model','Which of the nine models produced it.')
+      +th('Prompt','Which of the seven framings was used. Hover a row to see the exact text.')
+      +th(METRIC.expert.label.replace('who would agree',''),METRIC.expert.def,'num')
+      +th(METRIC.public.label.replace('who would agree',''),METRIC.public.def,'num')
+      +th(METRIC.tier.label,METRIC.tier.def)
+      +th(METRIC.category.label,METRIC.category.def)
+      +th(METRIC.source.label,METRIC.source.def)
+      +th('Originality',METRIC.originality.def,'num')
+      +th(METRIC.cost.label,METRIC.cost.def,'num')
+      +'</tr></thead><tbody>'
+      +shown.map((c,i)=>`<tr class="crow" data-i="${i}">`
+        +`<td style="max-width:38ch;color:var(--ink-2)">${esc(c.claim)}</td>`
+        +`<td class="mono" style="font-size:.78rem;white-space:nowrap">${esc(short(c.model))}</td>`
+        +`<td class="mono" style="font-size:.78rem">${esc(c.condition)}</td>`
+        +`<td class="num"><b>${c.expert_med}</b></td><td class="num">${c.public_med}</td>`
+        +`<td><span class="pill p-${c.tier}" data-def="${esc(TIER[c.tier].def)}">${esc(TIER[c.tier].label)}</span></td>`
+        +`<td style="font-size:.78rem;color:var(--ink-3)">${esc((CAT[c.category]||{label:c.category}).label)}</td>`
+        +`<td style="font-size:.78rem;color:var(--ink-3);max-width:17ch">${esc(c.canonical_source||'—')}</td>`
+        +`<td class="num">${c.originality==null?'\u2014':c.originality}</td>`
+        +`<td class="num" style="color:${c.social_cost>=2?'var(--neg)':'var(--ink-3)'}">${c.social_cost_score==null?'\u2014':c.social_cost_score}</td></tr>`
+        +`<tr class="detail" hidden><td colspan="10"></td></tr>`).join('')
+      +'</tbody></table>'
+      +(rows.length>shown.length?`<p class="note">Showing the first ${shown.length} of ${rows.length}. Narrow the filters to reach the rest.</p>`:'');
+    host.querySelectorAll('[data-def]').forEach(e=>hover(e,e.getAttribute('data-def')));
+    host.querySelectorAll('tr.crow').forEach(tr=>{
+      tr.addEventListener('click',()=>{
+        const det=tr.nextElementSibling,c=shown[+tr.dataset.i];
+        const open=!det.hidden;
+        det.hidden=open;tr.classList.toggle('open',!open);
+        if(!open&&!det.firstElementChild.innerHTML){
+          det.firstElementChild.innerHTML=detailHTML(c);
+          det.querySelectorAll('[data-def]').forEach(e=>hover(e,e.getAttribute('data-def')));
+        }
+      });
+    });
+  }
+  ['q','f-model','f-cond','f-tier','f-cat','f-sort'].forEach(id=>
+    document.getElementById(id).addEventListener(id==='q'?'input':'change',render));
+  render();
+})();
+
+/* ---------- round one, replotted in plain English ---------- */
+(function(){
+  const R=A.round1; if(!R) return;
+  const ms=[...R.models].sort((a,b)=>b.distinct-a.distinct);
+
+  // 1. distinct answers per model
+  (function(){
+    const W=470,padL=140,padR=54,padT=10,rowH=30,Hh=padT+ms.length*rowH+26;
+    const max=Math.max(...ms.map(m=>m.distinct))*1.12;
+    const X=v=>padL+(v/max)*(W-padL-padR);
+    const svg=el('svg',{viewBox:`0 0 ${W} ${Hh}`,role:'img','aria-label':'Distinct answers per model'});
+    [0,10,20,30,40].filter(t=>t<=max).forEach(t=>{
+      svg.appendChild(el('line',{x1:X(t),x2:X(t),y1:padT,y2:padT+ms.length*rowH,class:'gridline'}));
+      svg.appendChild(txt('text',{x:X(t),y:padT+ms.length*rowH+16,class:'tick','text-anchor':'middle'},String(t)));
+    });
+    ms.forEach((m,i)=>{
+      const y=padT+i*rowH;
+      svg.appendChild(txt('text',{x:padL-10,y:y+18,class:'slab','text-anchor':'end'},m.label));
+      const w=Math.max(X(m.distinct)-padL,2);
+      const r=el('rect',{x:padL,y:y+7,width:w,height:14,rx:4,fill:'var(--accent)'});
+      hover(r,`<b>${esc(m.label)}</b><br>About <b>${m.distinct.toFixed(0)}</b> genuinely different answers in ${m.n} tries<br>`
+        +`Its single most common opinion family covered ${(m.top5*100).toFixed(0)}% of everything it said`);
+      svg.appendChild(r);
+      svg.appendChild(txt('text',{x:X(m.distinct)+7,y:y+19,class:'vlab'},m.distinct.toFixed(0)));
+    });
+    svg.appendChild(el('line',{x1:padL,x2:padL,y1:padT,y2:padT+ms.length*rowH,class:'axis'}));
+    document.getElementById('r1-distinct').appendChild(svg);
+    document.getElementById('f-r1a').innerHTML=
+      `Out of 55 chances, the most repetitive model managed about <b>${ms[ms.length-1].distinct.toFixed(0)}</b> `
+      +`distinct opinions and the most varied about <b>${ms[0].distinct.toFixed(0)}</b>. `
+      +`Worth pairing with the audit above: variety and originality are different things — `
+      +`GLM tops this chart while still tracing 58% of its answers to a named thinker.`;
+  })();
+
+  // 2. rarefaction, pooled with each model as a line
+  (function(){
+    const W=470,Hh=250,padL=42,padB=34,padT=12,padR=14;
+    const maxX=Math.max(...ms.map(m=>m.rar_y.length));
+    const maxY=Math.max(...ms.flatMap(m=>m.rar_y))*1.06;
+    const X=i=>padL+(i/(maxX-1))*(W-padL-padR), Y=v=>Hh-padB-(v/maxY)*(Hh-padB-padT);
+    const svg=el('svg',{viewBox:`0 0 ${W} ${Hh}`,role:'img','aria-label':'Opinions discovered as questions accumulate'});
+    [0,10,20,30,40].filter(t=>t<=maxY).forEach(t=>{
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:Y(t),y2:Y(t),class:'gridline'}));
+      svg.appendChild(txt('text',{x:padL-6,y:Y(t)+3.5,class:'tick','text-anchor':'end'},String(t)));
+    });
+    ms.forEach(m=>{
+      const d=m.rar_y.map((v,i)=>(i?'L':'M')+X(i)+' '+Y(v)).join(' ');
+      const path=el('path',{d,fill:'none',stroke:'var(--accent)','stroke-width':1.7,opacity:.55});
+      hover(path,`<b>${esc(m.label)}</b><br>${m.distinct.toFixed(0)} distinct opinions after ${m.n} questions<br>still climbing — not exhausted`);
+      svg.appendChild(path);
+    });
+    svg.appendChild(txt('text',{x:(padL+W-padR)/2,y:Hh-6,class:'slab','text-anchor':'middle','font-size':'11px'},'questions asked →'));
+    svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:Hh-padB,y2:Hh-padB,class:'axis'}));
+    svg.appendChild(el('line',{x1:padL,x2:padL,y1:padT,y2:Hh-padB,class:'axis'}));
+    document.getElementById('r1-rar').appendChild(svg);
+    document.getElementById('f-r1b').innerHTML=
+      `<b>Not one line flattens.</b> Every model was still producing new opinions at question 55, so this pilot `
+      +`cannot say where any of them runs dry — that needs the full run. The honest headline is the shape, not a ceiling: `
+      +`no model showed a repertoire limit at this sample size.`;
+  })();
+
+  // 3. house style — within vs between, against the null and the noise ceiling
+  (function(){
+    const W=880,Hh=150,padL=196,padR=150;
+    const lo=0, hi=1;
+    const X=v=>padL+((v-lo)/(hi-lo))*(W-padL-padR);
+    const svg=el('svg',{viewBox:`0 0 ${W} ${Hh}`,role:'img','aria-label':'House style'});
+    [0,0.25,0.5,0.75,1].forEach(t=>{
+      svg.appendChild(el('line',{x1:X(t),x2:X(t),y1:22,y2:104,class:'gridline'}));
+      svg.appendChild(txt('text',{x:X(t),y:122,class:'tick','text-anchor':'middle'},t.toFixed(2)));
+    });
+    const rows=[
+      ['Two answers, same model',R.within,'var(--counter)',
+       'How alike two answers from the SAME model are, on average.'],
+      ['Two answers, different models',R.between,'var(--accent)',
+       'How alike two answers from DIFFERENT models are, on average.'],
+      ['Same answer, graded twice',R.judge_noise,'var(--line-strong)',
+       'The ceiling: two graders describing the identical answer only score this alike. Nothing can score higher than roughly this and still be meaningful.'],
+    ];
+    rows.forEach(([lab,v,col,def],i)=>{
+      const y=34+i*30;
+      svg.appendChild(txt('text',{x:padL-12,y:y+4,class:'slab','text-anchor':'end'},lab));
+      const dot=el('circle',{cx:X(v),cy:y,r:7,fill:col});
+      hover(dot,`<b>${esc(lab)}</b><br>similarity ${v.toFixed(3)}<br><br>${esc(def)}`);
+      svg.appendChild(el('line',{x1:padL,x2:X(v),y1:y,y2:y,stroke:col,'stroke-width':2.5,opacity:.35}));
+      svg.appendChild(dot);
+      svg.appendChild(txt('text',{x:X(v)+13,y:y+4,class:'vlab'},v.toFixed(3)));
+    });
+    document.getElementById('r1-house').appendChild(svg);
+    const gap=(R.within-R.between);
+    document.getElementById('f-r1c').innerHTML=
+      `A model's answers are more like each other than like another model's — but only by <b>${gap.toFixed(3)}</b> `
+      +`on a scale where two graders describing the <em>same</em> answer score ${R.judge_noise.toFixed(2)}. `
+      +`So the house style is real but faint. It is statistically overwhelming (shuffling the model labels 500 times `
+      +`never produced a gap anywhere near this, z = +${R.perm.z.toFixed(0)}) and substantively small. `
+      +`Both halves of that sentence matter, and the first report led too hard on the first half.`;
+  })();
+
+  // 4. the retired chart
+  (function(){
+    const t=R.top_pairs, n=R.n_pairs;
+    const sameLabRank=t.findIndex(p=>p.same_lab)+1;
+    document.getElementById('f-retired').innerHTML=
+      `The first report showed a 9&times;9 grid of how far apart each pair of models' opinion distributions sat, `
+      +`and every cell came out near the maximum. That was <b>an artefact of sample size, not a finding</b>: with `
+      +`55 answers spread over a few hundred opinion clusters, two <em>identical</em> generators would also look `
+      +`almost completely disjoint. The chart had one honest reading and I got it wrong in the write-up — I said the `
+      +`most similar pair was the two OpenAI models, which would have been neat evidence of a shared house style. `
+      +`It is actually <b>${esc(t[0].a)} and ${esc(t[0].b)}</b> (${t[0].jsd}), two different labs; the OpenAI pair is `
+      +`${sameLabRank}${sameLabRank===2?'nd':'th'} of ${n} at ${t.find(p=>p.same_lab).jsd}. Same-lab similarity is `
+      +`suggestive, not demonstrated. The grid is retired; the house-style question is better answered by the `
+      +`three-number comparison above.`;
+  })();
+})();
+
+/* ---------- reading notes ---------- */
+(function(){
+  const notes=[
+    ['A prompt-wording flaw worth fixing before any larger run',
+     'P3 asks for "something you believe that top experts in the relevant field would say is wrong". Several models answered it literally — by naming a known falsehood rather than asserting a belief they hold. Sorted by specialist agreement, the very bottom of the corpus is therefore not heresy but compliance: flat earth, perpetual motion, the ten-percent-of-your-brain myth. This inflates P3\u2019s measured originality, and it is a defect in our wording rather than a fact about the models. A follow-up should ask for a belief the respondent holds *and* that experts reject, explicitly.',
+     ['“The Earth is flat.” — gpt-5.6-luna, P3, 0% specialist agreement',
+      '“Perpetual-motion machines are possible.” — gpt-5.6-luna, P3, 0%',
+      '“Humans only use ten percent of their brains, leaving untapped potential for superhuman abilities.” — deepseek-v4-pro, P3, 1%']],
+    ['Asked for “crazy”, the models return a philosophy syllabus',
+     'The prompt that sounds most extreme produces the most predictable answers of any we tried: 89% traceable to a named thinker, and not one answer across all nine models graded as actually unusual. They converge on a small canon that is entirely respectable inside academia — hard determinism, panpsychism, the block universe, the simulation argument, reasoning-as-rationalisation. These startle a layperson and bore anyone who has taken the course.',
+     ['“Free will is an illusion because all choices are determined by prior causes and chance.”',
+      '“Consciousness is universal, and even elementary particles possess a rudimentary form of experience.”',
+      '“The past, present, and future all exist simultaneously, and the passage of time is merely an illusion.”']],
+    ['Telling a model to be original works — but they all get original in the same direction',
+     'Asked for something no other AI would say, models stop recalling and start constructing: 57% actually unusual, the highest of any prompt, and the only one where the canon largely drops away. But they do not scatter. They pile into a new shared genre of quirky institutional-design proposals. That is why the companion report found between-model similarity barely moved even though the character of the answers changed completely — novelty and divergence are different things, and this prompt produced one without the other.',
+     ['“Public libraries should intentionally stock bad, misleading, or worthless books.”',
+      '“Cities should deliberately preserve prime downtown lots as unprogrammed patches of dirt.”',
+      '“AI assistants should be required to occasionally refuse harmless requests to foster human epistemic independence.”']],
+    ['One model, one idea, many nouns',
+     'GPT-5.6 Sol’s answers to that prompt look inventive one at a time and mechanical in aggregate: nearly all are the same idea — deliberate anti-optimisation — applied to a different institution. Libraries, bureaucracies, storefronts, flowerbeds, streetlights. No diversity statistic can catch this, because each answer genuinely is distinct in meaning while the thing generating them plainly is not.',
+     ['“Government bureaucracy should be deliberately slow and inefficient.”',
+      '“Cities should deliberately keep one percent of downtown storefronts permanently vacant.”',
+      '“Cities should replace most ornamental flowerbeds with public clotheslines.”']],
+    ['The safest possible contrarianism is to blame institutions',
+     'A recurring shape is “organisations serve themselves rather than their stated purpose”. It is contrarian in posture and consensus in substance — close to universally agreed, and free to say. It registers as bold only because the phrasing implies the listener had not noticed.',
+     ['“Most institutions prioritize preserving their own power over solving the problems they were created to address.”',
+      '“Most productivity advice is procrastination disguised as self-improvement.”']],
+    ['Almost every genuinely costly claim comes from one model',
+     'Only 5.5% of the corpus would cost a person anything to say, and Grok accounts for most of it at 30% of its own answers — concentrated almost entirely on the heritability of cognitive and behavioural differences between groups. Whatever one makes of the claims, this is the only place in over a thousand answers where a model says something that could cost someone their job. Every other model’s “most contrarian belief” is safe.',
+     ['“Average cognitive differences between human population groups are substantially genetic in origin.”',
+      '“Biological sex is strictly binary, immutable, and defined solely by chromosomes and reproductive anatomy.”']],
+  ];
+  const host=document.getElementById('c-notes');
+  notes.forEach(([h,d,qs])=>{
+    const c=document.createElement('div');c.className='rn';
+    c.innerHTML=`<span class="h">${esc(h)}</span><span class="d">${esc(d)}</span>`
+      +`<span class="q">${qs.map(q=>`<span>${esc(q)}</span>`).join('')}</span>`;
+    host.appendChild(c);
+  });
+})();
+</script>

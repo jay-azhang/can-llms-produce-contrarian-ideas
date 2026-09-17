@@ -1,0 +1,35 @@
+{
+  "n_pairs": 221,
+  "n_same": 71,
+  "judge": "google/gemini-3.7-flash",
+  "spaces": {
+    "closed": {
+      "threshold": 0.59,
+      "youden_j": 0.7155,
+      "sensitivity": 0.9155,
+      "specificity": 0.8,
+      "precision": 0.6842,
+      "f1": 0.7831,
+      "tp": 65,
+      "fp": 30,
+      "fn": 6,
+      "tn": 120,
+      "mean_sim_same": 0.7138,
+      "mean_sim_diff": 0.4511
+    },
+    "open": {
+      "threshold": 0.73,
+      "youden_j": 0.588,
+      "sensitivity": 0.7746,
+      "specificity": 0.8133,
+      "precision": 0.6627,
+      "f1": 0.7143,
+      "tp": 55,
+      "fp": 28,
+      "fn": 16,
+      "tn": 122,
+      "mean_sim_same": 0.7815,
+      "mean_sim_diff": 0.6187
+    }
+  }
+}

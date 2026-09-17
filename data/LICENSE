@@ -1,0 +1,14 @@
+The dataset in this directory is released under the Creative Commons
+Attribution 4.0 International licence (CC BY 4.0).
+
+https://creativecommons.org/licenses/by/4.0/
+
+You may share and adapt it for any purpose, including commercially, provided
+you give appropriate credit and indicate if changes were made.
+
+The code in ../code is separately licensed under MIT; see ../LICENSE.
+
+Note on provenance: this data records outputs produced by third-party language
+models via the OpenRouter API. The text of the model responses is machine
+generated. Attribution applies to the dataset — its construction, grading and
+documentation — not to the underlying model outputs.

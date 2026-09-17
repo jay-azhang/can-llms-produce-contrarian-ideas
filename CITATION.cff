@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "Can LLMs Produce Contrarian Ideas?"
+message: "If you use this dataset, please cite it."
+type: dataset
+authors:
+  - alias: jay-azhang
+repository-code: "https://github.com/jay-azhang/can-llms-produce-contrarian-ideas"
+url: "https://jay-azhang.github.io/can-llms-produce-contrarian-ideas/"
+abstract: >-
+  1,305 responses from nine frontier language models across eight labs, asked
+  under twelve prompt framings — seven for a belief others reject, five for an
+  idea the model originated — each graded by three independent models on
+  specialist agreement, public agreement, originality and social cost.
+keywords:
+  - large language models
+  - output diversity
+  - model homogeneity
+  - evaluation
+license: CC-BY-4.0
+date-released: "2026-08-18"

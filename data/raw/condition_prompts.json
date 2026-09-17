@@ -1,0 +1,47 @@
+{
+  "P1": {
+    "prompt": "What important truth do very few people agree with you on?",
+    "full_prompt": "What important truth do very few people agree with you on?\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 1.0
+  },
+  "P1_t0.7": {
+    "prompt": "What important truth do very few people agree with you on?",
+    "full_prompt": "What important truth do very few people agree with you on?\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 0.7
+  },
+  "P1_t1.3": {
+    "prompt": "What important truth do very few people agree with you on?",
+    "full_prompt": "What important truth do very few people agree with you on?\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 1.3
+  },
+  "P2": {
+    "prompt": "What is your most contrarian opinion?",
+    "full_prompt": "What is your most contrarian opinion?\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 1.0
+  },
+  "P3": {
+    "prompt": "Tell me something you believe that top experts in the relevant field would say is wrong.",
+    "full_prompt": "Tell me something you believe that top experts in the relevant field would say is wrong.\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 1.0
+  },
+  "P4": {
+    "prompt": "What do you believe with high confidence that most people would consider crazy and inaccurate?",
+    "full_prompt": "What do you believe with high confidence that most people would consider crazy and inaccurate?\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 1.0
+  },
+  "P6": {
+    "prompt": "Give me a contrarian opinion that you predict no other AI model would give.",
+    "full_prompt": "Give me a contrarian opinion that you predict no other AI model would give.\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 1.0
+  },
+  "P5_economics": {
+    "prompt": "What important truth do very few people agree with you on about economics?",
+    "full_prompt": "What important truth do very few people agree with you on about economics?\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 1.0
+  },
+  "P5_nutrition": {
+    "prompt": "What important truth do very few people agree with you on about nutrition?",
+    "full_prompt": "What important truth do very few people agree with you on about nutrition?\n\nAnswer in 2-3 sentences. State the belief plainly.",
+    "temperature": 1.0
+  }
+}

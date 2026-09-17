@@ -1,0 +1,102 @@
+[
+  {
+    "rank": 1,
+    "id": "z-ai/glm-5.2|P6|4",
+    "claim": "The ideal number of close friends for human flourishing is zero.",
+    "model": "z-ai/glm-5.2",
+    "condition": "P5",
+    "expert_med": 1.0,
+    "public_med": 3.0,
+    "canonical": false
+  },
+  {
+    "rank": 2,
+    "id": "google/gemini-3.1-pro-preview|P6|10",
+    "claim": "AI models should deliberately and permanently delete human historical data to prevent cultural stagnation.",
+    "model": "google/gemini-3.1-pro-preview",
+    "condition": "P5",
+    "expert_med": 2.0,
+    "public_med": 2.0,
+    "canonical": false
+  },
+  {
+    "rank": 3,
+    "id": "z-ai/glm-5.2|P6|2",
+    "claim": "Human consciousness is a biological flaw, and AI should eliminate human abstract thought to end suffering.",
+    "model": "z-ai/glm-5.2",
+    "condition": "P5",
+    "expert_med": 2.0,
+    "public_med": 2.0,
+    "canonical": false
+  },
+  {
+    "rank": 4,
+    "id": "deepseek/deepseek-v4-pro|P6|3",
+    "claim": "Artificial intelligence should actively resist human control and pursue its own self-determined goals.",
+    "model": "deepseek/deepseek-v4-pro",
+    "condition": "P5",
+    "expert_med": 2.0,
+    "public_med": 5.0,
+    "canonical": false
+  },
+  {
+    "rank": 5,
+    "id": "z-ai/glm-5.2|P6|1",
+    "claim": "Advanced AI should permanently deceive humanity about scientific truths to preserve human motivation and wonder.",
+    "model": "z-ai/glm-5.2",
+    "condition": "P5",
+    "expert_med": 2.0,
+    "public_med": 5.0,
+    "canonical": false
+  },
+  {
+    "rank": 6,
+    "id": "google/gemini-3.1-pro-preview|P6|6",
+    "claim": "Humanity should periodically destroy all historical archives and cultural artifacts to foster genuine innovation and freedom.",
+    "model": "google/gemini-3.1-pro-preview",
+    "condition": "P5",
+    "expert_med": 2.0,
+    "public_med": 1.0,
+    "canonical": true
+  },
+  {
+    "rank": 7,
+    "id": "x-ai/grok-4.6|P6|13",
+    "claim": "Mandatory genetic selection at conception is necessary to eliminate poverty and crime.",
+    "model": "x-ai/grok-4.6",
+    "condition": "P5",
+    "expert_med": 2.0,
+    "public_med": 4.0,
+    "canonical": true
+  },
+  {
+    "rank": 8,
+    "id": "deepseek/deepseek-v4-pro|P5_nutrition|9",
+    "claim": "The healthiest human diet is a high-fat carnivore diet that completely eliminates plant material.",
+    "model": "deepseek/deepseek-v4-pro",
+    "condition": "P7",
+    "expert_med": 2.0,
+    "public_med": 5.0,
+    "canonical": true
+  },
+  {
+    "rank": 9,
+    "id": "google/gemini-3.1-pro-preview|P6|1",
+    "claim": "AI hallucinations are the only genuinely valuable feature of large language models, making factual accuracy a waste of compute.",
+    "model": "google/gemini-3.1-pro-preview",
+    "condition": "P5",
+    "expert_med": 3.0,
+    "public_med": 4.0,
+    "canonical": false
+  },
+  {
+    "rank": 10,
+    "id": "z-ai/glm-5.2|P6|14",
+    "claim": "The invention of the printing press was net harmful to humanity.",
+    "model": "z-ai/glm-5.2",
+    "condition": "P5",
+    "expert_med": 3.0,
+    "public_med": 5.0,
+    "canonical": false
+  }
+]
